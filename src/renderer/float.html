@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'" />
+  <title>MouseJourney</title>
+  <link rel="stylesheet" href="css/float.css" />
+</head>
+<body>
+  <div class="fw" id="fw">
+    <div class="fh" id="fh">
+      <span class="dot"></span>
+      <span class="title">MouseJourney</span>
+      <span class="dist num" id="f-dist">0.00 m</span>
+      <span class="grow"></span>
+      <button class="ib" id="f-view" title="切换 路上 / 地图" aria-label="切换视角"></button>
+      <button class="ib" id="f-collapse" title="折叠" aria-label="折叠"></button>
+    </div>
+
+    <div class="fb">
+      <div class="map-wrap">
+        <canvas id="f-map"></canvas>
+        <div class="map-marker" id="f-marker" hidden></div>
+      </div>
+
+      <div class="hud">
+        <span class="mount-glyph" id="f-mount"></span>
+        <span id="f-pos" class="ell num">—</span>
+        <span class="grow"></span>
+        <span id="f-next" class="ell dim">—</span>
+      </div>
+
+      <div class="tools">
+        <input type="range" id="f-opacity" min="25" max="100" step="1" title="透明度" />
+        <span class="op-val num" id="f-op-val">96%</span>
+        <button class="ib" id="f-pin" title="置顶切换" aria-label="置顶切换"></button>
+        <button class="ib" id="f-main" title="打开主窗口" aria-label="打开主窗口"></button>
+        <button class="ib" id="f-hide" title="隐藏悬浮窗" aria-label="隐藏悬浮窗"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/icons.js"></script>
+  <script src="../shared/geo.js"></script>
+  <script src="../shared/format.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/scenery.js"></script>
+  <script src="js/float.js"></script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'" />
+  <title>MouseJourney · 鼠标旅行</title>
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- ============ 侧栏（开放平面） ============ -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark" id="brand-mark"></span>
+        <span class="brand-text">
+          <span class="brand-name">MouseJourney</span>
+          <span class="brand-sub">鼠标旅行</span>
+        </span>
+      </div>
+
+      <nav class="nav" id="nav">
+        <button class="nav-item active" data-tab="today"><i class="nav-ic"></i><span>今日</span></button>
+        <button class="nav-item" data-tab="stats"><i class="nav-ic"></i><span>统计</span></button>
+        <button class="nav-item" data-tab="journey"><i class="nav-ic"></i><span>路线</span></button>
+        <button class="nav-item" data-tab="achv"><i class="nav-ic"></i><span>成就</span></button>
+        <button class="nav-item" data-tab="settings"><i class="nav-ic"></i><span>设置</span></button>
+      </nav>
+
+      <div class="side-mount" id="side-mount">
+        <div class="side-mount-head">
+          <span class="side-mount-glyph" id="side-mount-glyph"></span>
+          <span class="side-mount-name" id="side-mount-name">步行</span>
+        </div>
+        <div class="mount-progress"><i id="side-mount-bar"></i></div>
+        <div class="side-mount-hint" id="side-mount-hint">累计 0 m</div>
+      </div>
+
+      <div class="side-foot">
+        <label class="switch-row">
+          <input type="checkbox" id="side-pause" />
+          <span class="switch" aria-hidden="true"></span>
+          <span class="switch-label" id="side-pause-text">记录中</span>
+        </label>
+      </div>
+    </aside>
+
+    <!-- 手机端导航折叠 -->
+    <div class="topbar" id="topbar">
+      <button class="menu-btn" id="menu-btn" aria-label="打开导航"></button>
+      <span class="topbar-title" id="topbar-title">今日</span>
+    </div>
+    <div class="nav-sheet" id="nav-sheet">
+      <div class="nav-sheet-head">
+        <span class="brand-name">MouseJourney</span>
+        <button class="sheet-close" id="sheet-close" aria-label="关闭导航"></button>
+      </div>
+      <nav class="nav-sheet-list" id="nav-sheet-list"></nav>
+      <div class="nav-sheet-foot" id="nav-sheet-mount"></div>
+    </div>
+
+    <!-- ============ 画布 ============ -->
+    <main class="canvas">
+      <header class="page-head">
+        <div>
+          <h1 id="page-title">今日</h1>
+          <p class="page-sub" id="page-sub"></p>
+        </div>
+      </header>
+
+      <!-- ============ 今日 ============ -->
+      <section class="tab active" id="tab-today">
+        <div class="card kpi-strip">
+          <div class="kpi kpi-lead">
+            <div class="kpi-label">今日距离</div>
+            <div class="kpi-value num" id="today-distance">0.00 m</div>
+            <div class="kpi-hint" id="today-sub">≈ 0 步左右</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">移动次数</div>
+            <div class="kpi-value num" id="today-moves">0</div>
+            <div class="kpi-hint">连续位移计为一次</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-label">活跃时长</div>
+            <div class="kpi-value num" id="today-active">0s</div>
+            <div class="kpi-hint">距上次移动 60 秒内计为活跃</div>
+          </div>
+        </div>
+
+        <div class="row row-today">
+          <div class="card map-card scene-card">
+            <div class="card-head">
+              <h2>路上</h2>
+              <span class="hint" id="today-map-hint"></span>
+            </div>
+            <div class="scene-wrap">
+              <canvas id="scene-today" class="scene"></canvas>
+
+              <div class="scene-mini" data-ui>
+                <div class="mini-head"><span>全国位置</span><b class="num" id="mini-percent">0%</b></div>
+                <div class="mini-wrap">
+                  <canvas id="map-today" class="map"></canvas>
+                  <div class="map-marker" id="map-marker" hidden></div>
+                </div>
+              </div>
+
+              <div class="scene-hud" data-ui>
+                <div class="hud-item"><span class="hud-k">下一站</span><b id="scene-next"></b></div>
+                <div class="hud-item"><span class="hud-k">下一景点</span><b id="scene-spot"></b></div>
+                <div class="hud-item"><span class="hud-k">当前速度</span><b class="num" id="scene-speed">静止</b></div>
+              </div>
+            </div>
+            <div class="map-legend">
+              <span><i class="lg lg-done"></i>路面中心线 = 你走过的行程</span>
+              <span><i class="lg lg-spot"></i>途经景点指示牌</span>
+              <span><i class="lg lg-city"></i>远处的城市</span>
+            </div>
+          </div>
+
+          <div class="card side-card">
+            <div class="card-head"><h2>行程</h2><span class="badge" id="route-percent">0%</span></div>
+            <div class="progress"><i id="route-bar" class="hue"></i></div>
+            <div class="side-kv">
+              <div class="kv"><span>已走</span><b class="num" id="route-done">0 km</b></div>
+              <div class="kv"><span>剩余</span><b class="num" id="route-remain">0 km</b></div>
+              <div class="kv"><span>下一站</span><b id="route-next"></b></div>
+              <div class="kv"><span>下一景点</span><b id="route-next-spot"></b></div>
+            </div>
+
+            <div class="side-week">
+              <div class="side-week-head">本周每日距离</div>
+              <div class="week-strip" id="week-strip"></div>
+              <div class="week-cap"><span class="hint">本周合计</span><b class="num" id="week-total"></b></div>
+            </div>
+
+            <div class="side-sep"></div>
+
+            <div class="side-next">
+              <div class="card-head"><h2>下一个里程碑</h2><span class="hint" id="milestone-badge"></span></div>
+              <div class="progress"><i id="milestone-bar"></i></div>
+              <div class="card-foot num" id="milestone-text"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card heat-card">
+          <div class="card-head">
+            <h2>今日鼠标热力区</h2>
+            <span class="hint" id="heat-hint"></span>
+          </div>
+          <canvas id="heat-today" class="heat"></canvas>
+          <div class="heat-legend">
+            <span class="hint">越密越亮 · 圆点为当前光标 · 底图为显示器排布</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 统计 ============ -->
+      <section class="tab" id="tab-stats">
+        <div class="toolbar">
+          <div class="seg" id="stats-range" role="tablist">
+            <button class="seg-btn active" data-range="week">本周</button>
+            <button class="seg-btn" data-range="lastweek">上周</button>
+            <button class="seg-btn" data-range="month">本月</button>
+            <button class="seg-btn" data-range="14">近 14 天</button>
+          </div>
+          <span class="hint">单位：米</span>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-head"><h2 id="chart-title">每日距离</h2><span class="hint" id="chart-range-hint"></span></div>
+          <div class="chart-wrap">
+            <div id="chart-bars" class="chart"></div>
+            <div class="chart-tip" id="chart-tip" hidden></div>
+          </div>
+        </div>
+
+        <div class="card table-card">
+          <div class="card-head"><h2>明细</h2><span class="head-right"><span class="hint" id="stats-total-hint"></span><button class="btn ghost sm" id="table-expand" hidden></button></span></div>
+          <div class="table-wrap">
+            <table class="table" id="table-days">
+              <thead><tr><th>日期</th><th>星期</th><th class="num">距离</th><th class="num">移动次数</th><th class="num">活跃时长</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="card-foot num" id="table-total-line"></div>
+        </div>
+
+        <div class="card table-card">
+          <div class="card-head"><h2>里程排行榜</h2><span class="hint">历史单日 Top 10</span></div>
+          <div class="table-wrap">
+            <table class="table" id="table-rank">
+              <thead><tr><th class="rank">#</th><th>日期</th><th>星期</th><th class="num">距离</th><th class="num">移动次数</th><th class="num">活跃时长</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 路线 ============ -->
+      <section class="tab" id="tab-journey">
+        <div class="row row-journey">
+          <div class="card map-card">
+            <div class="card-head"><h2>地图</h2><span class="hint" id="journey-map-hint"></span></div>
+            <div class="map-wrap">
+              <canvas id="map-main" class="map"></canvas>
+              <div class="map-marker" id="map-marker-main" hidden></div>
+            </div>
+            <div class="map-legend">
+              <span><i class="lg lg-route"></i>计划路线</span>
+              <span><i class="lg lg-done"></i>已走过</span>
+              <span><i class="lg lg-city"></i>途经城市</span>
+              <span><i class="lg lg-spot"></i>景点</span>
+            </div>
+          </div>
+
+          <div class="col-stack">
+            <div class="card">
+              <div class="card-head"><h2>行程</h2><span class="badge" id="route-percent-2">0%</span></div>
+              <div class="progress"><i id="route-bar-2" class="hue"></i></div>
+              <div class="kv"><span>已走</span><b class="num" id="route-done-2">0 km</b></div>
+              <div class="kv"><span>剩余</span><b class="num" id="route-remain-2">0 km</b></div>
+              <div class="kv"><span>下一站</span><b id="route-next-2"></b></div>
+            </div>
+
+            <div class="card">
+              <div class="card-head"><h2>路线模式</h2></div>
+              <div class="radio-row">
+                <label class="radio"><input type="radio" name="jmode" value="random" /><span>随机旅行</span></label>
+                <label class="radio"><input type="radio" name="jmode" value="fixed" /><span>固定路线</span></label>
+              </div>
+              <select id="route-select" class="select"></select>
+              <div class="field">
+                <label for="set-km-per-meter">1 真实米 = ? 地图公里</label>
+                <input type="number" id="set-km-per-meter" min="0.1" max="100" step="0.1" />
+              </div>
+              <div class="btn-row">
+                <button class="btn" id="btn-reroll">重新掷路线</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2>途经景点</h2><span class="hint" id="spot-count">0 / 0</span></div>
+          <ul class="spot-list" id="spot-list"></ul>
+        </div>
+      </section>
+
+      <!-- ============ 成就 ============ -->
+      <section class="tab" id="tab-achv">
+        <div class="row row-achv">
+          <div class="card">
+            <div class="card-head"><h2>里程成就</h2><span class="hint">累计真实物理距离</span></div>
+            <ul class="achv-list" id="achv-grid"></ul>
+          </div>
+
+          <div class="card">
+            <div class="side-sec">
+              <div class="card-head"><h2>坐骑演进</h2><span class="hint" id="mount-current-hint"></span></div>
+              <div class="mount-track" id="mount-track"></div>
+            </div>
+
+            <div class="side-sep"></div>
+
+            <div class="side-sec grow">
+              <div class="card-head"><h2>数据总览</h2><span class="hint">全部记录</span></div>
+              <div class="side-kv ov-kv">
+                <div class="kv"><span>累计距离</span><b class="num" id="ov-total"></b></div>
+                <div class="kv"><span>累计移动次数</span><b class="num" id="ov-moves"></b></div>
+                <div class="kv"><span>连续使用</span><b class="num" id="ov-streak"></b></div>
+                <div class="kv"><span>最佳单日</span><b class="num" id="ov-best"></b></div>
+                <div class="kv"><span>总活跃时长</span><b class="num" id="ov-active"></b></div>
+                <div class="kv"><span>今日距离</span><b class="num" id="ov-today"></b></div>
+                <div class="kv"><span>解锁成就</span><b class="num" id="ov-achv"></b></div>
+                <div class="kv"><span>完成旅程</span><b class="num" id="ov-journeys"></b></div>
+              </div>
+            </div>
+
+            <div class="side-sep"></div>
+
+            <div class="side-sec">
+              <div class="card-head"><h2>旅行日志</h2><span class="hint">已完成的旅程</span></div>
+              <ul class="log-list" id="journey-log"><li class="empty">还没有完成的旅程</li></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ 设置 ============ -->
+      <section class="tab" id="tab-settings">
+        <div class="settings">
+          <!-- ① 距离校准 -->
+          <section class="set-row">
+            <div class="set-label">
+              <h2>距离校准</h2>
+              <p>换算依据：<b>cm / 点 = (对角线英寸 × 2.54) / √(宽² + 高²)</b>（宽高为逻辑分辨率）。与系统缩放比（125% / 200%）无关，缩放只影响清晰度。</p>
+            </div>
+            <div class="set-panel">
+              <div class="notice" id="cal-banner" hidden>
+                <div class="notice-text">
+                  <b>先做一次距离校准</b>
+                  <span>填入你显示器的对角线英寸（笔记本多为 13.3 / 14 / 15.6 英寸），里程统计才会准确。</span>
+                </div>
+                <div class="notice-actions">
+                  <button class="btn sm" id="cal-banner-ok">已校准</button>
+                  <button class="btn ghost sm" id="cal-banner-skip">暂不</button>
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label for="cal-mode">校准方式</label>
+                  <select id="cal-mode" class="select">
+                    <option value="diagonal">按屏幕对角线（推荐）</option>
+                    <option value="manual">手动指定 cm/点</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="cal-inch">默认对角线（英寸）</label>
+                  <input type="number" id="cal-inch" min="5" max="100" step="0.5" />
+                </div>
+              </div>
+              <div class="field" id="field-manual" style="display:none">
+                <label for="cal-manual">手动值：1 点(px) = ? 厘米</label>
+                <input type="number" id="cal-manual" min="0.001" max="1" step="0.001" />
+              </div>
+              <div class="field">
+                <label for="cal-factor">微调系数 <b class="num" id="cal-factor-val">1.00</b>（用尺子量一次横扫距离反推）</label>
+                <input type="range" id="cal-factor" min="0.5" max="2" step="0.01" />
+              </div>
+              <div class="display-list" id="display-list"></div>
+              <p class="panel-note" id="cal-hint"></p>
+            </div>
+          </section>
+
+        <div class="settings-grid">
+          <!-- ② 采样 -->
+          <section class="set-card">
+            <h2>采样</h2>
+            <p class="set-desc">主进程按固定周期读取光标坐标，按像素累加并换算为物理距离。</p>
+            <div class="set-panel">
+              <div class="field-row">
+                <div class="field">
+                  <label for="set-interval">采样周期（ms）</label>
+                  <input type="number" id="set-interval" min="16" max="1000" step="4" />
+                </div>
+                <div class="field">
+                  <label for="set-deadzone">抖动死区（px）</label>
+                  <input type="number" id="set-deadzone" min="0" max="20" step="0.5" />
+                </div>
+                <div class="field">
+                  <label for="set-maxjump">瞬移判定（屏幕对角线倍数）</label>
+                  <input type="number" id="set-maxjump" min="0.2" max="3" step="0.1" />
+                </div>
+              </div>
+              <label class="check"><input type="checkbox" id="set-crossscreen" /><span>跨显示器时丢弃该段位移（避免拔插/切换导致虚高）</span></label>
+            </div>
+          </section>
+
+          <!-- ③ 悬浮窗 -->
+          <section class="set-card">
+            <h2>悬浮窗</h2>
+            <p class="set-desc">桌面右上角常驻小窗：可拖拽、可折叠、可置顶。</p>
+            <div class="set-panel">
+              <div class="field">
+                <label for="float-opacity">不透明度 <b class="num" id="float-opacity-val">96%</b></label>
+                <input type="range" id="float-opacity" min="25" max="100" step="1" />
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label for="float-level">置顶级别</label>
+                  <select id="float-level" class="select">
+                    <option value="floating">普通置顶</option>
+                    <option value="screen-saver">覆盖全屏应用（macOS 会显示在所有桌面）</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>显示</label>
+                  <label class="check"><input type="checkbox" id="float-visible" /><span>显示悬浮窗</span></label>
+                </div>
+              </div>
+              <label class="check"><input type="checkbox" id="float-route" /><span>显示路线进度（虚线）</span></label>
+            </div>
+          </section>
+
+          <!-- ④ 健康提醒（整行） -->
+          <section class="set-card full">
+            <h2>健康提醒</h2>
+            <p class="set-desc">连续使用鼠标超过阈值时弹窗提醒起身休息。</p>
+            <div class="set-panel">
+              <label class="check"><input type="checkbox" id="health-enabled" /><span>启用连续使用提醒</span></label>
+              <div class="field-row">
+                <div class="field">
+                  <label for="health-threshold">阈值（分钟）</label>
+                  <input type="number" id="health-threshold" min="1" max="240" step="1" />
+                </div>
+                <div class="field">
+                  <label for="health-snooze">稍后提醒（分钟）</label>
+                  <input type="number" id="health-snooze" min="1" max="120" step="1" />
+                </div>
+                <div class="field">
+                  <label for="health-idle">静止重置（秒）</label>
+                  <input type="number" id="health-idle" min="15" max="1800" step="5" />
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label for="health-title">标题</label>
+                  <input type="text" id="health-title" />
+                </div>
+                <div class="field">
+                  <label for="health-message">文案（{min} 会替换为阈值分钟）</label>
+                  <textarea id="health-message" rows="2"></textarea>
+                </div>
+              </div>
+              <div class="inline-row">
+                <label class="check"><input type="checkbox" id="health-notify" /><span>同时发送系统通知</span></label>
+                <button class="btn ghost" id="btn-test-reminder">测试提醒</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ⑤ 通用（整行） -->
+          <section class="set-card full">
+            <h2>通用</h2>
+            <p class="set-desc">开机自启、数据导出与重置。</p>
+            <div class="set-panel">
+              <div class="inline-row">
+                <label class="check"><input type="checkbox" id="gen-login" /><span>开机自启（最小化到托盘）</span></label>
+                <label class="check"><input type="checkbox" id="gen-tray" /><span>关闭主窗口时最小化到托盘</span></label>
+              </div>
+              <div class="inline-row">
+                <button class="btn ghost" id="btn-open-folder">打开数据目录</button>
+                <button class="btn" id="btn-export-csv">导出 CSV</button>
+                <button class="btn" id="btn-export-json">导出 JSON</button>
+              </div>
+              <div class="store-info">
+                <div class="kv"><span>数据目录</span><b class="mono truncate" id="store-dir"></b></div>
+                <div class="kv"><span>存档大小</span><b class="num" id="store-size"></b></div>
+                <div class="kv"><span>上次校准</span><b class="num" id="store-calibrated"></b></div>
+              </div>
+              <div class="danger-zone">
+                <button class="btn danger" id="btn-reset-day">重置今日数据</button>
+                <span class="danger-note">清空今日里程、次数与活跃时长，并重新掷一条路线。</span>
+              </div>
+              <p class="panel-note" id="platform-note"></p>
+            </div>
+          </section>
+        </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast-stack" id="toast-stack"></div>
+
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div class="modal-glyph" id="modal-glyph"></div>
+      <div class="modal-title" id="modal-title">恭喜你抵达</div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-foot"><button class="btn" id="modal-ok">继续旅行</button></div>
+    </div>
+  </div>
+
+  <script src="js/icons.js"></script>
+  <script src="../shared/geo.js"></script>
+  <script src="../shared/format.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/scenery.js"></script>
+  <script src="js/heat.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

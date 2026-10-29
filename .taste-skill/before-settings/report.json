@@ -1,0 +1,592 @@
+{
+ "url": "http://127.0.0.1:8901/.taste-skill/harness/index.html#settings",
+ "at": "2026-10-24T12:07:38.334Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 1,
+   "filled": [
+    0.96
+   ],
+   "motion": {
+    "elements": 3,
+    "css": 0,
+    "transitions": 3,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 900,
+     "screens": 1,
+     "words": 151,
+     "img": 0,
+     "video": 0,
+     "canvas": 5,
+     "svg": 0,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [
+      "🧭",
+      "🚌"
+     ],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "① 距离校准",
+     "words": 2,
+     "chars": 6,
+     "lines": 1,
+     "size": 14,
+     "vw": 1,
+     "font": "-apple-system",
+     "weight": 650,
+     "tracking": 0,
+     "leading": 1.2,
+     "top": 39,
+     "tag": "h3",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": null,
+    "headings": [],
+    "headingSummary": {
+     "count": 0,
+     "maxLines": 0,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "-apple-system",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      24,
+      26
+     ],
+     "sizeCount": 6,
+     "notLoaded": [],
+     "body": {
+      "font": "-apple-system",
+      "size": 12,
+      "leading": 1.7,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": null
+     },
+     "measureChars": 190,
+     "max": {
+      "size": 26,
+      "vw": 1.8,
+      "font": "-apple-system",
+      "text": "🚌"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.09,
+     "centerShare": 0.04,
+     "smallText": 13
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f4f5f9",
+     "bodyBgHsl": {
+      "h": 228,
+      "s": 0.29,
+      "l": 0.97
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 22,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#5b6478",
+       "share": 0.52
+      },
+      {
+       "color": "#1a1d29",
+       "share": 0.22
+      },
+      {
+       "color": "#8b93a7",
+       "share": 0.2
+      },
+      {
+       "color": "#4f46e5",
+       "share": 0.03
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#4f46e5",
+      "hsl": {
+       "h": 243,
+       "s": 0.75,
+       "l": 0.59
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": [
+      {
+       "text": "1920×1080 pt · 91.8 PPI · 1 pt = 0.277 m",
+       "ratio": 3,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#8b93a7",
+       "bg": "#fafbfd"
+      },
+      {
+       "text": "1728×1117 pt · 293.9 PPI · 1 pt = 0.173 ",
+       "ratio": 3,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#8b93a7",
+       "bg": "#fafbfd"
+      },
+      {
+       "text": "检测到 2 台显示器，1 pt ≈ 0.277 mm",
+       "ratio": 3.1,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#8b93a7",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "重置今日数据",
+       "ratio": 3.9,
+       "need": 4.5,
+       "size": 13,
+       "fg": "#e5484d",
+       "bg": "#ffffff"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 7,
+     "inHero": 2,
+     "radius": 10,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "设置",
+      "已校准"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 5,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "div.card → rgba(16, 24, 40, 0.04) 0px 1px 2px 0px, rgba(16, 24, 40, 0.06) 0px 8px 24px 0px",
+      "div.card → rgba(16, 24, 40, 0.04) 0px 1px 2px 0px, rgba(16, 24, 40, 0.06) 0px 8px 24px 0px",
+      "div.card → rgba(16, 24, 40, 0.04) 0px 1px 2px 0px, rgba(16, 24, 40, 0.06) 0px 8px 24px 0px",
+      "div.card → rgba(16, 24, 40, 0.04) 0px 1px 2px 0px, rgba(16, 24, 40, 0.06) 0px 8px 24px 0px"
+     ],
+     "gradients": 2,
+     "scrims": 0,
+     "gradientSamples": [
+      "aside.sidebar → linear-gradient(rgb(255, 255, 255) 0%, rgb(247, 248, 252) 100%)",
+      "div#cal-banner.banner → linear-gradient(135deg, rgb(238, 240, 255), rgb(246, 243, 255))"
+     ],
+     "gradientText": 0,
+     "hairlines": 1,
+     "hairlineSamples": [
+      "aside.sidebar 208px"
+     ],
+     "outlinedBoxes": 8,
+     "dashed": 2,
+     "blurred": 0,
+     "roundedBoxes": 8,
+     "boxRadius": 14,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 5,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 22
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": false,
+     "height": 188,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": []
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 900,
+    "margins": {
+     "left": 14,
+     "right": 45
+    },
+    "sections": [
+     {
+      "sel": "div.card",
+      "tag": "div",
+      "top": 22,
+      "height": 563,
+      "words": 93,
+      "media": 0,
+      "middle": 17,
+      "heading": {
+       "text": "① 距离校准",
+       "size": 14,
+       "tag": "h3"
+      },
+      "left": 253,
+      "right": 45,
+      "textLeft": 253,
+      "textRight": 45,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.card",
+      "tag": "div",
+      "top": 601,
+      "height": 166,
+      "words": 6,
+      "media": 0,
+      "middle": 12,
+      "heading": {
+       "text": "② 采样",
+       "size": 14,
+       "tag": "h3"
+      },
+      "left": 253,
+      "right": 45,
+      "textLeft": 253,
+      "textRight": 262,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.card",
+      "tag": "div",
+      "top": 783,
+      "height": 398,
+      "words": 11,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "③ 健康提醒",
+       "size": 14,
+       "tag": "h3"
+      },
+      "left": 253,
+      "right": 45,
+      "textLeft": 253,
+      "textRight": 334,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.card",
+      "tag": "div",
+      "top": 1197,
+      "height": 193,
+      "words": 7,
+      "media": 0,
+      "middle": 12,
+      "heading": {
+       "text": "④ 悬浮窗",
+       "size": 14,
+       "tag": "h3"
+      },
+      "left": 253,
+      "right": 722,
+      "textLeft": 253,
+      "textRight": 722,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.card",
+      "tag": "div",
+      "top": 1406,
+      "height": 260,
+      "words": 23,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "⑤ 通用",
+       "size": 14,
+       "tag": "h3"
+      },
+      "left": 253,
+      "right": 74,
+      "textLeft": 253,
+      "textRight": 74,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 253,
+      "n": 5
+     }
+    ],
+    "leftBlocks": 5,
+    "bodySize": 12,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.15,
+    "voidBox": {
+     "x": 600,
+     "y": 300,
+     "w": 660,
+     "h": 300
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": false,
+    "ground": "#f4f5f9",
+    "sidebar": {
+     "w": 208,
+     "tag": "aside",
+     "links": 5,
+     "share": 0.14
+    },
+    "topbar": null,
+    "canvas": {
+     "left": 45,
+     "right": 43
+    },
+    "hero": {
+     "text": "① 距离校准",
+     "words": 2,
+     "chars": 6,
+     "lines": 1,
+     "size": 14,
+     "vw": 1,
+     "font": "-apple-system",
+     "weight": 650,
+     "tracking": 0,
+     "leading": 1.2,
+     "top": 39,
+     "tag": "h3",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 6,
+     "firstScreen": 4,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 8,
+     "radii": [
+      [
+       14,
+       6
+      ],
+      [
+       12,
+       2
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 5,
+     "softShadows": 5,
+     "shadowSamples": [
+      "rgba(16, 24, 40, 0.06) 0px 8px 24px 0px",
+      "rgba(16, 24, 40, 0.06) 0px 8px 24px 0px",
+      "rgba(16, 24, 40, 0.06) 0px 8px 24px 0px"
+     ],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 28,
+     "leftAligned": 28,
+     "figures": 2,
+     "tabularShare": 0,
+     "kpiMax": 12
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.53,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      17,
+      18,
+      22,
+      24,
+      26,
+      40,
+      44,
+      46
+     ]
+    },
+    "title": null,
+    "colourShare": 0.005
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "emoji",
+   "width": 1440,
+   "message": "Emoji in the page: 🧭 🚌",
+   "fix": "Remove. Use words or real imagery."
+  },
+  {
+   "level": "FAIL",
+   "id": "gradient",
+   "width": 1440,
+   "message": "2 gradient fill(s): aside.sidebar → linear-gradient(rgb(255, 255, 255) 0%, rgb(247, 248, 252) 100%) | div#cal-banner.banner → linear-gradient(135deg, rgb(238, 240, 255), rgb(246, 243, 255))",
+   "fix": "Use a flat colour or a real image. The only gradient allowed by default is a neutral scrim over a photo for legibility."
+  },
+  {
+   "level": "WARN",
+   "id": "contrast",
+   "width": 1440,
+   "message": "Low-contrast text: \"1920×1080 pt · 91.8 PPI · 1 pt = 0.277 m\" 3:1 needs 4.5:1; \"1728×1117 pt · 293.9 PPI · 1 pt = 0.173 \" 3:1 needs 4.5:1; \"检测到 2 台显示器，1 pt ≈ 0.277 mm\" 3.1:1 needs 4.5:1; \"重置今日数据\" 3.9:1 needs 4.5:1",
+   "fix": "Darken or lighten the text colour."
+  },
+  {
+   "level": "FAIL",
+   "id": "heavy-shadow",
+   "width": 1440,
+   "message": "5 panel shadow(s) heavy enough to read as floating: rgba(16, 24, 40, 0.06) 0px 8px 24px 0px | rgba(16, 24, 40, 0.06) 0px 8px 24px 0px | rgba(16, 24, 40, 0.06) 0px 8px 24px 0px",
+   "fix": "Panels sit on the ground: separate them with a fill one step from the ground or a quiet 1px border. A shadow, if any, is under 8% black with a small blur. Real overlays (menus, dialogs, popovers) may float."
+  },
+  {
+   "level": "WARN",
+   "id": "numeric-align",
+   "width": 1440,
+   "message": "28 of 28 numeric table cells are left-aligned.",
+   "fix": "Right-align numbers, amounts and percentages (and their column headers) so the digits line up."
+  },
+  {
+   "level": "WARN",
+   "id": "tiny-text",
+   "width": 1440,
+   "message": "53% of the text is under 13px.",
+   "fix": "Data and labels read at 13–14px; keep 11–12px for sublines and axis ticks."
+  },
+  {
+   "level": "FAIL",
+   "id": "no-title",
+   "width": 1440,
+   "message": "The screen has no h1.",
+   "fix": "Name the screen in an h1 at the top of the canvas (18–28px): \"Overview\", \"Payouts\", the project's name."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/before-settings/desktop-fold.jpg",
+   "pages": [
+    "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/before-settings/desktop-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

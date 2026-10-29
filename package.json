@@ -1,0 +1,108 @@
+{
+  "name": "mouse-journey",
+  "productName": "MouseJourney",
+  "version": "1.0.0",
+  "description": "把每天鼠标移动的总距离，变成一场穿越中国的旅行",
+  "main": "src/main/index.js",
+  "author": "MouseJourney",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "icon": "node scripts/make-icon.mjs",
+    "dist:mac": "npm run icon && electron-builder --mac",
+    "dist:win": "npm run icon && electron-builder --win",
+    "dist": "npm run icon && electron-builder --mac --win",
+    "smoke": "node scripts/smoke-main.cjs"
+  },
+  "devDependencies": {
+    "electron": "^45.0.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.mousejourney.app",
+    "productName": "MouseJourney",
+    "copyright": "Copyright © 2026 MouseJourney",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "build/tray.png",
+      "build/tray@2x.png",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "extendInfo": {
+        "NSAppleEventsUsageDescription": "MouseJourney 需要辅助功能权限以读取鼠标移动距离，用于统计你的每日行程。",
+        "NSScreenCaptureDescription": "MouseJourney 仅读取光标坐标，不截取或上传任何屏幕内容。"
+      }
+    },
+    "dmg": {
+      "sign": false,
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MouseJourney"
+    },
+    "portable": {
+      "artifactName": "MouseJourney-${version}-portable.exe"
+    }
+  }
+}

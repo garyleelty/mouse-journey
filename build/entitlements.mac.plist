@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- 主进程：允许 JIT（V8 必需）与未签名内存执行 -->
+  <key>com.apple.security.cs.allow-jit</key>
+  <true/>
+  <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+  <true/>
+  <key>com.apple.security.cs.allow-dyld-environment-variables</key>
+  <true/>
+  <!-- 读取光标坐标不需要辅助功能权限；如需全局鼠标/键盘监听再开启下面这一项 -->
+  <key>com.apple.security.automation.apple-events</key>
+  <false/>
+  <!-- 本地数据读写：应用沙盒内自由访问 -->
+  <key>com.apple.security.files.user-selected.read-only</key>
+  <true/>
+  <key>com.apple.security.network.client</key>
+  <false/>
+  <key>com.apple.security.network.server</key>
+  <false/>
+</dict>
+</plist>

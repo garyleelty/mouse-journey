@@ -1,0 +1,1339 @@
+{
+ "url": "http://127.0.0.1:8899/.taste-skill/harness/index.html#journey",
+ "at": "2026-10-24T16:08:43.970Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.68,
+    0.76
+   ],
+   "motion": {
+    "elements": 2,
+    "css": 0,
+    "transitions": 2,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 1030,
+     "screens": 1.1,
+     "words": 127,
+     "img": 0,
+     "video": 0,
+     "canvas": 4,
+     "svg": 22,
+     "sections": 10,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 2,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "京沪线 · 上海 → 北京",
+     "words": 5,
+     "chars": 13,
+     "lines": 1,
+     "size": 24,
+     "vw": 1.7,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 32,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "京沪线 · 上海 → 北京",
+     "words": 5,
+     "lines": 1,
+     "size": 24,
+     "font": "Geist"
+    },
+    "headings": [],
+    "headingSummary": {
+     "count": 0,
+     "maxLines": 0,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 0.97,
+       "mono": false
+      },
+      {
+       "family": "Geist Mono",
+       "share": 0.03,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      16,
+      24
+     ],
+     "sizeCount": 4,
+     "notLoaded": [],
+     "body": null,
+     "measureChars": null,
+     "max": {
+      "size": 24,
+      "vw": 1.7,
+      "font": "Geist",
+      "text": "京沪线 · 上海 → 北京"
+     },
+     "monoShare": 0.03,
+     "monoProseShare": 0.03,
+     "monoFamilies": [
+      "Geist Mono"
+     ],
+     "monoSamples": [
+      "640 km",
+      "554.9 km"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f2f4f7",
+     "bodyBgHsl": {
+      "h": 216,
+      "s": 0.24,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 573,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#6b6b6b",
+       "share": 0.77
+      },
+      {
+       "color": "#0a0a0a",
+       "share": 0.2
+      },
+      {
+       "color": "#04250e",
+       "share": 0.01
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      },
+      {
+       "color": "#3d3d3d",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#eeeeee",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0.93
+      },
+      "fg": "#0a0a0a"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 2,
+     "inHero": 2,
+     "radius": 8,
+     "height": 32,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "路线",
+      "重新掷路线"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 4,
+     "hairlineSamples": [
+      "aside.sidebar 256px",
+      "li.spot-item 1102px",
+      "li.spot-item.locked 1102px",
+      "li.spot-item.locked 1102px"
+     ],
+     "outlinedBoxes": 4,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 4,
+     "boxRadius": 8,
+     "squareMedia": 0,
+     "roundedMedia": 1,
+     "mediaRadius": 6,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "canvas",
+      "ratio": 0.2
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist",
+     "geist mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 1030,
+    "margins": {
+     "left": 12,
+     "right": 41
+    },
+    "sections": [
+     {
+      "sel": "div.row.row-journey",
+      "tag": "div",
+      "top": 102,
+      "height": 452,
+      "words": 28,
+      "media": 1,
+      "middle": 46,
+      "heading": {
+       "text": "地图",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 297,
+      "right": 41,
+      "textLeft": 297,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.card",
+      "tag": "div",
+      "top": 573,
+      "height": 393,
+      "words": 47,
+      "media": 0,
+      "middle": 457,
+      "heading": {
+       "text": "途经景点",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 297,
+      "right": 41,
+      "textLeft": 297,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "京沪线 · 上海 → 北京",
+      "size": 24,
+      "top": 32,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 297,
+      "n": 2
+     },
+     {
+      "x": 1058,
+      "n": 2
+     },
+     {
+      "x": 280,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 5,
+    "bodySize": 13,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.17,
+    "voidBox": {
+     "x": 720,
+     "y": 540,
+     "w": 600,
+     "h": 360
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": false,
+    "ground": "#f2f4f7",
+    "sidebar": {
+     "w": 256,
+     "tag": "aside",
+     "links": 5,
+     "share": 0.18
+    },
+    "topbar": null,
+    "canvas": {
+     "left": 24,
+     "right": 41
+    },
+    "hero": {
+     "text": "京沪线 · 上海 → 北京",
+     "words": 5,
+     "chars": 13,
+     "lines": 1,
+     "size": 24,
+     "vw": 1.7,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 32,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 4,
+     "firstScreen": 4,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       8,
+       4
+      ],
+      [
+       0,
+       3
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 14,
+     "leftAligned": 0,
+     "figures": 1,
+     "tabularShare": 0,
+     "kpiMax": 13
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      16,
+      24,
+      30
+     ]
+    },
+    "title": {
+     "text": "京沪线 · 上海 → 北京",
+     "size": 24,
+     "top": 32
+    },
+    "colourShare": 0.001
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.59,
+    0.61
+   ],
+   "motion": {
+    "elements": 2,
+    "css": 0,
+    "transitions": 2,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 1494,
+     "screens": 1.5,
+     "words": 127,
+     "img": 0,
+     "video": 0,
+     "canvas": 4,
+     "svg": 22,
+     "sections": 10,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 2,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "京沪线 · 上海 → 北京",
+     "words": 5,
+     "chars": 13,
+     "lines": 1,
+     "size": 24,
+     "vw": 3.1,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 32,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "京沪线 · 上海 → 北京",
+     "words": 5,
+     "lines": 1,
+     "size": 24,
+     "font": "Geist"
+    },
+    "headings": [],
+    "headingSummary": {
+     "count": 0,
+     "maxLines": 0,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 0.97,
+       "mono": false
+      },
+      {
+       "family": "Geist Mono",
+       "share": 0.03,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      16,
+      24
+     ],
+     "sizeCount": 4,
+     "notLoaded": [],
+     "body": null,
+     "measureChars": null,
+     "max": {
+      "size": 24,
+      "vw": 3.1,
+      "font": "Geist",
+      "text": "京沪线 · 上海 → 北京"
+     },
+     "monoShare": 0.03,
+     "monoProseShare": 0.03,
+     "monoFamilies": [
+      "Geist Mono"
+     ],
+     "monoSamples": [
+      "640 km",
+      "554.9 km"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f2f4f7",
+     "bodyBgHsl": {
+      "h": 216,
+      "s": 0.24,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f2f4f7",
+       "top": 0,
+       "hsl": {
+        "h": 216,
+        "s": 0.24,
+        "l": 0.96
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#6b6b6b",
+       "share": 0.77
+      },
+      {
+       "color": "#0a0a0a",
+       "share": 0.2
+      },
+      {
+       "color": "#04250e",
+       "share": 0.01
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      },
+      {
+       "color": "#3d3d3d",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#eeeeee",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0.93
+      },
+      "fg": "#0a0a0a"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 2,
+     "inHero": 2,
+     "radius": 8,
+     "height": 32,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "路线",
+      "重新掷路线"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 4,
+     "hairlineSamples": [
+      "aside.sidebar 256px",
+      "li.spot-item 430px",
+      "li.spot-item.locked 430px",
+      "li.spot-item.locked 430px"
+     ],
+     "outlinedBoxes": 4,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 4,
+     "boxRadius": 8,
+     "squareMedia": 0,
+     "roundedMedia": 1,
+     "mediaRadius": 6,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 1112
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "canvas",
+      "ratio": 0.14
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 1024,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist",
+     "geist mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 1494,
+    "margins": {
+     "left": 12,
+     "right": 41
+    },
+    "sections": [
+     {
+      "sel": "div.row.row-journey",
+      "tag": "div",
+      "top": 123,
+      "height": 817,
+      "words": 28,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "地图",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 297,
+      "right": 41,
+      "textLeft": 297,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.card",
+      "tag": "div",
+      "top": 959,
+      "height": 471,
+      "words": 47,
+      "media": 0,
+      "middle": 6,
+      "heading": {
+       "text": "途经景点",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 297,
+      "right": 41,
+      "textLeft": 297,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "京沪线 · 上海 → 北京",
+      "size": 24,
+      "top": 32,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 297,
+      "n": 4
+     },
+     {
+      "x": 280,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 5,
+    "bodySize": 13,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": false,
+    "ground": "#f2f4f7",
+    "sidebar": {
+     "w": 256,
+     "tag": "aside",
+     "links": 5,
+     "share": 0.33
+    },
+    "topbar": null,
+    "canvas": {
+     "left": 24,
+     "right": 40
+    },
+    "hero": {
+     "text": "京沪线 · 上海 → 北京",
+     "words": 5,
+     "chars": 13,
+     "lines": 1,
+     "size": 24,
+     "vw": 3.1,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 32,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 4,
+     "firstScreen": 4,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       8,
+       4
+      ],
+      [
+       0,
+       3
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 14,
+     "leftAligned": 0,
+     "figures": 1,
+     "tabularShare": 0,
+     "kpiMax": 13
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      16,
+      24,
+      30
+     ]
+    },
+    "title": {
+     "text": "京沪线 · 上海 → 北京",
+     "size": 24,
+     "top": 32
+    },
+    "colourShare": 0.002
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.74,
+    0.8
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 1490,
+     "screens": 1.8,
+     "words": 111,
+     "img": 0,
+     "video": 0,
+     "canvas": 4,
+     "svg": 22,
+     "sections": 10,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 2,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "京沪线 · 上海 → 北京",
+     "words": 5,
+     "chars": 13,
+     "lines": 1,
+     "size": 24,
+     "vw": 6.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 64,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "京沪线 · 上海 → 北京",
+     "words": 5,
+     "lines": 1,
+     "size": 24,
+     "font": "Geist"
+    },
+    "headings": [
+     {
+      "text": "京沪线 · 上海 → 北京",
+      "words": 5,
+      "chars": 13,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Geist",
+      "weight": 600,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 64,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 0.96,
+       "mono": false
+      },
+      {
+       "family": "Geist Mono",
+       "share": 0.04,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      16,
+      24
+     ],
+     "sizeCount": 4,
+     "notLoaded": [],
+     "body": null,
+     "measureChars": null,
+     "max": {
+      "size": 24,
+      "vw": 6.2,
+      "font": "Geist",
+      "text": "京沪线 · 上海 → 北京"
+     },
+     "monoShare": 0.04,
+     "monoProseShare": 0.04,
+     "monoFamilies": [
+      "Geist Mono"
+     ],
+     "monoSamples": [
+      "640 km",
+      "554.9 km"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f2f4f7",
+     "bodyBgHsl": {
+      "h": 216,
+      "s": 0.24,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 155,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#6b6b6b",
+       "share": 0.79
+      },
+      {
+       "color": "#0a0a0a",
+       "share": 0.17
+      },
+      {
+       "color": "#04250e",
+       "share": 0.02
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      },
+      {
+       "color": "#3d3d3d",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#141414",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0.08
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 1,
+     "inHero": 0,
+     "radius": 6,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": []
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 4,
+     "hairlineSamples": [
+      "div#topbar.topbar 390px",
+      "li.spot-item 324px",
+      "li.spot-item.locked 324px",
+      "li.spot-item.locked 324px"
+     ],
+     "outlinedBoxes": 4,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 4,
+     "boxRadius": 8,
+     "squareMedia": 0,
+     "roundedMedia": 1,
+     "mediaRadius": 6,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 1104
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "canvas",
+      "ratio": 0.22
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist",
+     "geist mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 1490,
+    "margins": {
+     "left": 16,
+     "right": 33
+    },
+    "sections": [
+     {
+      "sel": "div.row.row-journey",
+      "tag": "div",
+      "top": 155,
+      "height": 777,
+      "words": 28,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "地图",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.card",
+      "tag": "div",
+      "top": 951,
+      "height": 491,
+      "words": 47,
+      "media": 0,
+      "middle": 4,
+      "heading": {
+       "text": "途经景点",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "京沪线 · 上海 → 北京",
+      "size": 24,
+      "top": 64,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 33,
+      "n": 4
+     },
+     {
+      "x": 16,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 5,
+    "bodySize": 13,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": false,
+    "ground": "#f2f4f7",
+    "sidebar": null,
+    "topbar": {
+     "h": 48
+    },
+    "canvas": {
+     "left": 16,
+     "right": 24
+    },
+    "hero": {
+     "text": "京沪线 · 上海 → 北京",
+     "words": 5,
+     "chars": 13,
+     "lines": 1,
+     "size": 24,
+     "vw": 6.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 64,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 4,
+     "firstScreen": 3,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       8,
+       4
+      ],
+      [
+       0,
+       3
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 14,
+     "leftAligned": 0,
+     "figures": 1,
+     "tabularShare": 0,
+     "kpiMax": 13
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      16,
+      24,
+      30
+     ]
+    },
+    "title": {
+     "text": "京沪线 · 上海 → 北京",
+     "size": 24,
+     "top": 64
+    },
+    "colourShare": 0.003
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/after-journey/desktop-fold.jpg",
+   "pages": [
+    "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/after-journey/desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/after-journey/tablet-fold.jpg",
+   "pages": [
+    "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/after-journey/tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/after-journey/mobile-fold.jpg",
+   "pages": [
+    "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/after-journey/mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

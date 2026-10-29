@@ -1,0 +1,1486 @@
+{
+ "url": "http://127.0.0.1:8899/.taste-skill/harness/index.html#today",
+ "at": "2026-10-24T16:08:20.487Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.65,
+    0.75
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 1069,
+     "screens": 1.2,
+     "words": 120,
+     "img": 0,
+     "video": 0,
+     "canvas": 4,
+     "svg": 22,
+     "sections": 10,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 2,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "今日",
+     "words": 1,
+     "chars": 2,
+     "lines": 1,
+     "size": 24,
+     "vw": 1.7,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 32,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "今日",
+     "words": 1,
+     "lines": 1,
+     "size": 24,
+     "font": "Geist"
+    },
+    "headings": [
+     {
+      "text": "412.6 m",
+      "words": 2,
+      "chars": 7,
+      "lines": 1,
+      "size": 30,
+      "vw": 2.1,
+      "font": "Geist Mono",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": true,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.24,
+      "top": 142,
+      "tag": "div",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 0.81,
+       "mono": false
+      },
+      {
+       "family": "Geist Mono",
+       "share": 0.19,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      16,
+      24,
+      30
+     ],
+     "sizeCount": 5,
+     "notLoaded": [],
+     "body": null,
+     "measureChars": null,
+     "max": {
+      "size": 30,
+      "vw": 2.1,
+      "font": "Geist Mono",
+      "text": "412.6 m"
+     },
+     "monoShare": 0.19,
+     "monoProseShare": 0.19,
+     "monoFamilies": [
+      "Geist Mono"
+     ],
+     "monoSamples": [
+      "412.6 m",
+      "1,240",
+      "2h 48m",
+      "54%",
+      "静止",
+      "640 km"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [
+     {
+      "text": "今日距离",
+      "above": "412.6 m",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 13,
+      "top": 119
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f2f4f7",
+     "bodyBgHsl": {
+      "h": 216,
+      "s": 0.24,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [],
+     "textColors": [
+      {
+       "color": "#6b6b6b",
+       "share": 0.71
+      },
+      {
+       "color": "#0a0a0a",
+       "share": 0.28
+      },
+      {
+       "color": "#3d3d3d",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#eeeeee",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0.93
+      },
+      "fg": "#0a0a0a"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 1,
+     "inHero": 1,
+     "radius": 8,
+     "height": 32,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "今日"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 2,
+     "hairlineSamples": [
+      "aside.sidebar 256px",
+      "div.side-sep 444px rule"
+     ],
+     "outlinedBoxes": 4,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 5,
+     "boxRadius": 8,
+     "squareMedia": 1,
+     "roundedMedia": 1,
+     "mediaRadius": 6,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "canvas",
+      "ratio": 0.17
+     },
+     {
+      "type": "canvas",
+      "ratio": 0.12
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist",
+     "geist mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 1069,
+    "margins": {
+     "left": 12,
+     "right": 41
+    },
+    "sections": [
+     {
+      "sel": "div.row.row-today",
+      "tag": "div",
+      "top": 237,
+      "height": 447,
+      "words": 57,
+      "media": 2,
+      "middle": 46,
+      "heading": {
+       "text": "路上",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 297,
+      "right": 41,
+      "textLeft": 297,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.card.heat-card",
+      "tag": "div",
+      "top": 704,
+      "height": 302,
+      "words": 8,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "今日鼠标热力区",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 297,
+      "right": 41,
+      "textLeft": 297,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "今日",
+      "size": 24,
+      "top": 32,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 297,
+      "n": 2
+     },
+     {
+      "x": 955,
+      "n": 2
+     },
+     {
+      "x": 280,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 5,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.08,
+    "voidBox": {
+     "x": 0,
+     "y": 300,
+     "w": 240,
+     "h": 420
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": false,
+    "ground": "#f2f4f7",
+    "sidebar": {
+     "w": 256,
+     "tag": "aside",
+     "links": 5,
+     "share": 0.18
+    },
+    "topbar": null,
+    "canvas": {
+     "left": 24,
+     "right": 41
+    },
+    "hero": {
+     "text": "今日",
+     "words": 1,
+     "chars": 2,
+     "lines": 1,
+     "size": 24,
+     "vw": 1.7,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 32,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 1,
+    "layout": {
+     "panels": 4,
+     "firstScreen": 4,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 5,
+     "radii": [
+      [
+       8,
+       4
+      ],
+      [
+       6,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 14,
+     "leftAligned": 0,
+     "figures": 4,
+     "tabularShare": 0.75,
+     "kpiMax": 30
+    },
+    "rows": null,
+    "chartHues": 1,
+    "placeholders": [],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      16,
+      24,
+      30
+     ]
+    },
+    "title": {
+     "text": "今日",
+     "size": 24,
+     "top": 32
+    },
+    "colourShare": 0.005
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.57,
+    0.57
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 1670,
+     "screens": 1.6,
+     "words": 120,
+     "img": 0,
+     "video": 0,
+     "canvas": 4,
+     "svg": 22,
+     "sections": 10,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 2,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "今日",
+     "words": 1,
+     "chars": 2,
+     "lines": 1,
+     "size": 24,
+     "vw": 3.1,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 32,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "今日",
+     "words": 1,
+     "lines": 1,
+     "size": 24,
+     "font": "Geist"
+    },
+    "headings": [
+     {
+      "text": "412.6 m",
+      "words": 2,
+      "chars": 7,
+      "lines": 1,
+      "size": 30,
+      "vw": 3.9,
+      "font": "Geist Mono",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": true,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.56,
+      "top": 142,
+      "tag": "div",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 0.81,
+       "mono": false
+      },
+      {
+       "family": "Geist Mono",
+       "share": 0.19,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      16,
+      24,
+      30
+     ],
+     "sizeCount": 5,
+     "notLoaded": [],
+     "body": null,
+     "measureChars": null,
+     "max": {
+      "size": 30,
+      "vw": 3.9,
+      "font": "Geist Mono",
+      "text": "412.6 m"
+     },
+     "monoShare": 0.19,
+     "monoProseShare": 0.19,
+     "monoFamilies": [
+      "Geist Mono"
+     ],
+     "monoSamples": [
+      "412.6 m",
+      "1,240",
+      "2h 48m",
+      "54%",
+      "静止",
+      "640 km"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [
+     {
+      "text": "今日距离",
+      "above": "412.6 m",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 13,
+      "top": 119
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f2f4f7",
+     "bodyBgHsl": {
+      "h": 216,
+      "s": 0.24,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f2f4f7",
+       "top": 0,
+       "hsl": {
+        "h": 216,
+        "s": 0.24,
+        "l": 0.96
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#6b6b6b",
+       "share": 0.71
+      },
+      {
+       "color": "#0a0a0a",
+       "share": 0.28
+      },
+      {
+       "color": "#3d3d3d",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#eeeeee",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0.93
+      },
+      "fg": "#0a0a0a"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 1,
+     "inHero": 1,
+     "radius": 8,
+     "height": 32,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "今日"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 4,
+     "hairlineSamples": [
+      "aside.sidebar 256px",
+      "div.kpi 462px",
+      "div.kpi 462px",
+      "div.side-sep 430px rule"
+     ],
+     "outlinedBoxes": 4,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 5,
+     "boxRadius": 8,
+     "squareMedia": 1,
+     "roundedMedia": 1,
+     "mediaRadius": 6,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "canvas",
+      "ratio": 0.15
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 1024,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist",
+     "geist mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 1670,
+    "margins": {
+     "left": 12,
+     "right": 41
+    },
+    "sections": [
+     {
+      "sel": "div.card.kpi-strip",
+      "tag": "div",
+      "top": 102,
+      "height": 331,
+      "words": 18,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "412.6 m",
+       "size": 30,
+       "tag": "div"
+      },
+      "left": 297,
+      "right": 257,
+      "textLeft": 297,
+      "textRight": 257,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.row.row-today",
+      "tag": "div",
+      "top": 452,
+      "height": 832,
+      "words": 57,
+      "media": 2,
+      "middle": 0,
+      "heading": {
+       "text": "路上",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 297,
+      "right": 41,
+      "textLeft": 297,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.card.heat-card",
+      "tag": "div",
+      "top": 1304,
+      "height": 302,
+      "words": 8,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "今日鼠标热力区",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 297,
+      "right": 41,
+      "textLeft": 297,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "今日",
+      "size": 24,
+      "top": 32,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 297,
+      "n": 4
+     },
+     {
+      "x": 280,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 5,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": false,
+    "ground": "#f2f4f7",
+    "sidebar": {
+     "w": 256,
+     "tag": "aside",
+     "links": 5,
+     "share": 0.33
+    },
+    "topbar": null,
+    "canvas": {
+     "left": 24,
+     "right": 41
+    },
+    "hero": {
+     "text": "今日",
+     "words": 1,
+     "chars": 2,
+     "lines": 1,
+     "size": 24,
+     "vw": 3.1,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 32,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 1,
+    "layout": {
+     "panels": 4,
+     "firstScreen": 3,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       8,
+       4
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       6,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 14,
+     "leftAligned": 0,
+     "figures": 4,
+     "tabularShare": 0.75,
+     "kpiMax": 30
+    },
+    "rows": null,
+    "chartHues": 1,
+    "placeholders": [],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      16,
+      24,
+      30
+     ]
+    },
+    "title": {
+     "text": "今日",
+     "size": 24,
+     "top": 32
+    },
+    "colourShare": 0.003
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.76,
+    0.81
+   ],
+   "motion": {
+    "elements": 0,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 1641,
+     "screens": 1.9,
+     "words": 105,
+     "img": 0,
+     "video": 0,
+     "canvas": 4,
+     "svg": 22,
+     "sections": 10,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 2,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "今日",
+     "words": 1,
+     "chars": 2,
+     "lines": 1,
+     "size": 24,
+     "vw": 6.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 64,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "今日",
+     "words": 1,
+     "lines": 1,
+     "size": 24,
+     "font": "Geist"
+    },
+    "headings": [
+     {
+      "text": "今日",
+      "words": 1,
+      "chars": 2,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Geist",
+      "weight": 600,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 64,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "412.6 m",
+      "words": 2,
+      "chars": 7,
+      "lines": 1,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Geist Mono",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": true,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.83,
+      "top": 174,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "1,240",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Geist Mono",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": true,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.83,
+      "top": 289,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "2h 48m",
+      "words": 2,
+      "chars": 6,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Geist Mono",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": true,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.83,
+      "top": 396,
+      "tag": "div",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 4,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 1,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 0.78,
+       "mono": false
+      },
+      {
+       "family": "Geist Mono",
+       "share": 0.22,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      16,
+      24,
+      30
+     ],
+     "sizeCount": 5,
+     "notLoaded": [],
+     "body": null,
+     "measureChars": null,
+     "max": {
+      "size": 30,
+      "vw": 7.7,
+      "font": "Geist Mono",
+      "text": "412.6 m"
+     },
+     "monoShare": 0.22,
+     "monoProseShare": 0.22,
+     "monoFamilies": [
+      "Geist Mono"
+     ],
+     "monoSamples": [
+      "412.6 m",
+      "1,240",
+      "2h 48m",
+      "54%",
+      "静止",
+      "640 km"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [
+     {
+      "text": "今日距离",
+      "above": "412.6 m",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 13,
+      "top": 151
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f2f4f7",
+     "bodyBgHsl": {
+      "h": 216,
+      "s": 0.24,
+      "l": 0.96
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 134,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#6b6b6b",
+       "share": 0.72
+      },
+      {
+       "color": "#0a0a0a",
+       "share": 0.28
+      },
+      {
+       "color": "#3d3d3d",
+       "share": 0.01
+      }
+     ],
+     "button": null,
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 0,
+     "inHero": 0,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": []
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 4,
+     "hairlineSamples": [
+      "div#topbar.topbar 390px",
+      "div.kpi 356px",
+      "div.kpi 356px",
+      "div.side-sep 324px rule"
+     ],
+     "outlinedBoxes": 4,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 4,
+     "boxRadius": 8,
+     "squareMedia": 1,
+     "roundedMedia": 1,
+     "mediaRadius": 6,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "canvas",
+      "ratio": 0.24
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist",
+     "geist mono"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 1641,
+    "margins": {
+     "left": 16,
+     "right": 33
+    },
+    "sections": [
+     {
+      "sel": "div.card.kpi-strip",
+      "tag": "div",
+      "top": 134,
+      "height": 331,
+      "words": 18,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "412.6 m",
+       "size": 30,
+       "tag": "div"
+      },
+      "left": 33,
+      "right": 143,
+      "textLeft": 33,
+      "textRight": 143,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.row.row-today",
+      "tag": "div",
+      "top": 484,
+      "height": 828,
+      "words": 57,
+      "media": 2,
+      "middle": 0,
+      "heading": {
+       "text": "路上",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.card.heat-card",
+      "tag": "div",
+      "top": 1332,
+      "height": 262,
+      "words": 8,
+      "media": 1,
+      "middle": 0,
+      "heading": {
+       "text": "今日鼠标热力区",
+       "size": 16,
+       "tag": "h2"
+      },
+      "left": 33,
+      "right": 33,
+      "textLeft": 33,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "今日",
+      "size": 24,
+      "top": 64,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 33,
+      "n": 4
+     },
+     {
+      "x": 16,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 5,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": false,
+    "ground": "#f2f4f7",
+    "sidebar": null,
+    "topbar": {
+     "h": 48
+    },
+    "canvas": {
+     "left": 16,
+     "right": 33
+    },
+    "hero": {
+     "text": "今日",
+     "words": 1,
+     "chars": 2,
+     "lines": 1,
+     "size": 24,
+     "vw": 6.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.2,
+     "top": 64,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 1,
+    "layout": {
+     "panels": 4,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 6,
+     "radii": [
+      [
+       8,
+       4
+      ],
+      [
+       0,
+       2
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 14,
+     "leftAligned": 0,
+     "figures": 4,
+     "tabularShare": 0.75,
+     "kpiMax": 30
+    },
+    "rows": null,
+    "chartHues": 1,
+    "placeholders": [],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      16,
+      24,
+      30
+     ]
+    },
+    "title": {
+     "text": "今日",
+     "size": 24,
+     "top": 64
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/after-today/desktop-fold.jpg",
+   "pages": [
+    "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/after-today/desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/after-today/tablet-fold.jpg",
+   "pages": [
+    "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/after-today/tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/after-today/mobile-fold.jpg",
+   "pages": [
+    "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/after-today/mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

@@ -1,0 +1,532 @@
+{
+ "url": "http://127.0.0.1:8903/.taste-skill/harness/index.html#stats",
+ "at": "2026-10-24T12:09:19.931Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 1,
+   "filled": [
+    0.84
+   ],
+   "motion": {
+    "elements": 3,
+    "css": 0,
+    "transitions": 3,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 900,
+     "screens": 1,
+     "words": 144,
+     "img": 0,
+     "video": 0,
+     "canvas": 5,
+     "svg": 0,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [
+      "🧭",
+      "🚌"
+     ],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "12.06 km",
+     "words": 2,
+     "chars": 8,
+     "lines": 1,
+     "size": 22,
+     "vw": 1.5,
+     "font": "-apple-system",
+     "weight": 650,
+     "tracking": 0,
+     "leading": 1.2,
+     "top": 775,
+     "tag": "div",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": null,
+    "headings": [],
+    "headingSummary": {
+     "count": 0,
+     "maxLines": 0,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "-apple-system",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      22,
+      24,
+      26
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": null,
+     "measureChars": null,
+     "max": {
+      "size": 26,
+      "vw": 1.8,
+      "font": "-apple-system",
+      "text": "🚌"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.02,
+     "smallText": 1
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#f4f5f9",
+     "bodyBgHsl": {
+      "h": 228,
+      "s": 0.29,
+      "l": 0.97
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 337,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#1a1d29",
+       "share": 0.84
+      },
+      {
+       "color": "#8b93a7",
+       "share": 0.12
+      },
+      {
+       "color": "#5b6478",
+       "share": 0.04
+      },
+      {
+       "color": "#4f46e5",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#eef0ff",
+      "hsl": {
+       "h": 233,
+       "s": 1,
+       "l": 0.97
+      },
+      "fg": "#4f46e5"
+     },
+     "lowContrast": [
+      {
+       "text": "单位：米",
+       "ratio": 3.1,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#8b93a7",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "共 23 天记录",
+       "ratio": 3.1,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#8b93a7",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "移动次数",
+       "ratio": 3.1,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b93a7",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "活跃时长",
+       "ratio": 3.1,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b93a7",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "累计距离",
+       "ratio": 3.1,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b93a7",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "累计活跃",
+       "ratio": 3.1,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#8b93a7",
+       "bg": "#ffffff"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 1,
+     "inHero": 1,
+     "radius": 10,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "统计"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 6,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "div.card → rgba(16, 24, 40, 0.04) 0px 1px 2px 0px, rgba(16, 24, 40, 0.06) 0px 8px 24px 0px",
+      "div.card → rgba(16, 24, 40, 0.04) 0px 1px 2px 0px, rgba(16, 24, 40, 0.06) 0px 8px 24px 0px",
+      "div.card → rgba(16, 24, 40, 0.04) 0px 1px 2px 0px, rgba(16, 24, 40, 0.06) 0px 8px 24px 0px",
+      "div.stat → rgba(16, 24, 40, 0.04) 0px 1px 2px 0px, rgba(16, 24, 40, 0.06) 0px 8px 24px 0px"
+     ],
+     "gradients": 1,
+     "scrims": 0,
+     "gradientSamples": [
+      "aside.sidebar → linear-gradient(rgb(255, 255, 255) 0%, rgb(247, 248, 252) 100%)"
+     ],
+     "gradientText": 0,
+     "hairlines": 1,
+     "hairlineSamples": [
+      "aside.sidebar 208px"
+     ],
+     "outlinedBoxes": 7,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 7,
+     "boxRadius": 14,
+     "squareMedia": 2,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "canvas",
+      "ratio": 0.09
+     },
+     {
+      "type": "canvas",
+      "ratio": 0.09
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": false,
+     "height": 188,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": []
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 900,
+    "margins": {
+     "left": 14,
+     "right": 45
+    },
+    "sections": [
+     {
+      "sel": "div.grid.grid-2",
+      "tag": "div",
+      "top": 22,
+      "height": 299,
+      "words": 11,
+      "media": 2,
+      "middle": 52,
+      "heading": {
+       "text": "统计视图",
+       "size": 14,
+       "tag": "h3"
+      },
+      "left": 253,
+      "right": 45,
+      "textLeft": 253,
+      "textRight": 45,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.card",
+      "tag": "div",
+      "top": 337,
+      "height": 386,
+      "words": 72,
+      "media": 0,
+      "middle": 229,
+      "heading": {
+       "text": "明细",
+       "size": 14,
+       "tag": "h3"
+      },
+      "left": 253,
+      "right": 45,
+      "textLeft": 253,
+      "textRight": 45,
+      "fullBleed": false,
+      "footer": true,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 253,
+      "n": 2
+     },
+     {
+      "x": 850,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 3,
+    "bodySize": 16,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.08,
+    "voidBox": {
+     "x": 0,
+     "y": 300,
+     "w": 240,
+     "h": 420
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": false,
+    "ground": "#f4f5f9",
+    "sidebar": {
+     "w": 208,
+     "tag": "aside",
+     "links": 5,
+     "share": 0.14
+    },
+    "topbar": null,
+    "canvas": {
+     "left": 43,
+     "right": 45
+    },
+    "hero": {
+     "text": "12.06 km",
+     "words": 2,
+     "chars": 8,
+     "lines": 1,
+     "size": 22,
+     "vw": 1.5,
+     "font": "-apple-system",
+     "weight": 650,
+     "tracking": 0,
+     "leading": 1.2,
+     "top": 775,
+     "tag": "div",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 1,
+    "layout": {
+     "panels": 7,
+     "firstScreen": 7,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 7,
+     "radii": [
+      [
+       14,
+       7
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 6,
+     "softShadows": 6,
+     "shadowSamples": [
+      "rgba(16, 24, 40, 0.06) 0px 8px 24px 0px",
+      "rgba(16, 24, 40, 0.06) 0px 8px 24px 0px",
+      "rgba(16, 24, 40, 0.06) 0px 8px 24px 0px"
+     ],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 28,
+     "leftAligned": 28,
+     "figures": 28,
+     "tabularShare": 1,
+     "kpiMax": 13
+    },
+    "rows": {
+     "count": 14,
+     "median": 35
+    },
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.53,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      17,
+      18,
+      22,
+      24,
+      26,
+      40,
+      44,
+      46
+     ]
+    },
+    "title": null,
+    "colourShare": 0.036
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "emoji",
+   "width": 1440,
+   "message": "Emoji in the page: 🧭 🚌",
+   "fix": "Remove. Use words or real imagery."
+  },
+  {
+   "level": "FAIL",
+   "id": "gradient",
+   "width": 1440,
+   "message": "1 gradient fill(s): aside.sidebar → linear-gradient(rgb(255, 255, 255) 0%, rgb(247, 248, 252) 100%)",
+   "fix": "Use a flat colour or a real image. The only gradient allowed by default is a neutral scrim over a photo for legibility."
+  },
+  {
+   "level": "WARN",
+   "id": "contrast",
+   "width": 1440,
+   "message": "Low-contrast text: \"单位：米\" 3.1:1 needs 4.5:1; \"共 23 天记录\" 3.1:1 needs 4.5:1; \"移动次数\" 3.1:1 needs 4.5:1; \"活跃时长\" 3.1:1 needs 4.5:1",
+   "fix": "Darken or lighten the text colour."
+  },
+  {
+   "level": "FAIL",
+   "id": "heavy-shadow",
+   "width": 1440,
+   "message": "6 panel shadow(s) heavy enough to read as floating: rgba(16, 24, 40, 0.06) 0px 8px 24px 0px | rgba(16, 24, 40, 0.06) 0px 8px 24px 0px | rgba(16, 24, 40, 0.06) 0px 8px 24px 0px",
+   "fix": "Panels sit on the ground: separate them with a fill one step from the ground or a quiet 1px border. A shadow, if any, is under 8% black with a small blur. Real overlays (menus, dialogs, popovers) may float."
+  },
+  {
+   "level": "WARN",
+   "id": "numeric-align",
+   "width": 1440,
+   "message": "28 of 28 numeric table cells are left-aligned.",
+   "fix": "Right-align numbers, amounts and percentages (and their column headers) so the digits line up."
+  },
+  {
+   "level": "WARN",
+   "id": "tiny-text",
+   "width": 1440,
+   "message": "53% of the text is under 13px.",
+   "fix": "Data and labels read at 13–14px; keep 11–12px for sublines and axis ticks."
+  },
+  {
+   "level": "FAIL",
+   "id": "no-title",
+   "width": 1440,
+   "message": "The screen has no h1.",
+   "fix": "Name the screen in an h1 at the top of the canvas (18–28px): \"Overview\", \"Payouts\", the project's name."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/before-stats/desktop-fold.jpg",
+   "pages": [
+    "/Users/tianyi/Documents/code/col/mouse-journey/.taste-skill/before-stats/desktop-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

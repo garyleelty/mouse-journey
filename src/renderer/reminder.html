@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'" />
+  <title>休息提醒</title>
+  <style>
+    @font-face {
+      font-family: 'Geist';
+      src: url('fonts/geist-latin.woff2') format('woff2');
+      font-weight: 100 900;
+      font-display: swap;
+    }
+    html, body { margin: 0; height: 100%; background: transparent; font-family: 'Geist', -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; overflow: hidden; }
+    .card {
+      margin: 0; height: 100vh; box-sizing: border-box;
+      background: #ffffff;
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+      padding: 26px 26px 20px; display: flex; flex-direction: column; align-items: center; text-align: center;
+      color: #0a0a0a;
+    }
+    .glyph { color: #141414; margin-top: 2px; }
+    .glyph svg { width: 26px; height: 26px; }
+    .title { font-size: 17px; font-weight: 600; margin-top: 10px; letter-spacing: -0.01em; }
+    .body { font-size: 13px; color: #6b6b6b; line-height: 1.7; margin-top: 8px; }
+    .meta { font-size: 11px; color: #6b6b6b; margin-top: auto; }
+    .row { display: flex; gap: 10px; margin-top: 16px; }
+    button {
+      border: 0; border-radius: 6px; padding: 9px 16px; cursor: pointer; font-size: 13px; font-weight: 500;
+      font-family: inherit;
+    }
+    .primary { background: #141414; color: #fff; }
+    .primary:hover { background: #000; }
+    .ghost { background: #fff; border: 1px solid #d4d4d4; color: #0a0a0a; }
+    .ghost:hover { background: #f5f5f5; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="glyph" id="r-glyph"></div>
+    <div class="title" id="r-title">该起身活动一下啦</div>
+    <div class="body" id="r-body">你已经连续使用鼠标 45 分钟了。</div>
+    <div class="row">
+      <button class="primary" id="r-ok">我已休息过了</button>
+      <button class="ghost" id="r-later">稍后提醒</button>
+    </div>
+    <div class="meta">MouseJourney · 20-20-20 法则：每 20 分钟，看 20 英尺（6 米）外 20 秒</div>
+  </div>
+
+  <script src="js/icons.js"></script>
+  <script src="js/reminder.js"></script>
+</body>
+</html>
