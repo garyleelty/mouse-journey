@@ -153,6 +153,10 @@ const step = 12; // 每次 tick 移动 12px
   if (!geoOk) throw new Error('geo 快照缺少 context/bbox');
   if (!snap2.dataDir || !(snap2.storeBytes > 0)) throw new Error('存储信息快照缺失');
   if (snap2.achievements.length !== MILESTONES.length) throw new Error('成就快照数量不符');
+  if (!Array.isArray(snap2.todayIntraday) || !snap2.todayIntraday[minNow]) {
+    throw new Error('todayIntraday 快照缺失（热力卡时段徽标依赖）');
+  }
+  console.log(`  todayIntraday ok · ${minNow} 分 = ${snap2.todayIntraday[minNow] / 100} m`);
 
   /* ---------------- 7. 存档往返 ---------------- */
   store.flush();

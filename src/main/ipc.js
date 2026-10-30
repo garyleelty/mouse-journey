@@ -56,6 +56,8 @@ function buildState(ctx, full) {
       acc[k] = { distanceCm: d.distanceCm || 0, moves: d.moves || 0, activeMs: d.activeMs || 0 };
       return acc;
     }, {});
+    // 今天的分钟级累计曲线（稀疏数组，热力卡「最集中时段」徽标用；轨迹点无时间戳，时段从这里推导）
+    state.todayIntraday = (ctx.store.data.days[dayKey()] || {}).intraday || null;
     // 首次运行引导：尚未手动校准过则提示
     state.needsCalibration = !ctx.store.data.calibratedAt;
     state.calibratedAt = ctx.store.data.calibratedAt || null;

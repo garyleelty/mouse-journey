@@ -291,6 +291,60 @@ function updateGoal() {
     + (p >= 1 ? ' · 达成！' : ` · 还差 ${Fmt.formatDistance(Math.max(0, goalM - st.today.meters))}`));
 }
 
+/** 热力卡热点摘要徽标：最活跃屏幕（≥2 屏才有意义）/ 最集中时段（todayIntraday 小时增量）。
+ *  复用统计页洞察徽标样式；数据色只给显著信号（份额 ≥60% / ≥30%）。 */
+function renderHeatInsights() {
+  const host = $('heat-insights');
+  if (!host) return;
+  const st = S.state;
+  host.innerHTML = '';
+  const track = st.track || [];
+  if (!track.length) return;
+
+  const chip = (icon, text, cls) => {
+    const el = document.createElement('span');
+    el.className = 'sight' + (cls ? ` ${cls}` : '');
+    el.innerHTML = Icons.svg(icon, 13);
+    el.appendChild(document.createTextNode(text));
+    return el;
+  };
+
+  // 最活跃屏幕：轨迹点按显示器 id 聚类
+  const displays = (st.screenLayout && st.screenLayout.displays) || [];
+  if (displays.length > 1) {
+    const byD = {};
+    for (const p of track) byD[p.d] = (byD[p.d] || 0) + 1;
+    const top = Object.entries(byD).sort((a, b) => b[1] - a[1])[0];
+    if (top && top[1] > 0) {
+      const d = displays.find((x) => String(x.id) === String(top[0]));
+      const tag = d ? (d.primary ? '主屏' : (d.internal ? '内建屏' : `屏幕 #${d.id}`)) : `屏幕 ${top[0]}`;
+      const pct = Math.round((top[1] / track.length) * 100);
+      host.appendChild(chip('screen', `最活跃在${tag} ${pct}%`, pct >= 60 ? 'hot' : ''));
+    }
+  }
+
+  // 最集中时段：今天的分钟级累计曲线按小时求增量（轨迹点无时间戳，时段从这里推导）
+  const intraday = st.todayIntraday;
+  if (Array.isArray(intraday) && intraday.length) {
+    const hours = new Array(24).fill(0);
+    let lastVal = 0;
+    for (let m = 0; m < 1440; m++) {
+      const v = intraday[m];
+      if (v == null) continue;
+      hours[Math.floor(m / 60)] += Math.max(0, (v - lastVal) / 100);
+      lastVal = v;
+    }
+    const total = hours.reduce((a, b) => a + b, 0);
+    if (total > 0) {
+      let hi = 0;
+      for (let i = 1; i < 24; i++) if (hours[i] > hours[hi]) hi = i;
+      const pct = Math.round((hours[hi] / total) * 100);
+      const hh = (n) => String(n % 24).padStart(2, '0');
+      host.appendChild(chip('clock', `高峰 ${hh(hi)}–${hh(hi + 1)} 时 ${pct}%`, pct >= 30 ? 'hot' : ''));
+    }
+  }
+}
+
 function renderToday() {
   const st = S.state;
   $('today-distance').textContent = Fmt.formatDistance(st.today.meters);
@@ -355,6 +409,7 @@ function renderToday() {
   // 热力图
   const heatPts = st.track || [];
   $('heat-hint').textContent = heatPts.length ? `${heatPts.length} 个采样点` : '等待数据';
+  renderHeatInsights();
   HeatMap.render($('heat-today'), heatPts, st.screenLayout);
 }
 

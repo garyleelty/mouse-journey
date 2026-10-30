@@ -68,6 +68,39 @@ rawDays[dayKey(Date.now())] = { distanceCm: Math.round(todayMeters * 100), moves
 const RINGS = [[[121.5, 53.5], [135, 48], [127.5, 41], [124.3, 39.8], [121.5, 38.5], [122, 36], [119.2, 34.5], [121.8, 31], [121, 28], [115, 23], [110, 20.5], [108, 21.4], [102, 24.8], [97.5, 28], [91, 27.8], [85, 28.2], [80.3, 30], [76, 35.5], [73.8, 39.5], [87.5, 49], [96, 43], [110, 42.5], [117, 46.5], [121.5, 53.5]]];
 const CONTEXT = RINGS[0].map(([lon, lat]) => [lon + (lon > 104 ? 1.6 : -1.6), lat + (lat > 36 ? 1.4 : -1.2)]);
 
+/* 热力卡假数据：双屏排布 + 聚类轨迹点（主屏 72%）+ 分钟级累计曲线（10–11 时高峰 34%） */
+const SCREEN_LAYOUT = {
+  originX: 0, originY: 0, width: 2880, height: 1117,
+  displays: [
+    { id: 1, x: 0, y: 0, w: 1728, h: 1117, primary: true, internal: true },
+    { id: 2, x: 1728, y: 0, w: 1152, h: 1117, primary: false, internal: false }
+  ]
+};
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const jit = (i, amp) => (Math.sin(i * 12.9898) * 43758.5453 % 1) * amp; // 确定性抖动
+const TRACK = [];
+for (let i = 0; i < 400; i++) {
+  if (i % 10 < 7) {
+    // 主屏：两个热点簇（编辑器区 / 浏览器区）
+    const c = i % 2 === 0 ? { x: 620, y: 420 } : { x: 980, y: 760 };
+    TRACK.push({ x: clamp(c.x + jit(i, 260), 20, 1700), y: clamp(c.y + jit(i + 7, 220), 20, 1090), w: 1728, h: 1117, d: 1 });
+  } else {
+    TRACK.push({ x: clamp(2140 + jit(i + 3, 620), 1748, 2860), y: clamp(430 + jit(i + 11, 480), 20, 1090), w: 1152, h: 1117, d: 2 });
+  }
+}
+const INTRADAY = (() => {
+  const arr = [];
+  const hourW = { 8: 0.06, 9: 0.16, 10: 0.34, 11: 0.14, 13: 0.1, 14: 0.12, 16: 0.08 };
+  let acc = 0;
+  for (let m = 0; m < 1440; m++) {
+    const w = hourW[Math.floor(m / 60)] || 0;
+    acc += (todayMeters * 100 * w) / 60 * (0.6 + 0.8 * Math.abs(Math.sin(m * 1.7)));
+    if (w > 0) arr[m] = Math.round(acc);
+  }
+  arr[1439] = Math.round(todayMeters * 100);
+  return arr;
+})();
+
 const state = {
   today: { meters: todayMeters, moves: 214, activeMs: 4520000 },
   totals: { meters: 284500, moves: 9021, activeMs: 51230000 },
@@ -75,8 +108,9 @@ const state = {
   continuousMs: 754000,
   daysTotal: 34,
   metrics: { streakDays: 7, bestDayMeters: 6210 },
-  track: [],
-  screenLayout: null,
+  track: TRACK,
+  screenLayout: SCREEN_LAYOUT,
+  todayIntraday: INTRADAY,
   displays: [],
   dataDir: '/tmp/mj-shot',
   storeBytes: 48211,

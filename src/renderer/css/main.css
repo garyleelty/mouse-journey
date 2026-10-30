@@ -332,7 +332,14 @@ canvas { display: block; }
 
 /* ---------- 热力图 ---------- */
 .heat { width: 100%; height: 200px; }
-.heat-legend { display: flex; justify-content: flex-end; }
+.heat-legend { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+/* 密度标尺：离散四阶蓝（热力点 multiply 叠加后的大致档位），不引入渐变 */
+.heat-scale { display: inline-flex; align-items: center; gap: 5px; }
+.hs { width: 16px; height: 10px; border-radius: 2px; display: inline-block; }
+.hs1 { background: rgba(29, 95, 191, 0.10); }
+.hs2 { background: rgba(29, 95, 191, 0.18); }
+.hs3 { background: rgba(29, 95, 191, 0.26); }
+.hs4 { background: rgba(29, 95, 191, 0.42); }
 
 /* ---------- 统计 ---------- */
 /* 游戏化洞察徽标：同比 / 连击 / 最佳单日（数据色只给正向信号） */
