@@ -33,6 +33,7 @@ class Tracker extends EventEmitter {
     this.lastTickTs = 0;
     this.lastMoveTs = 0;
     this.moveOpen = false; // 是否处于「一次连续移动」中
+    this.vx = 0;           // 水平速度（px/s，EMA 平滑），供「顺弯压弯」判定用
   }
 
   start() {
@@ -92,6 +93,7 @@ class Tracker extends EventEmitter {
     this.lastTickTs = Date.now();
     this.moveOpen = false;
     this._lastTrackPoint = null;
+    this.vx = 0;
   }
 
   _pause(reason) {
@@ -117,7 +119,7 @@ class Tracker extends EventEmitter {
     if (deltaMs > BIG_GAP_MS) {
       this._resetBaseline();
       // idleMs 视为无穷大：唤醒等同「已休息」，健康连续计时归零
-      this.emit('tick', { deltaCm: 0, movedNow: false, newMove: false, deltaMs, idleMs: Infinity, skipped: true });
+      this.emit('tick', { deltaCm: 0, movedNow: false, newMove: false, deltaMs, idleMs: Infinity, vx: 0, displayId: null, skipped: true });
       return;
     }
 
@@ -201,7 +203,13 @@ class Tracker extends EventEmitter {
     // 尚未发生过任何移动（lastMoveTs=0）时视为「一直静止」：
     // 否则启动后挂着不动也会被健康模块当作连续使用累加
     const idleMs = this.lastMoveTs ? now - this.lastMoveTs : Infinity;
-    this.emit('tick', { deltaCm, movedNow, newMove, deltaMs, idleMs, displayId: display.id });
+
+    // 水平速度 EMA（压弯判定用）：包含死区内的小位移，方向信息比幅度重要
+    if (deltaMs > 0) {
+      const instVx = dx / (deltaMs / 1000);
+      this.vx = this.vx * 0.75 + instVx * 0.25;
+    }
+    this.emit('tick', { deltaCm, movedNow, newMove, deltaMs, idleMs, vx: this.vx, displayId: display.id });
   }
 
   /** 写入一条轨迹点；超过上限时按 1/2 抽稀，保证长会话不会撑爆存储 */

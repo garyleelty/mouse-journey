@@ -73,5 +73,5 @@
     return `${(b / 1024 / 1024).toFixed(1)} MB`;
   }
 
-  return { dayKey, formatDistance, formatDuration, formatBytes, weekdayLabel, lastNDays, currentWeekDays };
+  return { dayKey, formatDistance, formatDuration, formatBytes, weekdayLabel, lastNDays, currentWeekDays, shiftDay };
 });

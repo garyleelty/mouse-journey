@@ -267,6 +267,10 @@ function setupTrackerCallbacks() {
   let lastAchievementCheck = 0;
 
   tracker.on('tick', (t) => {
+    // 0) 趣味机制：能量充放 + 分钟级里程曲线（幽灵车数据源）
+    journey.chargeEnergy(t.movedNow, t.deltaMs, t.idleMs);
+    ctx.store.recordIntraday();
+
     // 1) 里程推进
     if (t.deltaCm > 0) {
       const events = journey.addMeters(t.deltaCm / 100);
@@ -280,6 +284,15 @@ function setupTrackerCallbacks() {
           maybeNotify('旅程达成 🏁', `你已完成「${ev.payload.routeName}」，全程 ${ev.payload.totalKm} 公里！`);
         }
       }
+    }
+
+    // 1.5) 冲刺窗口结束 → 广播本轮加成
+    const whipNow = journey.whipStatus();
+    if (ctx._wasWhip && !whipNow.active) {
+      ctx._wasWhip = false;
+      ctx.broadcast('boost:event', { type: 'whipEnd', gainedKm: Number(whipNow.gainedKm.toFixed(1)), label: journey.whipLabel() });
+    } else if (whipNow.active) {
+      ctx._wasWhip = true;
     }
 
     // 2) 健康提醒
@@ -312,6 +325,7 @@ function setupTrackerCallbacks() {
   tracker.on('resumed', () => health.reset());
   tracker.on('day', () => {
     ctx.store.pruneTrack(14); // 只保留最近 14 天的轨迹点
+    ctx.store.pruneIntraday(2); // 幽灵车曲线只留 2 天
     ctx.broadcast('state:full', ctx.buildState(true));
     if (ctx.rebuildTray) ctx.rebuildTray();
   });

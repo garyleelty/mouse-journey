@@ -67,6 +67,35 @@ html, body {
 .fb { padding: 8px; }
 .fw.collapsed .fb { display: none; }
 
+/* 能量槽 / 冲刺计时条 */
+.boost-row {
+  position: relative;
+  height: 3px;
+  border-radius: 2px;
+  background: #eceef2;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.boost-row i {
+  display: block; height: 100%; width: 0%;
+  background: #c3c8d2; border-radius: 2px;
+  transition: width .25s;
+}
+.boost-row.ready i { background: #1d5fbf; }
+.boost-row.whip i { background: #1d5fbf; }
+.boost-row.deny { animation: deny .25s; }
+@keyframes deny {
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+/* 倍率徽章（唯一数据色） */
+.mult {
+  color: #fff; background: #1d5fbf;
+  border-radius: 4px; padding: 1px 5px;
+  font-size: 10px; font-weight: 500;
+}
+
 .map-wrap { position: relative; }
 #f-map {
   width: 100%;

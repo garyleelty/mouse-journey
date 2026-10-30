@@ -71,6 +71,10 @@ function buildState(ctx, full) {
   const todayRec = ctx.store.today();
   state.track = (todayRec.track || []).slice(-3000);
   state.screenLayout = ctx.screenLayout ? ctx.screenLayout() : null;
+  // 趣味机制：水平速度（压弯判定用）与幽灵车（昨天此刻的当日累计距离）
+  state.vx = ctx.tracker ? (ctx.tracker.vx || 0) : 0;
+  const g = ctx.store.ghostMetersAt();
+  state.ghost = { have: !!g, meters: g ? Number(g.meters.toFixed(1)) : 0 };
   return state;
 }
 
@@ -242,6 +246,14 @@ function registerIpc(ctx) {
     if (typeof url === 'string' && /^https?:\/\//i.test(url)) shell.openExternal(url);
     return true;
   });
+
+  /* ---- 趣味机制：抽鞭冲刺 / 顺弯压弯 / 幽灵车 ---- */
+  ipcMain.handle('boost:whip', () => ctx.journey.whip());
+  ipcMain.handle('boost:lean', (_e, a) => {
+    ctx.journey.setLean(!!(a && a.active));
+    return true;
+  });
+  ipcMain.handle('boost:ghostPass', () => ctx.journey.recordGhostPass());
 
   ipcMain.handle('data:resetDay', () => {
     const k = dayKey();

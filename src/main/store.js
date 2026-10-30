@@ -55,9 +55,10 @@ function defaults() {
         closeToTray: true
       }
     },
-    days: {},          // { 'YYYY-MM-DD': { distanceCm, moves, activeMs, firstTs, lastTs } }
+    days: {},          // { 'YYYY-MM-DD': { distanceCm, moves, activeMs, firstTs, lastTs, intraday? } }
     totals: { distanceCm: 0, moves: 0, activeMs: 0, days: 0 },
     achievements: {},  // { id: ISO 时间字符串 }
+    counters: { whips: 0, leans: 0, ghostPasses: 0, whipDay: null }, // 趣味机制计数
     journey: null,     // 当前旅程快照（见 journey.js）
     journeyLog: []     // 已完成旅程记录
   };
@@ -148,6 +149,43 @@ class Store {
 
   today() {
     return this.day(dayKey());
+  }
+
+  /**
+   * 每分钟记录一次当日累计距离（下标 = 当地分钟 0..1439），
+   * 供「幽灵车」取「昨天此刻」的进度。内部按分钟去重。
+   */
+  recordIntraday() {
+    const d = new Date();
+    const min = d.getHours() * 60 + d.getMinutes();
+    if (this._lastIntradayMin === `${dayKey()}:${min}`) return;
+    this._lastIntradayMin = `${dayKey()}:${min}`;
+    const rec = this.today();
+    if (!Array.isArray(rec.intraday)) rec.intraday = [];
+    rec.intraday[min] = Math.round(rec.distanceCm || 0);
+    this.saveSoon();
+  }
+
+  /** 幽灵车只需要今天和昨天：更早的分钟级曲线清掉 */
+  pruneIntraday(keepDays = 2) {
+    const cutoff = dayKey(Date.now() - (keepDays - 1) * 86400000);
+    for (const [k, rec] of Object.entries(this.data.days || {})) {
+      if (k < cutoff && rec && rec.intraday) rec.intraday = undefined;
+    }
+  }
+
+  /** 昨天「同一分钟」的当日累计米数（找不到整点样本时向前找最近的），无数据返回 null */
+  ghostMetersAt(now) {
+    const yKey = dayKey(Date.now() - 86400000);
+    const rec = (this.data.days || {})[yKey];
+    const arr = rec && Array.isArray(rec.intraday) ? rec.intraday : null;
+    if (!arr) return null;
+    const d = new Date(now == null ? Date.now() : now);
+    let min = d.getHours() * 60 + d.getMinutes();
+    for (let i = 0; i <= 60 && min - i >= 0; i++) {
+      if (arr[min - i] != null) return { meters: arr[min - i] / 100, minutesAgo: i };
+    }
+    return null;
   }
 
   /** 只保留最近 N 天的明细，避免文件无限增长 */

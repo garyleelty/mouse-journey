@@ -3,7 +3,7 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 const channels = [
-  'state:update', 'state:full', 'journey:event', 'achievement', 'health:reminder', 'reminder:show'
+  'state:update', 'state:full', 'journey:event', 'achievement', 'health:reminder', 'reminder:show', 'boost:event'
 ];
 
 const api = {
@@ -22,6 +22,11 @@ const api = {
   /* ---- 旅程 ---- */
   setJourneyMode: (mode, routeId) => ipcRenderer.invoke('journey:setMode', { mode, routeId }),
   reroll: () => ipcRenderer.invoke('journey:reroll'),
+
+  /* ---- 趣味机制 ---- */
+  whip: () => ipcRenderer.invoke('boost:whip'),
+  setLean: (active) => ipcRenderer.invoke('boost:lean', { active }),
+  ghostPass: () => ipcRenderer.invoke('boost:ghostPass'),
 
   /* ---- 健康 ---- */
   snooze: () => ipcRenderer.invoke('health:snooze'),

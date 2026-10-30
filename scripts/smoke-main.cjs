@@ -104,6 +104,37 @@ const step = 12; // 每次 tick 移动 12px
   console.log(`journey ok · ${snap.name} ${snap.progressKm}/${snap.totalKm} km · 景点 ${snap.spots.length} · 下一站 ${snap.nextCity ? snap.nextCity.name : '—'}`);
   if (snap.progressKm !== 640) throw new Error('journey 进度异常');
 
+  /* ---------------- 5.5 趣味机制（冲刺/压弯/幽灵车/计数器） ---------------- */
+  j.chargeEnergy(true, 45_000, 0); // 持续移动 45s → 能量满
+  const whipR = j.whip();
+  if (!whipR.ok) throw new Error('满能量冲刺失败');
+  if (Math.abs(j.multiplier() - 2) > 1e-9) throw new Error('冲刺倍率未生效: ' + j.multiplier());
+  j.addMeters(100); // 冲刺中 1m = 2km
+  if (Math.abs(j.snapshot().progressKm - 840) > 0.01) throw new Error('冲刺里程翻倍异常: ' + j.snapshot().progressKm);
+  j.boost.whipUntil -= 16_000; // 模拟冲刺结束
+  j.setLean(true);
+  if (Math.abs(j.multiplier() - 1.25) > 1e-9) throw new Error('压弯倍率未生效: ' + j.multiplier());
+  j.addMeters(100);
+  if (Math.abs(j.snapshot().progressKm - 965) > 0.01) throw new Error('压弯加成异常: ' + j.snapshot().progressKm);
+  j.setLean(false);
+  if (Math.abs(j.multiplier() - 1) > 1e-9) throw new Error('倍率未回落: ' + j.multiplier());
+  const c = store.data.counters;
+  if (c.whips !== 1 || c.leans !== 1 || c.whipDay.n !== 1) throw new Error('计数器异常: ' + JSON.stringify(c));
+  store.recordIntraday();
+  const gNone = store.ghostMetersAt();
+  if (gNone !== null) throw new Error('无昨日数据时幽灵应为 null');
+  const yKey = (() => { const d = new Date(Date.now() - 86400000); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; })();
+  const minNow = new Date().getHours() * 60 + new Date().getMinutes();
+  store.data.days[yKey] = { distanceCm: 0, moves: 0, activeMs: 0, intraday: [] };
+  store.data.days[yKey].intraday[minNow] = 123_456; // 昨天此刻 1234.56 m
+  const g = store.ghostMetersAt();
+  if (!g || Math.abs(g.meters - 1234.56) > 0.01) throw new Error('幽灵进度读取异常: ' + JSON.stringify(g));
+  j.recordGhostPass();
+  const ach = new (require(path.join(ROOT, 'src/main/achievements.js')).Achievements)(store);
+  const unlockedNow = ach.check().map((a) => a.id);
+  if (!unlockedNow.includes('w_1')) throw new Error('「第一次抽鞭」成就未解锁');
+  console.log(`boost ok · 冲刺 ×2 / 压弯 ×1.25 / 计数 whips=${c.whips} leans=${c.leans} ghosts=${c.ghostPasses} · 昨日此刻 ${g.meters} m · 新成就 ${unlockedNow.join(',')}`);
+
   /* ---------------- 6. ipc 快照（buildState：渲染层拿到的全量状态） ---------------- */
   const { Achievements } = require(path.join(ROOT, 'src/main/achievements.js'));
   const { buildState } = require(path.join(ROOT, 'src/main/ipc.js'));

@@ -203,6 +203,16 @@ function renderToday() {
     $('route-next').textContent = j.nextCity ? j.nextCity.name : '已抵达终点';
     $('route-next-spot').textContent = j.nextSpot ? j.nextSpot.name : '—';
 
+    // 倍率徽标（冲刺/压弯激活时）
+    const rb = $('route-boost');
+    const b = j.boost;
+    if (b && b.gameMult > 1) {
+      rb.hidden = false;
+      rb.textContent = `×${b.gameMult} ${b.whipRemainS > 0 ? b.whipLabel : '压弯中'}`;
+    } else {
+      rb.hidden = true;
+    }
+
     // 视角 HUD
     $('mini-percent').textContent = `${Math.round(j.percent * 100)}%`;
     $('scene-next').textContent = j.nextCity && cityKm != null
@@ -712,6 +722,12 @@ function onReminder(r) {
   toast('bell', r.title, r.message, 12000);
 }
 
+function onBoostEvent(e) {
+  if (e && e.type === 'whipEnd') {
+    toast('flag', `${e.label || '冲刺'}结束`, `这一轮跑了 +${(e.gainedKm || 0).toFixed(1)} km`);
+  }
+}
+
 /* ------------------------------------------------------------------ 启动 */
 async function init() {
   // 静态图标注入
@@ -739,6 +755,7 @@ async function init() {
   api.on('journey:event', onJourneyEvent);
   api.on('achievement', onAchievement);
   api.on('health:reminder', onReminder);
+  api.on('boost:event', onBoostEvent);
 
   let resizeTimer = null;
   window.addEventListener('resize', () => {

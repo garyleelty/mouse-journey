@@ -2,7 +2,12 @@
 
 /* global api, Geo, Fmt, MapKit, SceneryKit, Icons */
 
-const S = { state: null, shownKm: 0, targetKm: 0, lastDraw: 0, view: 'road' };
+const S = {
+  state: null, shownKm: 0, targetKm: 0, lastDraw: 0, view: 'road',
+  lean: { dir: 0, since: 0, active: false }, // 顺弯压弯状态机
+  camRoll: 0,                                // 相机侧倾（平滑后的目标值）
+  ghostArmed: null                           // 幽灵超车武装位：null=未武装
+};
 const $ = (id) => document.getElementById(id);
 
 function setView(view) {
@@ -33,6 +38,25 @@ function renderHud() {
   $('f-next').textContent = st.journey.nextSpot
     ? `下一景点 ${st.journey.nextSpot.name}`
     : (st.journey.nextCity ? `下一站 ${st.journey.nextCity.name}` : (st.journey.remainKm <= 0 ? '已抵达终点' : '终点在望'));
+
+  // 能量槽 / 冲刺计时 / 倍率徽章
+  const b = st.journey.boost;
+  const row = $('f-boost-row');
+  const bar = $('f-boost-bar');
+  if (b) {
+    row.classList.toggle('whip', b.whipRemainS > 0);
+    row.classList.toggle('ready', b.whipRemainS <= 0 && b.energy >= 1);
+    bar.style.width = b.whipRemainS > 0
+      ? `${Math.min(100, (b.whipRemainS / 15) * 100)}%`
+      : `${Math.round(b.energy * 100)}%`;
+    const m = $('f-mult');
+    if (b.gameMult > 1) {
+      m.hidden = false;
+      m.textContent = `×${b.gameMult}`;
+    } else {
+      m.hidden = true;
+    }
+  }
 }
 
 function draw(ts) {
@@ -55,13 +79,43 @@ function draw(ts) {
       const at = j.cum[Math.min(j.cityIndex + 1, j.cum.length - 1)];
       nextCity = { name: j.nextCity.name, lon: j.nextCity.lon, lat: j.nextCity.lat, kmAhead: Math.max(0, at - j.progressKm) };
     }
-    SceneryKit.render($('f-map'), {
+    const b = j.boost;
+    const whipOn = !!(b && b.whipRemainS > 0);
+    const ghostOpt = (st.ghost && st.ghost.have)
+      ? { aheadKm: (st.ghost.meters - st.today.meters) / 1000 }
+      : null;
+    const info = SceneryKit.render($('f-map'), {
       route: j,
       progressKm: S.shownKm,
       visitedSpots: j.visitedSpots,
       nextCity,
-      compact: true
+      compact: true,
+      roll: S.camRoll,
+      boost: { whip: whipOn },
+      ghost: ghostOpt
     });
+
+    /* 顺弯压弯：弯道中（前方 120m 路心偏移 > 4m）且鼠标水平速度与弯向一致并保持 1.5s */
+    const vx = st.vx || 0;
+    const cornering = !!(info && info.bendMag > 4);
+    if (cornering && info.bendDir !== 0 && Math.sign(vx) === info.bendDir && Math.abs(vx) > 60) {
+      if (!S.lean.since || S.lean.dir !== info.bendDir) {
+        S.lean.dir = info.bendDir;
+        S.lean.since = ts;
+      }
+      if (!S.lean.active && ts - S.lean.since > 1500) {
+        S.lean.active = true;
+        api.setLean(true);
+      }
+    } else if (S.lean.active || S.lean.since) {
+      if (S.lean.active) api.setLean(false);
+      S.lean.active = false;
+      S.lean.since = 0;
+    }
+
+    // 相机侧倾目标：压弯向弯内倾 + 冲刺轻微抖动
+    const rollTarget = (S.lean.active && info ? info.bendDir * 0.05 : 0) + (whipOn ? Math.sin(ts / 90) * 0.006 : 0);
+    S.camRoll += (rollTarget - S.camRoll) * 0.12;
     return;
   }
 
@@ -87,6 +141,34 @@ function draw(ts) {
   }
 }
 
+/** 幽灵超车检测：今日里程从落后昨日 ≥200m 翻到领先 ≥50m 记一次（带迟滞防抖） */
+function detectGhostPass() {
+  const st = S.state;
+  if (!st || !st.ghost || !st.ghost.have) return;
+  const delta = st.today.meters - st.ghost.meters; // >0 = 你领先
+  if (delta < -200) {
+    S.ghostArmed = true;
+  } else if (S.ghostArmed && delta > 50) {
+    S.ghostArmed = null;
+    flashRow();
+    api.ghostPass();
+  }
+}
+
+/** 能量条闪一下：冲刺结束 / 超越幽灵的轻反馈 */
+function flashRow() {
+  const row = $('f-boost-row');
+  row.classList.remove('deny');
+  void row.offsetWidth; // 重启动画
+  row.classList.add('deny');
+  setTimeout(() => row.classList.remove('deny'), 300);
+}
+
+async function onWhip() {
+  await api.whip();
+  flashRow(); // 成功 = 起跑提示；能量不足 = 拒绝提示（同一段轻抖动）
+}
+
 async function init() {
   $('f-collapse').innerHTML = Icons.svg('chevron', 13);
   $('f-pin').innerHTML = Icons.svg('pinTop', 13);
@@ -108,7 +190,14 @@ async function init() {
     S.state.totals = u.totals;
     S.state.journey = u.journey;
     S.state.mount = u.mount;
+    S.state.vx = u.vx;
+    S.state.ghost = u.ghost;
     renderHud();
+    detectGhostPass();
+  });
+
+  api.on('boost:event', (e) => {
+    if (e && e.type === 'whipEnd') flashRow();
   });
 
   api.on('state:full', (f) => {
@@ -148,6 +237,9 @@ async function init() {
 
   $('f-main').addEventListener('click', () => api.showMain());
   $('f-hide').addEventListener('click', () => api.hideFloat());
+
+  // 点击主画面 = 抽鞭冲刺（能量满时触发）
+  $('f-map').addEventListener('click', onWhip);
 
   // 双击头部折叠/展开
   $('fh').addEventListener('dblclick', () => setCollapsed(!$('fw').classList.contains('collapsed')));

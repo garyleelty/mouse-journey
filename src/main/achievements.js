@@ -11,7 +11,11 @@ const MILESTONES = [
   { id: 'm_100k',   type: 'distance', value: 100000, icon: '🧭', name: '百里行者',     desc: '累计移动 100 公里' },
   { id: 'h_10',     type: 'active',   value: 10,     icon: '⏳', name: '专注十小时',   desc: '累计活跃时长 10 小时' },
   { id: 'd_1k',     type: 'bestDay',  value: 1000,   icon: '☀️', name: '单日破千',     desc: '单日移动超过 1 公里' },
-  { id: 's_3',      type: 'streak',   value: 3,      icon: '🔥', name: '三日之约',     desc: '连续 3 天有移动记录' }
+  { id: 's_3',      type: 'streak',   value: 3,      icon: '🔥', name: '三日之约',     desc: '连续 3 天有移动记录' },
+  { id: 'w_1',      type: 'whips',       value: 1,  icon: '⚡',  name: '第一次抽鞭', desc: '完成一次冲刺' },
+  { id: 'w_20',     type: 'whipDay',     value: 20, icon: '🌪️', name: '冲刺狂人',   desc: '单日冲刺 20 次' },
+  { id: 'l_10',     type: 'leans',       value: 10, icon: '🛣️', name: '弯道舞者',   desc: '顺弯压弯 10 次' },
+  { id: 'g_10',     type: 'ghostPasses', value: 10, icon: '👻', name: '胜过昨日',   desc: '超越「昨天的你」10 次' }
 ];
 
 /** 坐骑分级：按累计里程演进，speed 只影响悬浮窗小人的动画步频/速度感 */
@@ -61,12 +65,35 @@ class Achievements {
     }
     let bestDayMeters = 0;
     for (const k of keys) bestDayMeters = Math.max(bestDayMeters, (days[k].distanceCm || 0) / 100);
+    // 趣味机制计数
+    const c = this.store.data.counters || {};
+    const now = new Date();
+    const todayKeyStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     return {
       streakDays: streak,
       bestDayMeters,
       activeHours: (this.store.data.totals.activeMs || 0) / 3600000,
-      totalMeters: (this.store.data.totals.distanceCm || 0) / 100
+      totalMeters: (this.store.data.totals.distanceCm || 0) / 100,
+      whips: c.whips || 0,
+      whipDay: c.whipDay && c.whipDay.key === todayKeyStr ? c.whipDay.n : 0,
+      leans: c.leans || 0,
+      ghostPasses: c.ghostPasses || 0
     };
+  }
+
+  /** 成就类型 → 当前值 */
+  _valueFor(a, m) {
+    switch (a.type) {
+      case 'distance': return m.totalMeters;
+      case 'active': return m.activeHours;
+      case 'bestDay': return m.bestDayMeters;
+      case 'streak': return m.streakDays;
+      case 'whips': return m.whips;
+      case 'whipDay': return m.whipDay;
+      case 'leans': return m.leans;
+      case 'ghostPasses': return m.ghostPasses;
+      default: return 0;
+    }
   }
 
   /** 检查并返回本次新解锁的成就 */
@@ -76,12 +103,7 @@ class Achievements {
     const fresh = [];
     for (const a of MILESTONES) {
       if (unlocked[a.id]) continue;
-      const v =
-        a.type === 'distance' ? m.totalMeters :
-        a.type === 'active' ? m.activeHours :
-        a.type === 'bestDay' ? m.bestDayMeters :
-        a.type === 'streak' ? m.streakDays : 0;
-      if (v >= a.value) {
+      if (this._valueFor(a, m) >= a.value) {
         unlocked[a.id] = new Date().toISOString();
         fresh.push(a);
       }
@@ -95,11 +117,7 @@ class Achievements {
     const m = this.metrics();
     const unlocked = this.store.data.achievements || {};
     return MILESTONES.map((a) => {
-      const v =
-        a.type === 'distance' ? m.totalMeters :
-        a.type === 'active' ? m.activeHours :
-        a.type === 'bestDay' ? m.bestDayMeters :
-        a.type === 'streak' ? m.streakDays : 0;
+      const v = this._valueFor(a, m);
       return { ...a, unlocked: !!unlocked[a.id], at: unlocked[a.id] || null, progress: Math.min(1, v / a.value), current: v };
     });
   }

@@ -187,6 +187,14 @@
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
     g.clearRect(0, 0, w, h);
 
+    // 相机侧倾（压弯 / 冲刺表现）：绕画面底部中心轻转，模拟重心移动
+    const roll = Math.max(-0.06, Math.min(0.06, o.roll || 0));
+    if (roll) {
+      g.translate(w / 2, h);
+      g.rotate(roll);
+      g.translate(-w / 2, -h);
+    }
+
     const compact = !!o.compact;
     const hy = Math.round(h * (compact ? 0.5 : 0.44));
 
@@ -381,6 +389,55 @@
         }
       }
     });
+
+    /* ---- 幽灵车（昨天的你）：同车道半透明剪影，领先你时出现在前方 ---- */
+    if (o.ghost && o.ghost.aheadKm != null && o.ghost.aheadKm > -0.25) {
+      const gz = 40 + Math.min(150, Math.max(0, o.ghost.aheadKm) * 25); // 领先越远越靠前
+      const gsc = FOCAL / gz;
+      const gy = proj(0, gz).y;
+      const gx = cx + (latAt(gz) + 1.8) * gsc;
+      const bw = 1.7 * gsc;   // 车长
+      const bh = 1.1 * gsc;   // 车身高
+      const wr = 0.34 * gsc;  // 轮径
+      g.save();
+      g.globalAlpha = 0.42;
+      g.fillStyle = '#7c8593';
+      g.fillRect(gx - bw / 2, gy - wr - bh, bw, bh);
+      g.fillRect(gx - bw * 0.3, gy - wr - bh - bh * 0.5, bw * 0.6, bh * 0.55);
+      g.beginPath();
+      g.arc(gx - bw * 0.28, gy - wr, wr, 0, Math.PI * 2);
+      g.arc(gx + bw * 0.28, gy - wr, wr, 0, Math.PI * 2);
+      g.fill();
+      g.restore();
+    }
+
+    /* ---- 冲刺表现：速度线 + 路面扬尘（灰阶，不引入新彩色） ---- */
+    if (o.boost && o.boost.whip) {
+      g.save();
+      g.strokeStyle = 'rgba(10, 10, 10, 0.10)';
+      g.lineWidth = 1.5;
+      for (let i = 0; i < 10; i++) {
+        const r1 = hash01(i * 37 + Math.floor(startMeters / 90));
+        const y = hy + (h - hy) * (0.15 + r1 * 0.7);
+        const len = 40 + r1 * 90;
+        const x = i % 2 === 0 ? w * 0.04 + r1 * w * 0.16 : w * 0.96 - r1 * w * 0.16;
+        g.beginPath();
+        g.moveTo(x, y);
+        g.lineTo(x + (i % 2 === 0 ? len : -len), y - len * 0.12);
+        g.stroke();
+      }
+      g.fillStyle = 'rgba(107, 107, 107, 0.16)';
+      for (let i = 0; i < 7; i++) {
+        const r2 = hash01(i * 53 + Math.floor(startMeters / 60));
+        const dw = 3 + r2 * 7;
+        g.fillRect(w * 0.12 + r2 * w * 0.76, h - 4 - r2 * 14, dw, dw * 0.7);
+      }
+      g.restore();
+    }
+
+    // 弯道信息：前方 120m 路心横向偏移（米），供悬浮窗做「顺弯压弯」判定
+    const lookLat = latAt(Math.min(120, zFar));
+    return { bendDir: Math.sign(lookLat), bendMag: Math.abs(lookLat) };
   }
 
   window.SceneryKit = { render, terrainPalette };
