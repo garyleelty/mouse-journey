@@ -75,6 +75,11 @@
             <div class="kpi-label">今日距离</div>
             <div class="kpi-value num" id="today-distance">0.00 m</div>
             <div class="kpi-hint" id="today-sub">≈ 0 步左右</div>
+            <svg class="goal-ring" id="goal-ring" viewBox="0 0 36 36" hidden>
+              <circle class="gr-bg" cx="18" cy="18" r="15.5"/>
+              <circle class="gr-fg" id="goal-ring-fg" cx="18" cy="18" r="15.5" stroke-dasharray="97.4"/>
+              <text class="gr-txt" id="goal-ring-txt" x="18" y="20.5">0%</text>
+            </svg>
           </div>
           <div class="kpi">
             <div class="kpi-label">移动次数</div>
@@ -399,6 +404,22 @@
                 </div>
               </div>
               <label class="check"><input type="checkbox" id="float-route" /><span>显示路线进度（虚线）</span></label>
+            </div>
+          </section>
+
+          <!-- ③.5 今日目标（整行） -->
+          <section class="set-card full">
+            <h2>今日目标</h2>
+            <p class="set-desc">给每天定一个里程小目标：进度环显示在「今日」页与悬浮窗，达成时主窗口撒彩带庆祝。</p>
+            <div class="set-panel">
+              <div class="inline-row">
+                <label class="check"><input type="checkbox" id="goal-enabled" /><span>启用今日目标</span></label>
+                <div class="field">
+                  <label for="goal-km">每日目标（km，真实物理距离）</label>
+                  <input type="number" id="goal-km" min="0.5" max="200" step="0.5" />
+                </div>
+              </div>
+              <p class="panel-note">按自然日 0 点重置；达成庆祝每天只发生一次。</p>
             </div>
           </section>
 

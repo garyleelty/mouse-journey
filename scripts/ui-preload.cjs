@@ -136,6 +136,7 @@ const state = {
     health: { enabled: true, thresholdMin: 45, snoozeMin: 10, idleResetSec: 60, title: '该休息啦', message: '已连续使用 {min} 分钟，起身活动一下吧。', useNotification: false },
     float: { opacity: 0.96, alwaysOnTopLevel: 'floating', visible: true, showRoute: true, collapsed: process.env.MJ_COLLAPSED === '1' },
     general: { launchAtLogin: false, closeToTray: true },
+    goal: { enabled: true, dailyKm: 6 }, // 3842.6 m → 64% 进度环
     journey: { kmPerMeter: 2.5, mode: 'random', routeId: 'shot' }
   }
 };
@@ -178,6 +179,9 @@ setTimeout(() => {
   const ev = process.env.MJ_EVENT || 'achv';
   if (ev === 'none') {
     // 不注入事件（截静态页面用）
+  } else if (ev === 'goal') {
+    // 今日目标达成瞬间：真实跨越 6 km 目标（3.84 → 6.05 km）
+    fire('state:update', Object.assign({}, state, { today: { meters: 6050, moves: 300, activeMs: 5600000 } }));
   } else if (ev === 'ghost') {
     // 超越瞬间：先推一条幽灵落后 120m 的 state:update（contextBridge 克隆对象，
     // 直接改 state 不影响渲染层已持有的拷贝），再注入超越事件

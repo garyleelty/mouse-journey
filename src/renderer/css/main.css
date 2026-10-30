@@ -210,6 +210,19 @@ canvas { display: block; }
 .kpi-value { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: var(--fs-kpi); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; }
 .kpi:not(.kpi-lead) .kpi-value { font-size: var(--fs-title); font-weight: 400; }
 .kpi-hint { font-size: var(--fs-small); color: var(--muted); }
+.kpi-lead { position: relative; }
+
+/* ---------- 今日目标进度环（今日页 KPI / 悬浮窗 HUD） ---------- */
+.goal-ring { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); width: 46px; height: 46px; }
+.goal-ring circle { fill: none; stroke-width: 3.2; }
+.goal-ring .gr-bg { stroke: var(--rule); }
+.goal-ring .gr-fg {
+  stroke: var(--hue); stroke-linecap: round;
+  transform: rotate(-90deg); transform-origin: center;
+  transition: stroke-dashoffset .3s;
+}
+.goal-ring .gr-txt { font: 600 8.5px var(--font-mono); fill: var(--text); text-anchor: middle; }
+.goal-ring.done .gr-txt { fill: var(--hue); }
 
 /* ---------- 地图 ---------- */
 .map-card { gap: 8px; }

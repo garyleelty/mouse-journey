@@ -32,6 +32,10 @@ function defaults() {
         autoNext: true,        // 抵达终点后自动开启下一段随机旅程
         showSpotCards: true
       },
+      goal: {
+        enabled: true,         // 今日目标（达成时主窗庆祝，进度环在今日页与悬浮窗）
+        dailyKm: 3             // 每日里程目标（真实物理公里）
+      },
       health: {
         enabled: true,
         thresholdMin: 45,      // 连续使用阈值（分钟）

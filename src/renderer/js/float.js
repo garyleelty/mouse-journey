@@ -35,6 +35,19 @@ function renderHud() {
   $('f-dist').textContent = fmtMeters(st.today.meters);
   $('f-mount').innerHTML = Icons.mountIcon(st.mount.id, 14);
   $('f-pos').textContent = `${st.journey.progressKm} / ${st.journey.totalKm} km`;
+
+  // 今日目标迷你进度环（关闭/无目标时隐藏；SVG 元素 .hidden 不映射 attribute，须用 setAttribute）
+  const gl = st.settings && st.settings.goal;
+  const fr = $('f-goal');
+  if (gl && gl.enabled && gl.dailyKm > 0) {
+    const p = Math.max(0, Math.min(1, st.today.meters / (gl.dailyKm * 1000)));
+    fr.removeAttribute('hidden');
+    fr.classList.toggle('done', p >= 1);
+    $('f-goal-fg').style.strokeDashoffset = (97.4 * (1 - p)).toFixed(1);
+    fr.setAttribute('title', `今日目标 ${gl.dailyKm} km · ${Math.round(p * 100)}%`);
+  } else {
+    fr.setAttribute('hidden', '');
+  }
   $('f-next').textContent = st.journey.nextSpot
     ? `下一景点 ${st.journey.nextSpot.name}`
     : (st.journey.nextCity ? `下一站 ${st.journey.nextCity.name}` : (st.journey.remainKm <= 0 ? '已抵达终点' : '终点在望'));

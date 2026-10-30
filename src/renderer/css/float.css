@@ -126,6 +126,15 @@ html, body {
   font-size: 11px;
   color: #0a0a0a;
 }
+/* 今日目标迷你进度环（HUD 行内；基础样式与 main.css 同值，悬浮窗独立样式表） */
+.goal-ring.sm { position: static; transform: none; width: 16px; height: 16px; flex: none; }
+.goal-ring.sm circle { fill: none; stroke-width: 3.6; }
+.goal-ring.sm .gr-bg { stroke: #f0f0f0; }
+.goal-ring.sm .gr-fg {
+  stroke: #1d5fbf; stroke-linecap: round;
+  transform: rotate(-90deg); transform-origin: center;
+  transition: stroke-dashoffset .25s;
+}
 .hud .grow { flex: 1; }
 .mount-glyph { display: grid; place-items: center; width: 16px; height: 16px; color: #0a0a0a; }
 .mount-glyph svg { width: 14px; height: 14px; }

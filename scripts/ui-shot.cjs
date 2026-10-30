@@ -33,6 +33,9 @@ app.whenReady().then(async () => {
     console.error(`[renderer:${level}] ${message} (${source}:${line})`);
   });
   await win.loadFile(path.join(__dirname, '..', 'src', 'renderer', PAGE));
+  if (process.env.MJ_FRESH) {
+    await win.webContents.executeJavaScript('localStorage.clear()'); // 排除跨运行的持久化状态
+  }
   if (TAB) {
     // 走真实 UI 路径切页（复用 switchTab 的渲染链路）
     await win.webContents.executeJavaScript(
@@ -44,7 +47,11 @@ app.whenReady().then(async () => {
     const info = await win.webContents.executeJavaScript(
       `JSON.stringify({ dpr: devicePixelRatio, iw: innerWidth, ih: innerHeight,` +
       ` fw: document.getElementById('fw') && document.getElementById('fw').getBoundingClientRect(),` +
-      ` fh: document.getElementById('fh') && document.getElementById('fh').getBoundingClientRect() })`
+      ` fh: document.getElementById('fh') && document.getElementById('fh').getBoundingClientRect(),` +
+      ` gr: (() => { const el = document.getElementById('goal-ring'); if (!el) return 'missing';` +
+      ` const cs = getComputedStyle(el); return { hidden: el.hidden, disp: cs.display, pos: cs.position, w: cs.width, rect: el.getBoundingClientRect() }; })(),` +
+      ` goalDebug: (() => { try { const s = S.state; return { goal: s.settings.goal, today: s.today.meters,` +
+      ` done: localStorage.getItem('mj-goal-done'), toasts: document.querySelectorAll('.toast').length }; } catch (e) { return 'ERR:' + e.message; } })() })`
     );
     console.log('layout', info);
   }

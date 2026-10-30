@@ -161,6 +161,18 @@ const step = 12; // 每次 tick 移动 12px
   const ok = s2.settings.journey.routeId === 'jinghu' && Object.keys(s2.data.days).length > 0;
   console.log('persistence ok · 重载后 route =', s2.settings.journey.routeId, '· 天数 =', Object.keys(s2.data.days).length);
   if (!ok) throw new Error('存档往返失败');
+
+  /* ---------------- 8. 今日目标设置 ---------------- */
+  if (!s2.settings.goal || s2.settings.goal.enabled !== true || !(s2.settings.goal.dailyKm > 0)) {
+    throw new Error('今日目标默认值缺失: ' + JSON.stringify(s2.settings.goal));
+  }
+  s2.updateSettings({ goal: { dailyKm: 5, enabled: false } });
+  if (s2.settings.goal.dailyKm !== 5 || s2.settings.goal.enabled !== false) throw new Error('goal 设置合并异常');
+  s2.updateSettings({ goal: { dailyKm: 3, enabled: true } });
+  s2.flush();
+  const s3 = new Store2();
+  if (s3.settings.goal.dailyKm !== 3 || s3.settings.goal.enabled !== true) throw new Error('goal 设置未持久化');
+  console.log(`goal ok · 默认 enabled=true dailyKm=3 · 合并/持久化/默认深合并(旧档补齐)均通过`);
   fs.rmSync(tmpData, { recursive: true, force: true });
   console.log('\nALL SMOKE TESTS PASSED');
 })().catch((e) => { console.error('SMOKE FAILED:', e.message); process.exit(1); });

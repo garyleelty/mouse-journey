@@ -274,11 +274,29 @@ function updateSpeed() {
   el.textContent = v < 1 ? `${(v * 100).toFixed(0)} cm/s` : `${v.toFixed(2)} m/s`;
 }
 
+/** 今日目标进度环（KPI 卡右上角，关闭/无目标时隐藏）。
+ *  注意 goal-ring 是 SVG 元素：.hidden 属性不会映射到 attribute，须用 removeAttribute/setAttribute。 */
+function updateGoal() {
+  const st = S.state;
+  const wrap = $('goal-ring');
+  const g = st.settings && st.settings.goal;
+  if (!g || !g.enabled || !(g.dailyKm > 0)) { wrap.setAttribute('hidden', ''); return; }
+  const goalM = g.dailyKm * 1000;
+  const p = Math.max(0, Math.min(1, st.today.meters / goalM));
+  wrap.removeAttribute('hidden');
+  wrap.classList.toggle('done', p >= 1);
+  $('goal-ring-fg').style.strokeDashoffset = (97.4 * (1 - p)).toFixed(1);
+  $('goal-ring-txt').textContent = `${Math.round(p * 100)}%`;
+  wrap.setAttribute('title', `今日目标 ${g.dailyKm} km · 已完成 ${Math.round(p * 100)}%`
+    + (p >= 1 ? ' · 达成！' : ` · 还差 ${Fmt.formatDistance(Math.max(0, goalM - st.today.meters))}`));
+}
+
 function renderToday() {
   const st = S.state;
   $('today-distance').textContent = Fmt.formatDistance(st.today.meters);
   $('today-moves').textContent = st.today.moves.toLocaleString();
   $('today-active').textContent = Fmt.formatDuration(st.today.activeMs);
+  updateGoal();
 
   const cm = st.today.meters * 100;
   $('today-sub').textContent = cm > 0
@@ -701,6 +719,9 @@ function fillSettings() {
   $('gen-login').checked = !!s.general.launchAtLogin;
   $('gen-tray').checked = !!s.general.closeToTray;
 
+  $('goal-enabled').checked = !(s.goal && s.goal.enabled === false);
+  $('goal-km').value = (s.goal && s.goal.dailyKm) || 3;
+
   $('store-dir').textContent = st.dataDir || '—';
   $('store-size').textContent = Fmt.formatBytes(st.storeBytes || 0);
   $('store-calibrated').textContent = st.calibratedAt
@@ -767,6 +788,9 @@ function bindSettings() {
 
   $('gen-login').addEventListener('change', () => set({ general: { launchAtLogin: $('gen-login').checked } }));
   $('gen-tray').addEventListener('change', () => set({ general: { closeToTray: $('gen-tray').checked } }));
+
+  $('goal-enabled').addEventListener('change', () => set({ goal: { enabled: $('goal-enabled').checked } }));
+  num('goal-km', (v) => set({ goal: { dailyKm: v } }));
 
   $('side-pause').addEventListener('change', () => api.pause($('side-pause').checked).then(() => {
     S.state.paused = $('side-pause').checked;
@@ -865,8 +889,25 @@ function renderAll() {
 }
 
 /* ------------------------------------------------------------------ 事件 */
+/** 今日目标达成检测：仅在真实跨越目标的瞬间庆祝一次（按天持久化，重开窗口不重复） */
+const GOAL_DONE_KEY = 'mj-goal-done';
+function checkGoalCelebration(prevMeters, nowMeters) {
+  const st = S.state;
+  const g = st.settings && st.settings.goal;
+  if (!g || !g.enabled || !(g.dailyKm > 0)) return;
+  const goalM = g.dailyKm * 1000;
+  const key = Fmt.dayKey(Date.now());
+  if (localStorage.getItem(GOAL_DONE_KEY) === key) return;
+  if (!(prevMeters < goalM && nowMeters >= goalM)) return;
+  localStorage.setItem(GOAL_DONE_KEY, key);
+  toast('flag', '今日目标达成！', `已走 ${Fmt.formatDistance(nowMeters)} · 目标 ${g.dailyKm} km`, 8000, true);
+  FX.confetti({ count: 120 });
+  setTimeout(() => FX.confetti({ count: 70, spread: Math.PI * 1.2, power: 0.85 }), 200);
+}
+
 function onUpdate(u) {
   const s = S.state;
+  const prevMeters = s.today ? s.today.meters : 0;
   s.today = u.today;
   s.totals = u.totals;
   s.journey = u.journey;
@@ -878,6 +919,7 @@ function onUpdate(u) {
   s.screenLayout = u.screenLayout || s.screenLayout;
   renderSidebar();
   renderToday();
+  checkGoalCelebration(prevMeters, u.today.meters);
   if ($('tab-journey').classList.contains('active')) { renderJourney(); drawMap($('map-main'), $('map-marker-main'), false); }
   if ($('tab-today').classList.contains('active')) drawMap($('map-today'), $('map-marker'), true);
   if ($('tab-stats').classList.contains('active')) renderStats();
