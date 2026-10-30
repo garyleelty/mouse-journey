@@ -55,7 +55,8 @@ app.whenReady().then(async () => {
       `(async () => {
         for (let i = 0; i < 20; i++) {
           const t = document.querySelector(${JSON.stringify(sel)});
-          if (t) { t.click(); return 'clicked'; }
+          // SVG 元素没有 .click() 方法，统一用 MouseEvent 派发（HTML/SVG 通用）
+          if (t) { t.dispatchEvent(new MouseEvent('click', { bubbles: true })); return 'clicked'; }
           await new Promise((r2) => setTimeout(r2, 150));
         }
         return 'no-target';

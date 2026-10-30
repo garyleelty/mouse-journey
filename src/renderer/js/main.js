@@ -345,7 +345,8 @@ function updateGoal() {
   $('goal-ring-fg').style.strokeDashoffset = (97.4 * (1 - p)).toFixed(1);
   $('goal-ring-txt').textContent = `${Math.round(p * 100)}%`;
   wrap.setAttribute('title', `今日目标 ${g.dailyKm} km · 已完成 ${Math.round(p * 100)}%`
-    + (p >= 1 ? ' · 达成！' : ` · 还差 ${Fmt.formatDistance(Math.max(0, goalM - st.today.meters))}`));
+    + (p >= 1 ? ' · 达成！' : ` · 还差 ${Fmt.formatDistance(Math.max(0, goalM - st.today.meters))}`)
+    + ' · 点击调整目标');
 }
 
 /** 热力卡热点摘要徽标：最活跃屏幕（≥2 屏才有意义）/ 最集中时段（todayIntraday 小时增量）。
@@ -1110,6 +1111,19 @@ function checkMountUpgrade(prevMount, newMount) {
   FX.burstFromEl(el.querySelector('.ti'), { count: 40 });
 }
 
+/** 目标环点击 → 设置页并定位「今日目标」卡（导航闭环 + flash 高亮） */
+function gotoGoalSettings() {
+  switchTab('settings');
+  setTimeout(() => {
+    const card = $('goal-card');
+    if (!card) return;
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    card.classList.remove('flash');
+    void card.offsetWidth; // 重启动画
+    card.classList.add('flash');
+  }, 60);
+}
+
 /** 今日目标达成检测：仅在真实跨越目标的瞬间庆祝一次（按天持久化，重开窗口不重复） */
 const GOAL_DONE_KEY = 'mj-goal-done';
 function checkGoalCelebration(prevMeters, nowMeters) {
@@ -1224,8 +1238,9 @@ async function init() {
   $('side-next').addEventListener('click', () => switchTab('achv'));
   // 「本周每日距离」条带 → 统计页（导航闭环）
   $('side-week').addEventListener('click', () => switchTab('stats'));
-  // 「今日目标达成日历」→ 统计页（导航闭环）
+  // 「今日目标达成日历」→ 统计页；进度环 → 设置页定位今日目标卡（导航闭环）
   $('goal-days').addEventListener('click', () => switchTab('stats'));
+  $('goal-ring').addEventListener('click', gotoGoalSettings);
   requestAnimationFrame(rideLoop);
 
   let resizeTimer = null;

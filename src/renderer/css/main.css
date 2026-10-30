@@ -224,8 +224,15 @@ canvas { display: block; }
   transform: rotate(-90deg); transform-origin: center;
   transition: stroke-dashoffset .3s;
 }
+.goal-ring { cursor: pointer; }
 .goal-ring .gr-txt { font: 600 8.5px var(--font-mono); fill: var(--text); text-anchor: middle; }
 .goal-ring.done .gr-txt { fill: var(--hue); }
+/* 从今日页跳转设置页时的定位高亮（目标环点击 → 今日目标卡） */
+.set-card.flash { animation: card-flash 1.8s ease-out; }
+@keyframes card-flash {
+  0%, 55% { box-shadow: 0 0 0 3px rgba(29, 95, 191, 0.35); }
+  100% { box-shadow: 0 0 0 0 rgba(29, 95, 191, 0); }
+}
 /* 今日目标达成日历：最近 14 天小方格（达成=数据色实心 / 未达成=灰环 / 今天=外描边），可点击跳统计页。
    流内右对齐（hint 下方），卡片自动增高，窄屏无重叠风险 */
 .goal-days { align-self: flex-end; display: flex; gap: 3px; cursor: pointer; margin-top: 2px; }
