@@ -709,9 +709,13 @@ function renderAchievements() {
   const list = st.achievements || [];
   const grid = $('achv-grid');
   grid.innerHTML = '';
-  list.forEach((a) => {
+
+  /* 分组：进行中按进度降序（最近的在最上），已解锁按档位升序；
+     进度语言与里程碑卡/时间轴一致——已解锁 = 数据色，进行中 ≥80% 点亮 */
+  const row = (a) => {
     const li = document.createElement('li');
-    li.className = 'achv-row' + (a.unlocked ? '' : ' locked');
+    const near = !a.unlocked && a.progress >= 0.8;
+    li.className = 'achv-row' + (a.unlocked ? ' unlocked' : ' locked') + (near ? ' near' : '');
     li.innerHTML = `
       <div><span class="achv-name"></span><span class="achv-desc"></span></div>
       <div class="achv-val"></div>
@@ -720,8 +724,30 @@ function renderAchievements() {
     li.querySelector('.achv-desc').textContent = a.desc;
     li.querySelector('.achv-bar i').style.width = `${Math.round(a.progress * 100)}%`;
     li.querySelector('.achv-val').textContent = a.unlocked ? '已解锁' : `${Math.round(a.progress * 100)}%`;
+    return li;
+  };
+  const groupLabel = (text) => {
+    const li = document.createElement('li');
+    li.className = 'achv-group-label';
+    li.textContent = text;
+    return li;
+  };
+  const wip = list.filter((a) => !a.unlocked).sort((a, b) => b.progress - a.progress);
+  const done = list.filter((a) => a.unlocked).sort((a, b) => (a.value || 0) - (b.value || 0));
+  if (wip.length) {
+    grid.appendChild(groupLabel(`进行中 · ${wip.length}`));
+    wip.forEach((a) => grid.appendChild(row(a)));
+  }
+  if (done.length) {
+    grid.appendChild(groupLabel(`已解锁 · ${done.length}`));
+    done.forEach((a) => grid.appendChild(row(a)));
+  }
+  if (!list.length) {
+    const li = document.createElement('li');
+    li.className = 'achv-group-label';
+    li.textContent = '暂无成就';
     grid.appendChild(li);
-  });
+  }
   renderPageHead();
 
   const track = $('mount-track');

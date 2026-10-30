@@ -136,10 +136,13 @@ const state = {
     id: 'train', name: '高铁', progress: 0.28, // 与 totals/mounts 自洽：284.5 km 在高铁(200km)~飞机(500km)之间
     next: { id: 'plane', name: '飞机', minMeters: 500000 }
   },
+  // 里程成就 5 档（progress 由 totals 推导，300km 档受 MJ_MILESTONE 覆盖）：进行中 3 档可演示降序
   achievements: [
-    { type: 'distance', name: '50 km', desc: '累计骑行 50 公里', value: 50000, unlocked: true, progress: 1 },
-    { type: 'distance', name: '100 km', desc: '累计骑行 100 公里', value: 100000, unlocked: true, progress: 1 },
-    { type: 'distance', name: '300 km', desc: '累计骑行 300 公里', value: 300000, unlocked: ms >= 1, progress: ms },
+    ...[50000, 100000, 300000, 500000, 1000000].map((v) => {
+      const progress = v === 300000 ? ms : Math.min(1, 284500 / v);
+      const name = v >= 1000 ? `${v / 1000} km` : `${v} m`;
+      return { type: 'distance', name, desc: `累计骑行 ${name}`, value: v, unlocked: progress >= 1, progress };
+    }),
     { type: 'whip', name: '第一次抽鞭', desc: '完成一次冲刺', value: 1, unlocked: true, progress: 1 }
   ],
   journeyLog: [],

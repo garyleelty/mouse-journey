@@ -460,6 +460,12 @@ canvas { display: block; }
 .achv-bar i { display: block; height: 100%; background: var(--primary); }
 .achv-row.locked .achv-bar i { background: #b5b9c2; }
 .achv-val { font-size: var(--fs-small); color: var(--muted); text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* 分组（进行中 / 已解锁）+ 进度语言：已解锁 = 数据色；进行中 ≥80% 点亮（呼应里程碑卡） */
+.achv-group-label { font-size: var(--fs-small); font-weight: 500; color: var(--muted); padding: 14px 0 2px; }
+.achv-group-label:first-child { padding-top: 0; }
+.achv-row.unlocked .achv-bar i { background: var(--hue); }
+.achv-row.near .achv-bar i { background: var(--hue); }
+.achv-row.near .achv-val { color: var(--hue); font-weight: 600; }
 
 /* 成就页右卡：坐骑演进 / 数据总览 / 旅行日志（总览段吸收剩余高度） */
 .side-sec { display: flex; flex-direction: column; gap: 10px; }
