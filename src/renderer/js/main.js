@@ -374,6 +374,40 @@ function statsFinding() {
   return `${rangeNames[S.statsRange] || ''}已走 ${Fmt.formatDistance(total)} · 最高 ${best.key} ${Fmt.formatDistance(best.meters)}`;
 }
 
+/** 游戏化洞察徽标：本周较上周 ±% / 连续记录天数 / 最佳单日（数据型游戏化，唯一数据色给正向信号） */
+function renderInsights() {
+  const host = $('stat-insights');
+  if (!host) return;
+  const st = S.state;
+  const days = st.rawDays || {};
+  const sum = (keys) => keys.reduce((a, k) => a + ((days[k] && days[k].distanceCm) || 0), 0) / 100;
+  const today = new Date();
+  const monday = today.getTime() - ((today.getDay() + 6) % 7) * 86400000;
+  const cur = sum(Fmt.currentWeekDays());
+  const prev = sum([0, 1, 2, 3, 4, 5, 6].map((i) => Fmt.dayKey(monday - (7 - i) * 86400000)));
+
+  const chip = (icon, text, cls) => {
+    const el = document.createElement('span');
+    el.className = 'sight' + (cls ? ` ${cls}` : '');
+    el.innerHTML = Icons.svg(icon, 13);
+    el.appendChild(document.createTextNode(text));
+    return el;
+  };
+  host.innerHTML = '';
+  if (cur > 0 || prev > 0) {
+    if (prev > 0) {
+      const pct = Math.round(((cur - prev) / prev) * 100);
+      host.appendChild(chip('stats', `本周较上周 ${pct >= 0 ? '+' : ''}${pct}%`, pct > 0 ? 'up' : ''));
+    } else {
+      host.appendChild(chip('stats', '上周无记录，本周从零开始'));
+    }
+  }
+  const streak = (st.metrics && st.metrics.streakDays) || 0;
+  if (streak > 0) host.appendChild(chip('flame', `连续记录 ${streak} 天`, streak >= 2 ? 'hot' : ''));
+  const best = (st.metrics && st.metrics.bestDayMeters) || 0;
+  if (best > 0) host.appendChild(chip('trophy', `最佳单日 ${Fmt.formatDistance(best)}`));
+}
+
 function renderStats() {
   const st = S.state;
   const series = statsSeries(S.statsRange);
@@ -411,6 +445,7 @@ function renderStats() {
   $('table-total-line').textContent =
     `累计 ${Fmt.formatDistance(st.totals.meters)} · 活跃 ${Fmt.formatDuration(st.totals.activeMs)} · 连续 ${(st.metrics && st.metrics.streakDays) || 0} 天`;
   $('stats-total-hint').textContent = `共 ${st.daysTotal != null ? st.daysTotal : Object.keys(st.rawDays || {}).length} 天记录`;
+  renderInsights();
   renderLeaderboard();
 }
 

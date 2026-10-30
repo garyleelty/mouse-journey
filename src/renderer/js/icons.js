@@ -35,6 +35,7 @@
     close: '<path d="M4 4l8 8M12 4l-8 8"/>',
     bell: '<path d="M8 2a4 4 0 0 1 4 4c0 3 1.5 4 1.5 4h-11S4 9 4 6a4 4 0 0 1 4-4Z"/><path d="M6.5 12.5a1.8 1.8 0 0 0 3 0"/>',
     ghost: '<path d="M3.5 13.5V7a4.5 4.5 0 0 1 9 0v6.5l-1.5-1.1-1.5 1.1-1.5-1.1-1.5 1.1-1.5-1.1-1.5 1.1Z"/><circle cx="6.4" cy="7" r="0.9" fill="currentColor" stroke="none"/><circle cx="9.6" cy="7" r="0.9" fill="currentColor" stroke="none"/>',
+    trophy: '<path d="M5 2h6v3.5a3 3 0 0 1-6 0V2Z"/><path d="M5 3H3.2a2.3 2.3 0 0 0 2.3 2.8M11 3h1.8a2.3 2.3 0 0 1-2.3 2.8"/><path d="M8 8.5V11M5.5 13.5h5"/>',
     flame: '<path d="M8 1.5S4.5 5.5 4.5 9A3.5 3.5 0 0 0 11.5 9c0-1.5-.8-2.8-1.5-3.8 0 1.5-1 2.3-2 2.3.3-2.2-.5-4.2-1-6Z"/>',
     plus: '<path d="M8 3v10M3 8h10"/>',
     dice: '<rect x="2.5" y="2.5" width="11" height="11" rx="2"/><circle cx="5.5" cy="5.5" r="1" fill="currentColor" stroke="none"/><circle cx="10.5" cy="10.5" r="1" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r="1" fill="currentColor" stroke="none"/>'

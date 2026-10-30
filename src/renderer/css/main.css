@@ -322,6 +322,16 @@ canvas { display: block; }
 .heat-legend { display: flex; justify-content: flex-end; }
 
 /* ---------- 统计 ---------- */
+/* 游戏化洞察徽标：同比 / 连击 / 最佳单日（数据色只给正向信号） */
+.stat-insights { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.sight {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 26px; padding: 0 10px;
+  border-radius: 999px; border: 1px solid var(--border);
+  background: var(--panel); font-size: var(--fs-small); color: var(--muted);
+}
+.sight svg { width: 13px; height: 13px; flex: none; }
+.sight.up, .sight.hot { border-color: var(--hue); color: var(--hue); background: var(--surface); }
 .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .seg { display: inline-flex; background: var(--raised); border-radius: var(--radius-control); padding: 2px; gap: 2px; }
 .seg-btn {
