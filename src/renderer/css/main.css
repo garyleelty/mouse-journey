@@ -324,7 +324,12 @@ canvas { display: block; }
 
 /* ---------- 行程 / 里程碑 ---------- */
 .progress { height: 6px; border-radius: 999px; background: var(--rule); overflow: hidden; }
-.progress i { display: block; height: 100%; border-radius: 999px; background: var(--primary); }
+.progress i { display: block; height: 100%; border-radius: 999px; background: var(--primary); transition: width .3s, background-color .2s; }
+/* 「下一个里程碑」卡：可点击跳成就页；进度 ≥80% 点亮数据色（接近达成的信号语言） */
+.side-next.link { cursor: pointer; border-radius: var(--radius-control); transition: background-color .12s ease; }
+.side-next.link:hover { background: var(--raised); }
+.side-next.near .progress i { background: var(--hue); }
+.side-next.near .card-foot, .side-next.near .hint { color: var(--hue); }
 .progress i.hue { background: var(--hue); }
 .kv { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: var(--fs-body); }
 .kv span { color: var(--muted); }

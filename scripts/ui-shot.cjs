@@ -48,16 +48,17 @@ app.whenReady().then(async () => {
       `document.querySelector('#stats-range .seg-btn[data-range="${process.env.MJ_RANGE}"]').click()`
     );
   }
-  if (process.env.MJ_CLICK === 'toast') {
-    // 事件在 900ms 注入出 toast；轮询等它出现再点击，验证「事件 → 页面」闭环
+  if (process.env.MJ_CLICK) {
+    // 真实点击验证交互闭环：'toast' 等 900ms 注入的可跳转 toast；其它值当作元素 id（如 milestone）
+    const sel = process.env.MJ_CLICK === 'toast' ? '.toast.link' : `#${process.env.MJ_CLICK}`;
     const r = await win.webContents.executeJavaScript(
       `(async () => {
         for (let i = 0; i < 20; i++) {
-          const t = document.querySelector('.toast.link');
+          const t = document.querySelector(${JSON.stringify(sel)});
           if (t) { t.click(); return 'clicked'; }
           await new Promise((r2) => setTimeout(r2, 150));
         }
-        return 'no-toast';
+        return 'no-target';
       })()`
     );
     console.log('click:', r);

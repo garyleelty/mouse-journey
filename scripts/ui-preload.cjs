@@ -101,6 +101,11 @@ const INTRADAY = (() => {
   return arr;
 })();
 
+// 里程碑与 totals 自洽：下一档 300 km，进度 = 284.5/300 ≈ 94.8%（near 态）；MJ_MILESTONE 可覆盖
+const ms = process.env.MJ_MILESTONE != null
+  ? Math.max(0, Math.min(1, Number(process.env.MJ_MILESTONE)))
+  : Math.min(1, 284500 / 300000);
+
 const state = {
   today: { meters: todayMeters, moves: 214, activeMs: 4520000 },
   totals: { meters: 284500, moves: 9021, activeMs: 51230000 },
@@ -133,7 +138,8 @@ const state = {
   },
   achievements: [
     { type: 'distance', name: '50 km', desc: '累计骑行 50 公里', value: 50000, unlocked: true, progress: 1 },
-    { type: 'distance', name: '100 km', desc: '累计骑行 100 公里', value: 100000, unlocked: false, progress: 0.68 },
+    { type: 'distance', name: '100 km', desc: '累计骑行 100 公里', value: 100000, unlocked: true, progress: 1 },
+    { type: 'distance', name: '300 km', desc: '累计骑行 300 公里', value: 300000, unlocked: ms >= 1, progress: ms },
     { type: 'whip', name: '第一次抽鞭', desc: '完成一次冲刺', value: 1, unlocked: true, progress: 1 }
   ],
   journeyLog: [],

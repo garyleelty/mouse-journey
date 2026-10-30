@@ -421,16 +421,19 @@ function renderToday() {
   updateSpeed();
   renderRide();
 
-  // 下一个里程碑
+  // 下一个里程碑（≥80% 点亮数据色，接近达成的信号语言）
   const next = (st.achievements || []).filter((a) => a.type === 'distance' && !a.unlocked).sort((a, b) => a.value - b.value)[0];
+  const sn = $('side-next');
   if (next) {
     $('milestone-badge').textContent = next.name;
     $('milestone-bar').style.width = `${Math.round(next.progress * 100)}%`;
     $('milestone-text').textContent = `${Fmt.formatDistance(st.totals.meters)} / ${Fmt.formatDistance(next.value)} · ${next.desc}`;
+    sn.classList.toggle('near', next.progress >= 0.8);
   } else {
     $('milestone-badge').textContent = '全部达成';
     $('milestone-bar').style.width = '100%';
     $('milestone-text').textContent = `累计 ${Fmt.formatDistance(st.totals.meters)}，所有里程成就已解锁`;
+    sn.classList.remove('near');
   }
 
   // 本周条带
@@ -1126,6 +1129,8 @@ async function init() {
   // 主窗口同样能玩：点路面 = 抽鞭冲刺，叠层按钮同效；动画循环驱动路上视角
   $('scene-today').addEventListener('click', onWhip);
   $('btn-whip').addEventListener('click', onWhip);
+  // 「下一个里程碑」卡 → 成就页（导航闭环）
+  $('side-next').addEventListener('click', () => switchTab('achv'));
   requestAnimationFrame(rideLoop);
 
   let resizeTimer = null;
