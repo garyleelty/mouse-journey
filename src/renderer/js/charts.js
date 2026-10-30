@@ -102,6 +102,8 @@
     hits.forEach((r) => {
       r.addEventListener('mouseenter', () => show(Number(r.dataset.i)));
       r.addEventListener('mousemove', () => show(Number(r.dataset.i)));
+      // 点击柱条 → 回调（明细表定位当日），构成图表与明细的联动
+      r.addEventListener('click', () => opts.onSelect && opts.onSelect(data[Number(r.dataset.i)]));
     });
     el._chartHide = hide;
     el.addEventListener('mouseleave', hide);

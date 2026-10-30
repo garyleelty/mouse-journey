@@ -50,7 +50,8 @@ app.whenReady().then(async () => {
   }
   if (process.env.MJ_CLICK) {
     // 真实点击验证交互闭环：'toast' 等 900ms 注入的可跳转 toast；其它值当作元素 id（如 milestone）
-    const sel = process.env.MJ_CLICK === 'toast' ? '.toast.link' : `#${process.env.MJ_CLICK}`;
+    const v = process.env.MJ_CLICK;
+    const sel = v === 'toast' ? '.toast.link' : (v.startsWith('.') || v.startsWith('#') ? v : `#${v}`);
     const r = await win.webContents.executeJavaScript(
       `(async () => {
         for (let i = 0; i < 20; i++) {
@@ -64,7 +65,7 @@ app.whenReady().then(async () => {
     );
     console.log('click:', r);
   }
-  await new Promise((r) => setTimeout(r, 1800)); // 等字体与 rAF 场景循环出画
+  await new Promise((r) => setTimeout(r, Number(process.env.MJ_WAIT || 1800))); // 等字体与 rAF 场景循环出画（可缩短以捕捉 transient 动画）
   if (process.env.MJ_DEBUG) {
     const info = await win.webContents.executeJavaScript(
       `JSON.stringify({ dpr: devicePixelRatio, iw: innerWidth, ih: innerHeight,` +

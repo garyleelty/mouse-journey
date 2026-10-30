@@ -599,11 +599,13 @@ function renderStats() {
   // 鼠标悬停在图表上时跳过重建：hit 区被替换会让 tooltip 内容冻结
   const chartEl = $('chart-bars');
   if (!chartEl || !chartEl.matches(':hover')) {
-    Charts.bars(chartEl, visible.map((d) => ({ key: d.key, label: d.key.slice(5), value: d.meters, moves: d.moves, activeMs: d.activeMs })), { tip: $('chart-tip') });
+    Charts.bars(chartEl, visible.map((d) => ({ key: d.key, label: d.key.slice(5), value: d.meters, moves: d.moves, activeMs: d.activeMs })), { tip: $('chart-tip'), onSelect: (d) => focusDayRow(d.key) });
   }
 
   const past = visible;
-  $('chart-range-hint').textContent = past.length ? `${past[0].key} ~ ${past[past.length - 1].key}` : '—';
+  $('chart-range-hint').textContent = past.length
+    ? `${past[0].key} ~ ${past[past.length - 1].key} · 点击柱条定位当日明细`
+    : '—';
 
   const tb = document.querySelector('#table-days tbody');
   tb.innerHTML = '';
@@ -612,6 +614,7 @@ function renderStats() {
   const shown = S.tableExpanded ? rows : rows.slice(0, CAP);
   shown.forEach((d) => {
     const tr = document.createElement('tr');
+    tr.dataset.key = d.key;
     tr.innerHTML = `<td>${d.key}</td><td>${Fmt.weekdayLabel(d.key)}</td><td class="num">${Fmt.formatDistance(d.meters)}</td><td class="num">${d.moves.toLocaleString()}</td><td class="num">${Fmt.formatDuration(d.activeMs)}</td>`;
     tb.appendChild(tr);
   });
@@ -649,6 +652,22 @@ function renderLeaderboard() {
     tr.innerHTML = `<td class="rank">${rank}</td><td>${d.key}</td><td>${Fmt.weekdayLabel(d.key)}</td><td class="num">${Fmt.formatDistance(d.meters)}</td><td class="num">${d.moves.toLocaleString()}</td><td class="num">${Fmt.formatDuration(d.activeMs)}</td>`;
     tb.appendChild(tr);
   });
+}
+
+/** 图表点选联动明细：定位当日行（被 10 条上限折叠时自动展开），数据色闪烁标记 */
+function focusDayRow(key) {
+  const series = statsSeries(S.statsRange);
+  const rows = series.filter((d) => d.key <= Fmt.dayKey(Date.now())).slice().reverse();
+  if (!S.tableExpanded && rows.length > 10 && rows.findIndex((d) => d.key === key) >= 10) {
+    S.tableExpanded = true;
+    renderStats();
+  }
+  const tr = document.querySelector(`#table-days tbody tr[data-key="${key}"]`);
+  if (!tr) return;
+  tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  tr.classList.remove('row-flash');
+  void tr.offsetWidth; // 重启动画
+  tr.classList.add('row-flash');
 }
 
 function bindStatsRange() {
