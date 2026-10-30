@@ -95,7 +95,7 @@ function modal(glyph, title, body, celebrate, goTab) {
       $('modal-ok').before(go);
     }
     go.dataset.tab = goTab;
-    go.textContent = goTab === 'journey' ? '查看路线' : '查看详情';
+    go.textContent = goTab === 'journey' ? '查看路线' : goTab === 'achv' ? '查看演进' : '查看详情';
     go.hidden = false;
   } else if (go) {
     go.hidden = true;
@@ -1093,6 +1093,23 @@ function renderAll() {
 }
 
 /* ------------------------------------------------------------------ 事件 */
+/** 坐骑升级庆祝：实时更新中检测到档位跨越（id 变化且 minMeters 升高）时触发。
+ *  启动首帧（prev 来自 getState）与重开窗口都不触发——只有「正在用的时候升了级」才庆祝。 */
+function checkMountUpgrade(prevMount, newMount) {
+  if (!prevMount || !newMount || prevMount.id === newMount.id) return;
+  if ((newMount.minMeters || 0) < (prevMount.minMeters || 0)) return;
+  const st = S.state;
+  const next = newMount.next;
+  modal('medal', `新坐骑解锁 · ${newMount.name}`,
+    `累计骑行 ${Fmt.formatDistance(st.totals.meters)} · ${next
+      ? `距「${next.name}」还差 ${Fmt.formatDistance(Math.max(0, next.minMeters - st.totals.meters))}`
+      : '已是最高级坐骑'}`, true, 'achv');
+  FX.confetti({ count: 130 });
+  setTimeout(() => FX.confetti({ count: 80, spread: Math.PI * 1.3, power: 0.85 }), 200);
+  const el = toast('medal', `新坐骑 · ${newMount.name}`, '点击查看坐骑演进', 7000, true, 'achv');
+  FX.burstFromEl(el.querySelector('.ti'), { count: 40 });
+}
+
 /** 今日目标达成检测：仅在真实跨越目标的瞬间庆祝一次（按天持久化，重开窗口不重复） */
 const GOAL_DONE_KEY = 'mj-goal-done';
 function checkGoalCelebration(prevMeters, nowMeters) {
@@ -1112,6 +1129,7 @@ function checkGoalCelebration(prevMeters, nowMeters) {
 function onUpdate(u) {
   const s = S.state;
   const prevMeters = s.today ? s.today.meters : 0;
+  const prevMount = s.mount;
   s.today = u.today;
   s.totals = u.totals;
   s.journey = u.journey;
@@ -1124,6 +1142,7 @@ function onUpdate(u) {
   renderSidebar();
   renderToday();
   checkGoalCelebration(prevMeters, u.today.meters);
+  checkMountUpgrade(prevMount, u.mount);
   if ($('tab-journey').classList.contains('active')) { renderJourney(); drawMap($('map-main'), $('map-marker-main'), false); }
   if ($('tab-today').classList.contains('active')) drawMap($('map-today'), $('map-marker'), true);
   if ($('tab-stats').classList.contains('active')) renderStats();

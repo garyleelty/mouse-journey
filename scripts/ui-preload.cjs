@@ -222,6 +222,14 @@ setTimeout(() => {
   const ev = process.env.MJ_EVENT || 'achv';
   if (ev === 'none') {
     // 不注入事件（截静态页面用）
+  } else if (ev === 'mount') {
+    // 坐骑升级瞬间：高铁 → 飞机（含 minMeters 供升级判定；冲刺文案同步新坐骑）
+    fire('state:update', Object.assign({}, state, {
+      mount: { id: 'plane', name: '飞机', minMeters: 500000, progress: 0, next: null },
+      journey: Object.assign({}, state.journey, {
+        boost: Object.assign({}, state.journey.boost, { whipLabel: '加力燃烧' })
+      })
+    }));
   } else if (ev === 'goal') {
     // 今日目标达成瞬间：真实跨越 6 km 目标（3.84 → 6.05 km）
     fire('state:update', Object.assign({}, state, { today: { meters: 6050, moves: 300, activeMs: 5600000 } }));
