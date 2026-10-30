@@ -1230,6 +1230,8 @@ async function init() {
   api.on('achievement', onAchievement);
   api.on('health:reminder', onReminder);
   api.on('boost:event', onBoostEvent);
+  // 悬浮窗迷你目标环点击 → 主窗定位「今日目标」设置卡
+  api.on('goal:settings', gotoGoalSettings);
 
   // 主窗口同样能玩：点路面 = 抽鞭冲刺，叠层按钮同效；动画循环驱动路上视角
   $('scene-today').addEventListener('click', onWhip);

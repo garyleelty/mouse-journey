@@ -3,7 +3,7 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 const channels = [
-  'state:update', 'state:full', 'journey:event', 'achievement', 'health:reminder', 'reminder:show', 'boost:event'
+  'state:update', 'state:full', 'journey:event', 'achievement', 'health:reminder', 'reminder:show', 'boost:event', 'goal:settings'
 ];
 
 const api = {
@@ -42,6 +42,7 @@ const api = {
   /* ---- 其它 ---- */
   pause: (paused) => ipcRenderer.invoke('tracker:pause', paused),
   showMain: () => ipcRenderer.invoke('window:showMain'),
+  showGoalSettings: () => ipcRenderer.invoke('window:showGoalSettings'),
   openUrl: (url) => ipcRenderer.invoke('window:openUrl', url),
   resetDay: () => ipcRenderer.invoke('data:resetDay'),
   openFolder: () => ipcRenderer.invoke('data:openFolder'),

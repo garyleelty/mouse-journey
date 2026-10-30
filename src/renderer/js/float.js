@@ -261,6 +261,11 @@ async function init() {
     $('f-pin').innerHTML = Icons.svg(next === 'floating' ? 'pinTop' : 'lock', 13);
   });
 
+  // 迷你目标环 / HUD 目标环 → 主窗设置页定位「今日目标」卡；迷你能量槽 → 抽鞭
+  $('f-mini-goal').addEventListener('click', () => api.showGoalSettings());
+  $('f-goal').addEventListener('click', () => api.showGoalSettings());
+  $('f-mini').addEventListener('click', () => onWhip());
+
   $('f-main').addEventListener('click', () => api.showMain());
   $('f-hide').addEventListener('click', () => api.hideFloat());
 

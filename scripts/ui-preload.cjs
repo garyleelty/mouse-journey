@@ -209,6 +209,7 @@ contextBridge.exposeInMainWorld('api', {
   hideFloat: ok({}),
   pause: ok(state),
   showMain: ok({}),
+  showGoalSettings: () => { console.log('[stub] showGoalSettings called'); return Promise.resolve({}); },
   openUrl: ok({}),
   resetDay: ok(state),
   openFolder: ok({}),

@@ -126,8 +126,8 @@ html, body {
   font-size: 11px;
   color: #0a0a0a;
 }
-/* 今日目标迷你进度环（HUD 行内；基础样式与 main.css 同值，悬浮窗独立样式表） */
-.goal-ring.sm { position: static; transform: none; width: 16px; height: 16px; flex: none; }
+/* 今日目标迷你进度环（HUD 行内；基础样式与 main.css 同值，悬浮窗独立样式表；点击跳设置页） */
+.goal-ring.sm { position: static; transform: none; width: 16px; height: 16px; flex: none; cursor: pointer; }
 .goal-ring.sm circle { fill: none; stroke-width: 3.6; }
 .goal-ring.sm .gr-bg { stroke: #f0f0f0; }
 .goal-ring.sm .gr-fg {
@@ -155,8 +155,11 @@ html, body {
 }
 .op-val { font-size: 10px; color: #6b6b6b; width: 28px; text-align: right; }
 
-/* 折叠态迷你能量槽：展开时隐藏，折叠时顶替标题位（196px 头部放得下） */
+/* 折叠态迷你能量槽：展开时隐藏，折叠时顶替标题位（196px 头部放得下）。
+   头部是拖拽区，可点子元素必须 no-drag；能量槽点击 = 抽鞭，目标环点击 = 跳设置页 */
 .mini-boost {
+  -webkit-app-region: no-drag;
+  cursor: pointer;
   display: none; flex: 1; min-width: 24px; height: 3px;
   border-radius: 2px; background: #eceef2; overflow: hidden; margin: 0 2px;
 }
@@ -168,7 +171,7 @@ html, body {
 .fw.collapsed .fh .title { display: none; }
 .fw.collapsed .mini-boost { display: block; }
 /* 折叠态今日目标迷你环（与迷你能量槽并排；SVG 显隐用 attribute） */
-.mini-goal { display: none; width: 13px; height: 13px; flex: none; margin: 0 2px; }
+.mini-goal { display: none; width: 13px; height: 13px; flex: none; margin: 0 2px; -webkit-app-region: no-drag; cursor: pointer; }
 .mini-goal circle { fill: none; stroke-width: 4.5; }
 .mini-goal .gr-bg { stroke: #eceef2; }
 .mini-goal .gr-fg {

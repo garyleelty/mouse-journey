@@ -241,6 +241,12 @@ function registerIpc(ctx) {
     ctx.showMain();
     return true;
   });
+  // 悬浮窗迷你环点击：唤起主窗并广播定位指令（主窗 gotoGoalSettings 滚动到「今日目标」卡）
+  ipcMain.handle('window:showGoalSettings', () => {
+    ctx.showMain();
+    ctx.broadcast('goal:settings');
+    return true;
+  });
 
   ipcMain.handle('window:openUrl', (_e, url) => {
     const { shell } = require('electron');
