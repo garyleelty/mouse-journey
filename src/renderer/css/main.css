@@ -367,18 +367,49 @@ canvas { display: block; }
 .rk-2 { background: #3d3d3d; color: #fff; }
 .rk-3 { background: #9a9fab; color: #fff; }
 
-/* ---------- 路线 ---------- */
+/* ---------- 路线（途经景点时间轴打卡） ---------- */
 .spot-list { list-style: none; margin: 0; padding: 0; }
-.spot-item {
-  display: grid; grid-template-columns: 1fr auto; gap: 4px 16px;
-  padding: 10px 0; border-top: 1px solid var(--rule);
+.spot-item, .spot-now {
+  display: grid; grid-template-columns: 24px 1fr auto; gap: 2px 14px;
+  padding: 10px 0;
 }
-.spot-item:first-child { border-top: 0; }
+.spot-item .spot-rail, .spot-now .spot-rail { position: relative; }
+/* 连线：整条灰（未走）；已抵达节点之后 = 数据色（与地图「已走过」同语言） */
+.spot-item .spot-rail::before, .spot-now .spot-rail::before {
+  content: ''; position: absolute; left: 11px; top: 0; bottom: 0; width: 2px;
+  background: var(--rule); border-radius: 1px;
+}
+.spot-item:first-child .spot-rail::before, .spot-now:first-child .spot-rail::before { top: 18px; }
+.spot-item:last-child .spot-rail::before, .spot-now:last-child .spot-rail::before { bottom: auto; height: 18px; }
+.spot-item.on .spot-rail::before { background: var(--hue); }
+/* 「你在这里」游标：上段已走（数据色）→ 下段未走（灰） */
+.spot-now.started .spot-rail::before { bottom: auto; height: 18px; background: var(--hue); }
+.spot-now.started .spot-rail::after {
+  content: ''; position: absolute; left: 11px; top: 18px; bottom: 0; width: 2px;
+  background: var(--rule); border-radius: 1px;
+}
+.spot-dot {
+  position: relative; z-index: 1; display: grid; place-items: center;
+  width: 14px; height: 14px; margin: 11px auto 0;
+  border-radius: 999px; background: var(--surface);
+  border: 1.5px solid var(--control); color: #fff;
+}
+.spot-item.on .spot-dot { background: var(--hue); border-color: var(--hue); }
+.spot-item.next .spot-dot { border: 2px solid var(--hue); }
+.now-dot {
+  position: relative; z-index: 1; display: grid; place-items: center;
+  width: 20px; height: 20px; margin: 8px auto 0;
+  border-radius: 999px; background: var(--surface); border: 1px solid var(--control);
+  color: var(--primary);
+}
+.spot-body { min-width: 0; }
 .spot-name { font-weight: 500; }
-.spot-item.locked .spot-name { color: var(--muted); font-weight: 400; }
+.spot-item.locked .spot-name, .spot-item.locked .spot-intro { color: var(--muted); font-weight: 400; }
+.spot-now .spot-name { font-weight: 600; }
 .spot-meta { font-size: var(--fs-small); color: var(--muted); }
-.spot-intro { font-size: var(--fs-small); color: var(--muted); grid-column: 1 / -1; }
+.spot-intro { font-size: var(--fs-small); color: var(--muted); grid-column: 2 / -1; }
 .spot-state { align-self: start; }
+.spot-empty { color: var(--muted); padding: 8px 0; }
 
 /* ---------- 成就 ---------- */
 .achv-list { list-style: none; margin: 0; padding: 0; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }

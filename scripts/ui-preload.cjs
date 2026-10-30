@@ -30,6 +30,20 @@ const progressKm = Number((cum[XIAN] - 18.5).toFixed(2));
 const here = Geo.pointAtKm(points, cum, progressKm);
 const spotKm = Number((progressKm + 0.21).toFixed(2)); // 景点牌在 210m 前方
 
+/* 途经景点 5 个：2 已抵达 / 1 下一站（0.2km 后）/ 2 未到；坐标沿真实路线取点 */
+const SPOT_DEFS = [
+  { id: 's1', name: '殷墟', city: '安阳', atKm: Number((cum[1] + 60).toFixed(1)), intro: '甲骨文出土地，三千年前的都城遗址。', visited: true },
+  { id: 's2', name: '龙门石窟', city: '洛阳', atKm: Number((cum[2] - 80).toFixed(1)), intro: '伊水两岸的北魏至唐造像艺术宝库。', visited: true },
+  { id: 's3', name: '秦始皇兵马俑', city: '西安', atKm: spotKm, intro: '世界第八大奇迹，两千两百年前的地下军团。', visited: false },
+  { id: 's4', name: '古汉台', city: '汉中', atKm: Number((cum[4] - 40).toFixed(1)), intro: '刘邦受封汉王时的宫廷遗迹。', visited: false },
+  { id: 's5', name: '剑门关', city: '广元', atKm: Number((cum[5] + 55).toFixed(1)), intro: '「一夫当关，万夫莫开」的蜀道天险。', visited: false }
+];
+const SPOTS = SPOT_DEFS.map((d) => {
+  const p = Geo.pointAtKm(points, cum, Math.min(totalKm, d.atKm));
+  return { id: d.id, name: d.name, city: d.city, lon: p.lon, lat: p.lat, atKm: d.atKm, intro: d.intro };
+});
+const NEXT_SPOT = SPOTS.find((s) => s.id === 's3');
+
 const todayMeters = 3842.6;
 const energy = Math.max(0, Math.min(1, Number(process.env.MJ_ENERGY || 0.72)));
 const whipRemainS = Number(process.env.MJ_WHIP || 0);
@@ -100,9 +114,9 @@ const state = {
     heading: here.heading,
     cityIndex: XIAN - 1,
     nextCity: CITY[XIAN],
-    nextSpot: { id: 's1', name: '秦始皇兵马俑', city: '西安', lon: 109.25, lat: 34.38, atKm: spotKm, intro: '世界第八大奇迹，两千两百年前的地下军团。' },
-    spots: [{ id: 's1', name: '秦始皇兵马俑', city: '西安', lon: 109.25, lat: 34.38, atKm: spotKm, intro: '世界第八大奇迹，两千两百年前的地下军团。' }],
-    visitedSpots: [],
+    nextSpot: NEXT_SPOT,
+    spots: SPOTS,
+    visitedSpots: SPOT_DEFS.filter((d) => d.visited).map((d) => d.id),
     boost: {
       energy, whipRemainS,
       whipLabel: '地板油',

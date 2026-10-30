@@ -469,21 +469,52 @@ function renderJourney() {
   const ul = $('spot-list');
   ul.innerHTML = '';
   const visited = new Set(j.visitedSpots);
-  (j.spots || []).forEach((s) => {
+  const spots = j.spots || [];
+  if (!spots.length) {
     const li = document.createElement('li');
-    const on = visited.has(s.id);
-    li.className = 'spot-item' + (on ? '' : ' locked');
-    li.innerHTML = `
-      <div><div class="spot-name"></div><div class="spot-meta"></div><div class="spot-intro"></div></div>
-      <div class="spot-state"></div>`;
-    li.querySelector('.spot-name').textContent = s.name;
-    li.querySelector('.spot-meta').textContent = `${s.city} · 第 ${s.atKm} km 处`;
-    li.querySelector('.spot-intro').textContent = s.intro;
-    li.querySelector('.spot-state').innerHTML = on
-      ? '<span class="badge" style="color:var(--pill-positive-ink);background:var(--pill-positive-bg)">已抵达</span>'
-      : `<span class="hint">${Math.max(0, s.atKm - j.progressKm).toFixed(1)} km 后</span>`;
+    li.className = 'spot-empty';
+    li.textContent = '本条路线没有预设景点';
     ul.appendChild(li);
-  });
+  } else {
+    /* 时间轴打卡：节点（已抵达=实心数据色✓ / 下一站=数据色空心环 / 未到=灰环）
+       + 连线（走过的段 = 数据色）+ 「你在这里」游标（坐骑图标，呼应地图标记） */
+    let nowPlaced = false;
+    let seenVisited = false;
+    let nextAssigned = false;
+    const appendNow = () => {
+      const li = document.createElement('li');
+      li.className = 'spot-now' + (seenVisited ? ' started' : '');
+      li.innerHTML = '<div class="spot-rail"><i class="now-dot"></i></div><div class="spot-body"><div class="spot-name"></div><div class="spot-meta"></div></div>';
+      li.querySelector('.now-dot').innerHTML = Icons.mountIcon(st.mount.id, 12);
+      li.querySelector('.spot-name').textContent = '你在这里';
+      li.querySelector('.spot-meta').textContent = `已走 ${j.progressKm} km`
+        + (j.nextSpot ? ` · 距${j.nextSpot.name}还差 ${Math.max(0, j.nextSpot.atKm - j.progressKm).toFixed(1)} km` : '');
+      ul.appendChild(li);
+      nowPlaced = true;
+    };
+    spots.forEach((s) => {
+      if (!nowPlaced && s.atKm > j.progressKm) appendNow();
+      const on = visited.has(s.id);
+      if (on) seenVisited = true;
+      const isNext = !on && !nextAssigned;
+      if (isNext) nextAssigned = true;
+      const li = document.createElement('li');
+      li.className = 'spot-item' + (on ? ' on' : isNext ? ' next' : ' locked');
+      li.innerHTML = `
+        <div class="spot-rail"><i class="spot-dot"></i></div>
+        <div class="spot-body"><div class="spot-name"></div><div class="spot-meta"></div><div class="spot-intro"></div></div>
+        <div class="spot-state"></div>`;
+      li.querySelector('.spot-dot').innerHTML = on ? Icons.svg('check', 9) : '';
+      li.querySelector('.spot-name').textContent = s.name;
+      li.querySelector('.spot-meta').textContent = `${s.city} · 第 ${s.atKm} km 处`;
+      li.querySelector('.spot-intro').textContent = s.intro;
+      li.querySelector('.spot-state').innerHTML = on
+        ? '<span class="badge" style="color:var(--pill-positive-ink);background:var(--pill-positive-bg)">已抵达</span>'
+        : `<span class="hint">${Math.max(0, s.atKm - j.progressKm).toFixed(1)} km 后</span>`;
+      ul.appendChild(li);
+    });
+    if (!nowPlaced) appendNow();
+  }
   $('spot-count').textContent = `${j.visitedSpots.length} / ${(j.spots || []).length}`;
 }
 
