@@ -434,18 +434,39 @@ canvas { display: block; }
 
 .mount-track { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
 .mount-step {
+  position: relative;
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   padding: 12px 4px; border-radius: var(--radius-control);
   border: 1px solid transparent; text-align: center;
 }
-.mount-step .mi { display: grid; place-items: center; width: 24px; height: 24px; color: #b5b9c2; }
+/* 连线：格间空隙也盖住（±4px），垂直对齐圆环节点中心（12px padding + 20px 半径） */
+.mount-step::before, .mount-step::after {
+  content: ''; position: absolute; top: 31px; height: 2px; border-radius: 1px;
+  background: var(--rule);
+}
+.mount-step::before { left: -4px; right: calc(50% + 20px); }
+.mount-step::after { left: calc(50% + 20px); right: -4px; }
+.mount-step:first-child::before { display: none; }
+.mount-step:last-child::after { display: none; }
+/* 走到哪连线亮到哪（与地图/时间轴同语言）：本档已解锁 = 左半段数据色，下一档已解锁 = 右半段 */
+.mount-step.on::before { background: var(--hue); }
+.mount-step.joined::after { background: var(--hue); }
+.mount-step .mi {
+  display: grid; place-items: center; width: 40px; height: 40px;
+  border-radius: 999px; border: 1px solid var(--rule); background: var(--surface);
+  color: #b5b9c2;
+}
 .mount-step .mi svg { width: 20px; height: 20px; }
 .mount-step .mn { font-size: var(--fs-small); color: var(--muted); }
 .mount-step .md { font-size: var(--fs-small); color: var(--muted); font-family: var(--font-mono); }
-.mount-step.on .mi { color: var(--text); }
+.mount-step.on .mi { border-color: var(--control); color: var(--text); }
 .mount-step.on .mn { color: var(--text); }
+/* 当前坐骑：数据色实心圆 + 呼吸（与能量满/抽鞭状态同一信号语言） */
+.mount-step.cur .mi { background: var(--hue); border-color: var(--hue); color: #fff; animation: ride-pulse 1.6s ease-in-out infinite; }
 .mount-step.cur { background: var(--raised); border-color: var(--border); }
-.mount-step.cur .mn { font-weight: 500; }
+.mount-step.cur .mn { color: var(--text); font-weight: 500; }
+/* 距下一档坐骑进度 */
+.mount-next { margin-top: 12px; display: grid; gap: 8px; }
 
 .log-list { list-style: none; margin: 0; padding: 0; }
 .log-list li {
@@ -677,4 +698,6 @@ input:focus-visible, .select:focus-visible, textarea:focus-visible {
   .mini-wrap { height: 76px; }
   .heat { height: 160px; }
   .mount-track { grid-template-columns: repeat(3, 1fr); }
+  /* 换行后连线会接错邻居：窄屏直接收线，只留节点 */
+  .mount-step::before, .mount-step::after { display: none; }
 }

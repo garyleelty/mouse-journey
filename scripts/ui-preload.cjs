@@ -94,8 +94,8 @@ const state = {
     { id: 'plane', name: '飞机', minMeters: 500000 }
   ],
   mount: {
-    id: 'car', name: '汽车', progress: 0.36,
-    next: { id: 'train', name: '高铁', minMeters: 200000 }
+    id: 'train', name: '高铁', progress: 0.28, // 与 totals/mounts 自洽：284.5 km 在高铁(200km)~飞机(500km)之间
+    next: { id: 'plane', name: '飞机', minMeters: 500000 }
   },
   achievements: [
     { type: 'distance', name: '50 km', desc: '累计骑行 50 公里', value: 50000, unlocked: true, progress: 1 },
@@ -119,7 +119,7 @@ const state = {
     visitedSpots: SPOT_DEFS.filter((d) => d.visited).map((d) => d.id),
     boost: {
       energy, whipRemainS,
-      whipLabel: '地板油',
+      whipLabel: '提速率',
       leanActive,
       gameMult: (whipRemainS > 0 ? 2 : 1) * (leanActive ? 1.25 : 1),
       multiplier: 2.5
@@ -153,7 +153,7 @@ contextBridge.exposeInMainWorld('api', {
   updateSettings: ok(state),
   setJourneyMode: ok(state),
   reroll: ok(state),
-  whip: ok({ ok: true, seconds: 15, label: '地板油' }),
+  whip: ok({ ok: true, seconds: 15, label: '提速率' }),
   setLean: ok({}),
   ghostPass: ok({ total: 3 }),
   snooze: ok({}),

@@ -542,15 +542,27 @@ function renderAchievements() {
   const track = $('mount-track');
   track.innerHTML = '';
   const cur = st.mount;
-  (st.mounts || []).forEach((m) => {
+  (st.mounts || []).forEach((m, i) => {
     const on = meters(st.totals.meters) >= m.minMeters;
+    // 连线着色：本节点已解锁 → 左半段数据色；下一档已解锁 → 右半段数据色
+    const joined = i + 1 < st.mounts.length && meters(st.totals.meters) >= st.mounts[i + 1].minMeters;
     const d = document.createElement('div');
-    d.className = 'mount-step' + (on ? ' on' : '') + (cur && cur.id === m.id ? ' cur' : '');
+    d.className = 'mount-step' + (on ? ' on' : '') + (cur && cur.id === m.id ? ' cur' : '') + (joined ? ' joined' : '');
     d.innerHTML = `<div class="mi">${Icons.mountIcon(m.id, 20)}</div><div class="mn"></div><div class="md num"></div>`;
     d.querySelector('.mn').textContent = m.name;
     d.querySelector('.md').textContent = m.minMeters >= 1000 ? `${m.minMeters / 1000} km` : `${m.minMeters} m`;
     track.appendChild(d);
   });
+  // 距下一档坐骑的进度条（与侧栏/路线页同一进度语言）
+  const mn = $('mount-next');
+  if (cur && cur.next) {
+    mn.hidden = false;
+    $('mount-next-bar').style.width = `${Math.round(Math.max(0, Math.min(1, cur.progress)) * 100)}%`;
+    $('mount-next-text').textContent =
+      `进度 ${Math.round(Math.max(0, Math.min(1, cur.progress)) * 100)}% · 距${cur.next.name}还差 ${Fmt.formatDistance(Math.max(0, cur.next.minMeters - st.totals.meters))}`;
+  } else {
+    mn.hidden = true;
+  }
   $('mount-current-hint').textContent = cur && cur.next
     ? `当前 ${cur.name} · 距${cur.next.name}还差 ${Fmt.formatDistance(Math.max(0, cur.next.minMeters - st.totals.meters))}`
     : `当前 ${cur ? cur.name : '步行'}`;
