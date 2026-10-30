@@ -270,12 +270,13 @@ function renderWeekStrip() {
   const dowChar = ['日', '一', '二', '三', '四', '五', '六'];
   let marks = '';
   series.forEach((d, i) => {
-    const h = Math.max(2, Math.round((d.meters / max) * TOP));
+    const h = Math.round((d.meters / max) * TOP);
     const x = i * (BW + GAP);
-    const isToday = d.key === todayKey;
-    marks += `<rect x="${x.toFixed(1)}" y="${(TOP - h).toFixed(1)}" width="${BW.toFixed(1)}" height="${h}" fill="${isToday ? '#1d5fbf' : '#c3c8d2'}"></rect>`;
+    // 与统计图表同语言：单序列全数据色、0 值诚实不画；今天的辨识交给标签（数据色 + 加重）
+    if (d.meters > 0) marks += `<rect x="${x.toFixed(1)}" y="${(TOP - h).toFixed(1)}" width="${BW.toFixed(1)}" height="${h}" fill="#1d5fbf"></rect>`;
     const dow = new Date(`${d.key}T00:00:00`).getDay();
-    marks += `<text x="${(x + BW / 2).toFixed(1)}" y="72" text-anchor="middle" font-size="11" fill="${isToday ? '#0a0a0a' : '#8a8f99'}">${dowChar[dow]}</text>`;
+    const isToday = d.key === todayKey;
+    marks += `<text x="${(x + BW / 2).toFixed(1)}" y="72" text-anchor="middle" font-size="11" fill="${isToday ? '#1d5fbf' : '#8a8f99'}" font-weight="${isToday ? '600' : '400'}">${dowChar[dow]}</text>`;
   });
   host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="本周每日距离">${marks}</svg>`;
 }
@@ -1157,6 +1158,8 @@ async function init() {
   $('btn-whip').addEventListener('click', onWhip);
   // 「下一个里程碑」卡 → 成就页（导航闭环）
   $('side-next').addEventListener('click', () => switchTab('achv'));
+  // 「本周每日距离」条带 → 统计页（导航闭环）
+  $('side-week').addEventListener('click', () => switchTab('stats'));
   requestAnimationFrame(rideLoop);
 
   let resizeTimer = null;

@@ -195,6 +195,9 @@ canvas { display: block; }
 .side-card { justify-content: space-between; }
 .side-kv { display: flex; flex-direction: column; gap: 10px; }
 .side-week { display: flex; flex-direction: column; gap: 8px; }
+/* 周条带可点击跳统计页（导航闭环） */
+.side-week.link { cursor: pointer; border-radius: var(--radius-control); padding: 4px 6px; margin: -4px -6px; transition: background-color .12s ease; }
+.side-week.link:hover { background: var(--raised); }
 .side-week-head { font-size: var(--fs-body); font-weight: 500; }
 .week-strip svg { display: block; width: 100%; height: auto; }
 .week-cap { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
