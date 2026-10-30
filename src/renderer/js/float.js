@@ -44,11 +44,18 @@ function renderHud() {
   const row = $('f-boost-row');
   const bar = $('f-boost-bar');
   if (b) {
+    const ready = b.whipRemainS <= 0 && b.energy >= 1;
     row.classList.toggle('whip', b.whipRemainS > 0);
-    row.classList.toggle('ready', b.whipRemainS <= 0 && b.energy >= 1);
+    row.classList.toggle('ready', ready);
     bar.style.width = b.whipRemainS > 0
       ? `${Math.min(100, (b.whipRemainS / 15) * 100)}%`
       : `${Math.round(b.energy * 100)}%`;
+    // 折叠态迷你能量槽 + 头部圆点呼吸（同一份状态）
+    const mini = $('f-mini');
+    mini.classList.toggle('whip', b.whipRemainS > 0);
+    mini.classList.toggle('ready', ready);
+    $('f-mini-bar').style.width = bar.style.width;
+    $('f-dot').classList.toggle('ready', ready);
     const m = $('f-mult');
     if (b.gameMult > 1) {
       m.hidden = false;

@@ -21,6 +21,9 @@ html, body {
   user-select: none;
 }
 
+/* 与 main.css 对齐：hidden 属性必须真正隐藏（.map-marker 的 display:grid 会盖过 UA 样式） */
+[hidden] { display: none !important; }
+
 .fw {
   background: rgba(255, 255, 255, 0.94);
   border: 1px solid rgba(10, 10, 10, 0.1);
@@ -142,6 +145,22 @@ html, body {
   height: 14px;
 }
 .op-val { font-size: 10px; color: #6b6b6b; width: 28px; text-align: right; }
+
+/* 折叠态迷你能量槽：展开时隐藏，折叠时顶替标题位（196px 头部放得下） */
+.mini-boost {
+  display: none; flex: 1; min-width: 24px; height: 3px;
+  border-radius: 2px; background: #eceef2; overflow: hidden; margin: 0 2px;
+}
+.mini-boost b {
+  display: block; height: 100%; width: 0%;
+  background: #c3c8d2; border-radius: 2px; transition: width .25s;
+}
+.mini-boost.ready b, .mini-boost.whip b { background: #1d5fbf; }
+.fw.collapsed .fh .title { display: none; }
+.fw.collapsed .mini-boost { display: block; }
+/* 满能量：头部圆点呼吸，折叠态也是「可以抽鞭了」的信号 */
+.dot.ready { animation: dot-pulse 1.6s ease-in-out infinite; }
+@keyframes dot-pulse { 50% { box-shadow: 0 0 0 4px rgba(29, 95, 191, 0.22); } }
 
 /* 折叠态：头部更紧凑 */
 .fw.collapsed .fh { height: 44px; border-bottom: 0; }

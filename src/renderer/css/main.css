@@ -357,6 +357,15 @@ canvas { display: block; }
 .table td:last-child, .table th:last-child { padding-right: 0; }
 .table th.rank, .table td.rank { width: 2.2em; color: var(--muted); font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 .table td.empty-row { color: var(--muted); }
+/* 排行榜名次徽标：前三名圆片点亮（第一名 = 数据色） */
+.rk {
+  display: inline-grid; place-items: center;
+  width: 20px; height: 20px; border-radius: 999px;
+  font-size: 12px; font-weight: 600; color: var(--muted);
+}
+.rk-1 { background: var(--hue); color: #fff; }
+.rk-2 { background: #3d3d3d; color: #fff; }
+.rk-3 { background: #9a9fab; color: #fff; }
 
 /* ---------- 路线 ---------- */
 .spot-list { list-style: none; margin: 0; padding: 0; }

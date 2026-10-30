@@ -430,7 +430,9 @@ function renderLeaderboard() {
   }
   rows.forEach((d, i) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td class="rank">${i + 1}</td><td>${d.key}</td><td>${Fmt.weekdayLabel(d.key)}</td><td class="num">${Fmt.formatDistance(d.meters)}</td><td class="num">${d.moves.toLocaleString()}</td><td class="num">${Fmt.formatDuration(d.activeMs)}</td>`;
+    // 前三名名次徽标：第一名数据色，二三名深浅灰
+    const rank = i < 3 ? `<span class="rk rk-${i + 1}">${i + 1}</span>` : `${i + 1}`;
+    tr.innerHTML = `<td class="rank">${rank}</td><td>${d.key}</td><td>${Fmt.weekdayLabel(d.key)}</td><td class="num">${Fmt.formatDistance(d.meters)}</td><td class="num">${d.moves.toLocaleString()}</td><td class="num">${Fmt.formatDuration(d.activeMs)}</td>`;
     tb.appendChild(tr);
   });
 }

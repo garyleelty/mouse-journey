@@ -176,6 +176,9 @@ cmPerPoint = (对角线英寸 × 2.54) / √(width² + height²)      // width/h
 抵达景点 / 完赛 modal 徽标同款动效，并从事件原点炸出轻量彩带（`js/fx.js`，灰阶 + 唯一数据色，
 粒子跑完自动停 rAF，`prefers-reduced-motion` 时全静默）。
 
+**游戏化细节**：悬浮窗折叠态在标题位显示迷你能量槽（同一份 boost 快照，满能量整条点亮数据色 +
+头部圆点呼吸，随时点开抽鞭）；统计页「里程排行榜」前三名有圆片徽标（第一名 = 数据色）。
+
 设计细节见 `docs/superpowers/specs/2026-10-30-gameplay-v1-design.md`。
 
 ---

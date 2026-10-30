@@ -120,7 +120,7 @@ const state = {
     calibration: { mode: 'diagonal', diagonalInch: 14, manualCmPerPoint: 0, factor: 1, perDisplay: {} },
     sampling: { intervalMs: 33, deadZonePx: 2, maxJumpRatio: 0.6, crossScreenSkip: false },
     health: { enabled: true, thresholdMin: 45, snoozeMin: 10, idleResetSec: 60, title: '该休息啦', message: '已连续使用 {min} 分钟，起身活动一下吧。', useNotification: false },
-    float: { opacity: 0.96, alwaysOnTopLevel: 'floating', visible: true, showRoute: true, collapsed: false },
+    float: { opacity: 0.96, alwaysOnTopLevel: 'floating', visible: true, showRoute: true, collapsed: process.env.MJ_COLLAPSED === '1' },
     general: { launchAtLogin: false, closeToTray: true },
     journey: { kmPerMeter: 2.5, mode: 'random', routeId: 'shot' }
   }
@@ -158,11 +158,13 @@ contextBridge.exposeInMainWorld('api', {
   on: (ch, cb) => { (cbs[ch] = cbs[ch] || []).push(cb); return () => {}; }
 });
 
-/* MJ_EVENT=achv（默认）/ spot / city / complete：900ms 后注入一条庆祝事件，供截图自查 */
+/* MJ_EVENT=achv（默认）/ spot / city / complete / none：900ms 后注入一条庆祝事件，供截图自查 */
 const fire = (ch, payload) => (cbs[ch] || []).forEach((f) => f(payload));
 setTimeout(() => {
   const ev = process.env.MJ_EVENT || 'achv';
-  if (ev === 'spot') {
+  if (ev === 'none') {
+    // 不注入事件（截静态页面用）
+  } else if (ev === 'spot') {
     fire('journey:event', { type: 'spot', payload: { name: '秦始皇兵马俑', city: '西安', intro: '世界第八大奇迹，两千两百年前的地下军团。' } });
   } else if (ev === 'city') {
     fire('journey:event', { type: 'city', payload: { name: '西安', km: 1057.8 } });
