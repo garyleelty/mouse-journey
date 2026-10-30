@@ -226,6 +226,13 @@ canvas { display: block; }
 }
 .goal-ring .gr-txt { font: 600 8.5px var(--font-mono); fill: var(--text); text-anchor: middle; }
 .goal-ring.done .gr-txt { fill: var(--hue); }
+/* 今日目标达成日历：最近 14 天小方格（达成=数据色实心 / 未达成=灰环 / 今天=外描边），可点击跳统计页。
+   流内右对齐（hint 下方），卡片自动增高，窄屏无重叠风险 */
+.goal-days { align-self: flex-end; display: flex; gap: 3px; cursor: pointer; margin-top: 2px; }
+.goal-days .gd { width: 8px; height: 8px; border-radius: 2px; border: 1.5px solid var(--control); background: transparent; }
+.goal-days .gd.done { background: var(--hue); border-color: var(--hue); }
+.goal-days .gd.today { box-shadow: 0 0 0 1.5px rgba(29, 95, 191, 0.22); }
+.goal-days.link:hover .gd { opacity: 0.8; }
 
 /* ---------- 地图 ---------- */
 .map-card { gap: 8px; }

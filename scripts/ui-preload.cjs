@@ -179,7 +179,7 @@ const state = {
     health: { enabled: true, thresholdMin: 45, snoozeMin: 10, idleResetSec: 60, title: '该休息啦', message: '已连续使用 {min} 分钟，起身活动一下吧。', useNotification: false },
     float: { opacity: 0.96, alwaysOnTopLevel: 'floating', visible: true, showRoute: true, collapsed: process.env.MJ_COLLAPSED === '1' },
     general: { launchAtLogin: false, closeToTray: true },
-    goal: { enabled: true, dailyKm: 6 }, // 3842.6 m → 64% 进度环
+    goal: { enabled: true, dailyKm: 4 }, // 3842.6 m → 96% 环；4km 口径让 14 天达成日历虚实混合
     journey: { kmPerMeter: 2.5, mode: 'random', routeId: 'shot' }
   }
 };

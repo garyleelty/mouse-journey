@@ -305,6 +305,32 @@ function updateSpeed() {
   el.textContent = v < 1 ? `${(v * 100).toFixed(0)} cm/s` : `${v.toFixed(2)} m/s`;
 }
 
+/** 今日目标达成日历：最近 14 天小方格（含今天）。
+ *  达成判定从 rawDays 的当日距离推导（目标可能调整过，按当前目标口径统一回看）；
+ *  空状态/关闭目标时整块隐藏。HTMLElement 的 .hidden 正常生效（非 SVG）。 */
+function renderGoalDays() {
+  const host = $('goal-days');
+  if (!host) return;
+  const st = S.state;
+  const g = st.settings && st.settings.goal;
+  if (!g || !g.enabled || !(g.dailyKm > 0)) { host.hidden = true; return; }
+  const goalM = g.dailyKm * 1000;
+  const days = st.rawDays || {};
+  const todayKey = Fmt.dayKey(Date.now());
+  host.hidden = false;
+  host.innerHTML = '';
+  for (let i = 13; i >= 0; i--) {
+    const t = Date.now() - i * 86400000;
+    const key = Fmt.dayKey(t);
+    const meters = key === todayKey ? st.today.meters : ((days[key] && days[key].distanceCm) || 0) / 100;
+    const done = meters >= goalM;
+    const el = document.createElement('i');
+    el.className = 'gd' + (done ? ' done' : '') + (i === 0 ? ' today' : '');
+    el.title = `${key.slice(5)} · ${done ? '已达成' : '未达成'} · ${Fmt.formatDistance(meters)}`;
+    host.appendChild(el);
+  }
+}
+
 /** 今日目标进度环（KPI 卡右上角，关闭/无目标时隐藏）。
  *  注意 goal-ring 是 SVG 元素：.hidden 属性不会映射到 attribute，须用 removeAttribute/setAttribute。 */
 function updateGoal() {
@@ -382,6 +408,7 @@ function renderToday() {
   $('today-moves').textContent = st.today.moves.toLocaleString();
   $('today-active').textContent = Fmt.formatDuration(st.today.activeMs);
   updateGoal();
+  renderGoalDays();
 
   const cm = st.today.meters * 100;
   $('today-sub').textContent = cm > 0
@@ -1160,6 +1187,8 @@ async function init() {
   $('side-next').addEventListener('click', () => switchTab('achv'));
   // 「本周每日距离」条带 → 统计页（导航闭环）
   $('side-week').addEventListener('click', () => switchTab('stats'));
+  // 「今日目标达成日历」→ 统计页（导航闭环）
+  $('goal-days').addEventListener('click', () => switchTab('stats'));
   requestAnimationFrame(rideLoop);
 
   let resizeTimer = null;
