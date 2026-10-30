@@ -49,13 +49,28 @@ function todayFinding(st) {
   return `${date} · ${gap}${cont}`;
 }
 
-/** toast；celebrate = 庆祝变体（图标弹跳 + 数据色环，配 FX 彩带） */
-function toast(icon, title, body, ms, celebrate) {
+/** toast；celebrate = 庆祝变体（图标弹跳 + 数据色环，配 FX 彩带）；
+ *  goTab = 可点击跳转的目标页（如 achv/journey/today），构成「事件 → 对应页面」导航闭环 */
+function toast(icon, title, body, ms, celebrate, goTab) {
   const el = document.createElement('div');
-  el.className = 'toast' + (celebrate ? ' celebrate' : '');
+  el.className = 'toast' + (celebrate ? ' celebrate' : '') + (goTab ? ' link' : '');
   el.innerHTML = `<div class="ti">${Icons.svg(icon || 'dot', 16)}</div><div><div class="tt"></div><div class="tb"></div></div>`;
   el.querySelector('.tt').textContent = title;
   el.querySelector('.tb').textContent = body || '';
+  if (goTab) {
+    el.title = '点击查看详情';
+    const go = document.createElement('span');
+    go.className = 'tgo';
+    go.innerHTML = Icons.svg('chevron', 12);
+    go.style.transform = 'rotate(-90deg)';
+    el.appendChild(go);
+    el.addEventListener('click', () => {
+      switchTab(goTab);
+      el.style.transition = 'opacity .3s';
+      el.style.opacity = '0';
+      setTimeout(() => el.remove(), 320);
+    });
+  }
   $('toast-stack').appendChild(el);
   setTimeout(() => {
     el.style.transition = 'opacity .3s';
@@ -65,11 +80,26 @@ function toast(icon, title, body, ms, celebrate) {
   return el;
 }
 
-function modal(glyph, title, body, celebrate) {
+function modal(glyph, title, body, celebrate, goTab) {
   $('modal-glyph').innerHTML = Icons.svg(glyph || 'pin', 28);
   $('modal-title').textContent = title;
   $('modal-body').textContent = body || '';
   $('modal-card').classList.toggle('celebrate', !!celebrate);
+  let go = $('modal-go');
+  if (goTab) {
+    if (!go) {
+      go = document.createElement('button');
+      go.id = 'modal-go';
+      go.className = 'btn ghost';
+      go.addEventListener('click', () => { hideModal(); switchTab(go.dataset.tab); });
+      $('modal-ok').before(go);
+    }
+    go.dataset.tab = goTab;
+    go.textContent = goTab === 'journey' ? '查看路线' : '查看详情';
+    go.hidden = false;
+  } else if (go) {
+    go.hidden = true;
+  }
   $('modal').classList.add('show');
 }
 function hideModal() {
@@ -983,22 +1013,22 @@ function onUpdate(u) {
 
 function onJourneyEvent(ev) {
   if (ev.type === 'spot') {
-    modal('pin', `恭喜你抵达${ev.payload.name}`, `${ev.payload.city} · ${ev.payload.intro}`, true);
+    modal('pin', `恭喜你抵达${ev.payload.name}`, `${ev.payload.city} · ${ev.payload.intro}`, true, 'journey');
     FX.confetti({ count: 110 });
     setTimeout(() => FX.confetti({ count: 60, spread: Math.PI * 1.4, power: 0.8 }), 200);
-    toast('pin', `抵达 ${ev.payload.name}`, ev.payload.intro);
+    toast('pin', `抵达 ${ev.payload.name}`, ev.payload.intro, 5000, true, 'journey');
   } else if (ev.type === 'city') {
-    const el = toast('flag', `抵达 ${ev.payload.name}`, `已完成 ${ev.payload.km} km`, 5000, true);
+    const el = toast('flag', `抵达 ${ev.payload.name}`, `已完成 ${ev.payload.km} km`, 5000, true, 'journey');
     FX.burstFromEl(el.querySelector('.ti'), { count: 42, spread: Math.PI });
   } else if (ev.type === 'complete') {
-    modal('flag', `旅程达成：${ev.payload.routeName}`, `你走完了全程 ${ev.payload.totalKm} 公里，下一趟旅程已就绪。`, true);
+    modal('flag', `旅程达成：${ev.payload.routeName}`, `你走完了全程 ${ev.payload.totalKm} 公里，下一趟旅程已就绪。`, true, 'journey');
     FX.confetti({ count: 160 });
     setTimeout(() => FX.confetti({ count: 90, spread: Math.PI * 1.5, power: 0.85 }), 220);
   }
 }
 
 function onAchievement(a) {
-  const el = toast('medal', `成就解锁 · ${a.name}`, a.desc, 7000, true);
+  const el = toast('medal', `成就解锁 · ${a.name}`, a.desc, 7000, true, 'achv');
   FX.burstFromEl(el.querySelector('.ti'), { count: 90 });
 }
 
@@ -1008,13 +1038,13 @@ function onReminder(r) {
 
 function onBoostEvent(e) {
   if (e && e.type === 'whipEnd') {
-    const el = toast('flag', `${e.label || '冲刺'}结束`, `这一轮跑了 +${(e.gainedKm || 0).toFixed(1)} km`, 5000, true);
+    const el = toast('flag', `${e.label || '冲刺'}结束`, `这一轮跑了 +${(e.gainedKm || 0).toFixed(1)} km`, 5000, true, 'today');
     FX.burstFromEl(el.querySelector('.ti'), { count: 30, spread: Math.PI * 0.7, power: 0.7 });
   } else if (e && e.type === 'ghostPass') {
     // 超越昨天的自己：领先幅度取事件时刻的本地快照（幽灵此刻已在身后）
     const st = S.state;
     const lead = st && st.ghost && st.today ? Math.max(0, st.today.meters - st.ghost.meters) : 0;
-    const el = toast('ghost', '胜过昨天的你', `第 ${e.total} 次超越${lead > 0 ? ` · 此刻领先 ${Fmt.formatDistance(lead)}` : ''}`, 5000, true);
+    const el = toast('ghost', '胜过昨天的你', `第 ${e.total} 次超越${lead > 0 ? ` · 此刻领先 ${Fmt.formatDistance(lead)}` : ''}`, 5000, true, 'today');
     FX.burstFromEl(el.querySelector('.ti'), { count: 36, spread: Math.PI * 0.8, power: 0.75 });
   }
 }

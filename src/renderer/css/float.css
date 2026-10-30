@@ -49,7 +49,7 @@ html, body {
   background: #1d5fbf;
 }
 .fh .title { font-weight: 600; font-size: 11.5px; }
-.fh .dist { font-size: 11px; color: #1d5fbf; font-weight: 500; font-variant-numeric: tabular-nums; }
+.fh .dist { font-size: 11px; color: #1d5fbf; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .fh .grow { flex: 1; }
 .num { font-family: 'Geist Mono', 'SF Mono', ui-monospace, 'PingFang SC', monospace; font-variant-numeric: tabular-nums; }
 
@@ -167,10 +167,22 @@ html, body {
 .mini-boost.ready b, .mini-boost.whip b { background: #1d5fbf; }
 .fw.collapsed .fh .title { display: none; }
 .fw.collapsed .mini-boost { display: block; }
+/* 折叠态今日目标迷你环（与迷你能量槽并排；SVG 显隐用 attribute） */
+.mini-goal { display: none; width: 13px; height: 13px; flex: none; margin: 0 2px; }
+.mini-goal circle { fill: none; stroke-width: 4.5; }
+.mini-goal .gr-bg { stroke: #eceef2; }
+.mini-goal .gr-fg {
+  stroke: #1d5fbf; stroke-linecap: round;
+  transform: rotate(-90deg); transform-origin: center;
+  transition: stroke-dashoffset .25s;
+}
+.mini-goal.done .gr-fg { stroke: #1d5fbf; }
+.fw.collapsed .mini-goal { display: block; }
 /* 满能量：头部圆点呼吸，折叠态也是「可以抽鞭了」的信号 */
 .dot.ready { animation: dot-pulse 1.6s ease-in-out infinite; }
 @keyframes dot-pulse { 50% { box-shadow: 0 0 0 4px rgba(29, 95, 191, 0.22); } }
 
-/* 折叠态：头部更紧凑 */
-.fw.collapsed .fh { height: 44px; border-bottom: 0; }
+/* 折叠态：头部更紧凑（dot + 能量槽 + 目标环 + 距离 + 两个按钮，196px 放一行） */
+.fw.collapsed .fh { height: 44px; border-bottom: 0; gap: 4px; }
+.fw.collapsed .mini-boost { min-width: 16px; }
 .fw.collapsed { border-radius: 22px; }

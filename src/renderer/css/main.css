@@ -643,6 +643,11 @@ input:focus-visible, .select:focus-visible, textarea:focus-visible {
   from { opacity: 0.85; transform: scale(1); }
   to { opacity: 0; transform: scale(2.4); }
 }
+/* 可点击跳转的 toast：hover 点亮描边 + 箭头，构成「事件 → 对应页面」闭环 */
+.toast.link { cursor: pointer; }
+.toast.link:hover { border-color: var(--hue); }
+.toast .tgo { flex: none; align-self: center; margin-left: auto; color: var(--muted); }
+.toast.link:hover .tgo { color: var(--hue); }
 
 .modal {
   position: fixed; inset: 0; z-index: 60;

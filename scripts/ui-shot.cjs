@@ -42,6 +42,20 @@ app.whenReady().then(async () => {
       `document.querySelector('.nav-item[data-tab="${TAB}"]').click()`
     );
   }
+  if (process.env.MJ_CLICK === 'toast') {
+    // 事件在 900ms 注入出 toast；轮询等它出现再点击，验证「事件 → 页面」闭环
+    const r = await win.webContents.executeJavaScript(
+      `(async () => {
+        for (let i = 0; i < 20; i++) {
+          const t = document.querySelector('.toast.link');
+          if (t) { t.click(); return 'clicked'; }
+          await new Promise((r2) => setTimeout(r2, 150));
+        }
+        return 'no-toast';
+      })()`
+    );
+    console.log('click:', r);
+  }
   await new Promise((r) => setTimeout(r, 1800)); // 等字体与 rAF 场景循环出画
   if (process.env.MJ_DEBUG) {
     const info = await win.webContents.executeJavaScript(
