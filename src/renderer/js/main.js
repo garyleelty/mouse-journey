@@ -1,6 +1,6 @@
 'use strict';
 
-/* global api, Geo, Fmt, MapKit, SceneryKit, HeatMap, Charts, Icons */
+/* global api, Geo, Fmt, MapKit, SceneryKit, HeatMap, Charts, Icons, FX */
 
 const $ = (id) => document.getElementById(id);
 const S = {
@@ -49,9 +49,10 @@ function todayFinding(st) {
   return `${date} · ${gap}${cont}`;
 }
 
-function toast(icon, title, body, ms) {
+/** toast；celebrate = 庆祝变体（图标弹跳 + 数据色环，配 FX 彩带） */
+function toast(icon, title, body, ms, celebrate) {
   const el = document.createElement('div');
-  el.className = 'toast';
+  el.className = 'toast' + (celebrate ? ' celebrate' : '');
   el.innerHTML = `<div class="ti">${Icons.svg(icon || 'dot', 16)}</div><div><div class="tt"></div><div class="tb"></div></div>`;
   el.querySelector('.tt').textContent = title;
   el.querySelector('.tb').textContent = body || '';
@@ -61,17 +62,23 @@ function toast(icon, title, body, ms) {
     el.style.opacity = '0';
     setTimeout(() => el.remove(), 320);
   }, ms || 5000);
+  return el;
 }
 
-function modal(glyph, title, body) {
+function modal(glyph, title, body, celebrate) {
   $('modal-glyph').innerHTML = Icons.svg(glyph || 'pin', 28);
   $('modal-title').textContent = title;
   $('modal-body').textContent = body || '';
+  $('modal-card').classList.toggle('celebrate', !!celebrate);
   $('modal').classList.add('show');
 }
-$('modal-ok').addEventListener('click', () => $('modal').classList.remove('show'));
+function hideModal() {
+  $('modal').classList.remove('show');
+  $('modal-card').classList.remove('celebrate');
+}
+$('modal-ok').addEventListener('click', hideModal);
 $('modal').addEventListener('click', (e) => {
-  if (e.target === $('modal')) $('modal').classList.remove('show');
+  if (e.target === $('modal')) hideModal();
 });
 
 /* ------------------------------------------------------------------ 侧栏 */
@@ -798,17 +805,23 @@ function onUpdate(u) {
 
 function onJourneyEvent(ev) {
   if (ev.type === 'spot') {
-    modal('pin', `恭喜你抵达${ev.payload.name}`, `${ev.payload.city} · ${ev.payload.intro}`);
+    modal('pin', `恭喜你抵达${ev.payload.name}`, `${ev.payload.city} · ${ev.payload.intro}`, true);
+    FX.confetti({ count: 110 });
+    setTimeout(() => FX.confetti({ count: 60, spread: Math.PI * 1.4, power: 0.8 }), 200);
     toast('pin', `抵达 ${ev.payload.name}`, ev.payload.intro);
   } else if (ev.type === 'city') {
-    toast('flag', `抵达 ${ev.payload.name}`, `已完成 ${ev.payload.km} km`);
+    const el = toast('flag', `抵达 ${ev.payload.name}`, `已完成 ${ev.payload.km} km`, 5000, true);
+    FX.burstFromEl(el.querySelector('.ti'), { count: 42, spread: Math.PI });
   } else if (ev.type === 'complete') {
-    modal('flag', `旅程达成：${ev.payload.routeName}`, `你走完了全程 ${ev.payload.totalKm} 公里，下一趟旅程已就绪。`);
+    modal('flag', `旅程达成：${ev.payload.routeName}`, `你走完了全程 ${ev.payload.totalKm} 公里，下一趟旅程已就绪。`, true);
+    FX.confetti({ count: 160 });
+    setTimeout(() => FX.confetti({ count: 90, spread: Math.PI * 1.5, power: 0.85 }), 220);
   }
 }
 
 function onAchievement(a) {
-  toast('medal', `成就解锁 · ${a.name}`, a.desc, 7000);
+  const el = toast('medal', `成就解锁 · ${a.name}`, a.desc, 7000, true);
+  FX.burstFromEl(el.querySelector('.ti'), { count: 90 });
 }
 
 function onReminder(r) {
@@ -817,7 +830,8 @@ function onReminder(r) {
 
 function onBoostEvent(e) {
   if (e && e.type === 'whipEnd') {
-    toast('flag', `${e.label || '冲刺'}结束`, `这一轮跑了 +${(e.gainedKm || 0).toFixed(1)} km`);
+    const el = toast('flag', `${e.label || '冲刺'}结束`, `这一轮跑了 +${(e.gainedKm || 0).toFixed(1)} km`, 5000, true);
+    FX.burstFromEl(el.querySelector('.ti'), { count: 30, spread: Math.PI * 0.7, power: 0.7 });
   }
 }
 

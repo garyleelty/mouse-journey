@@ -530,10 +530,28 @@ input:focus-visible, .select:focus-visible, textarea:focus-visible {
   border-radius: var(--radius-card); padding: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
-.toast .ti { flex: none; width: 16px; height: 16px; color: var(--primary); margin-top: 2px; }
+.toast .ti { flex: none; width: 16px; height: 16px; color: var(--primary); margin-top: 2px; position: relative; }
 .toast .ti svg { width: 16px; height: 16px; }
 .toast .tt { font-size: var(--fs-body); font-weight: 500; }
 .toast .tb { font-size: var(--fs-small); color: var(--muted); margin-top: 2px; }
+
+/* 庆祝 toast：图标弹跳 + 数据色扩散环 + 描边点亮（彩带由 fx.js 叠层负责） */
+.toast.celebrate { border-color: var(--hue); }
+.toast.celebrate .ti { color: var(--hue); animation: cel-pop .55s cubic-bezier(0.2, 1.6, 0.4, 1); }
+.toast.celebrate .ti::after {
+  content: ''; position: absolute; inset: -3px; border-radius: 999px;
+  border: 2px solid var(--hue); pointer-events: none;
+  animation: cel-ring .7s ease-out .12s both;
+}
+@keyframes cel-pop {
+  0% { transform: scale(0.2); }
+  62% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+@keyframes cel-ring {
+  from { opacity: 0.85; transform: scale(1); }
+  to { opacity: 0; transform: scale(2.4); }
+}
 
 .modal {
   position: fixed; inset: 0; z-index: 60;
@@ -552,6 +570,19 @@ input:focus-visible, .select:focus-visible, textarea:focus-visible {
 .modal-title { font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.02em; }
 .modal-body { font-size: var(--fs-body); color: var(--muted); }
 .modal-foot { display: flex; justify-content: flex-end; margin-top: 4px; }
+/* 庆祝 modal：徽标弹跳 + 扩散环，卡片顶边点亮数据色 */
+.modal-card.celebrate { border-top: 3px solid var(--hue); }
+.modal-card.celebrate .modal-glyph { color: var(--hue); animation: cel-pop .55s cubic-bezier(0.2, 1.6, 0.4, 1); position: relative; }
+.modal-card.celebrate .modal-glyph::after {
+  content: ''; position: absolute; inset: -4px; border-radius: 999px;
+  border: 2px solid var(--hue); pointer-events: none;
+  animation: cel-ring .8s ease-out .15s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast.celebrate .ti, .toast.celebrate .ti::after,
+  .modal-card.celebrate .modal-glyph, .modal-card.celebrate .modal-glyph::after { animation: none; }
+}
 
 /* ---------- 手机端 ---------- */
 .topbar, .nav-sheet { display: none; }

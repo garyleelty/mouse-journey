@@ -172,6 +172,10 @@ cmPerPoint = (对角线英寸 × 2.54) / √(width² + height²)      // width/h
 主窗口与悬浮窗共享同一份 boost 快照：主窗「路上」画面同样有相机侧倾、冲刺速度线/扬尘、幽灵车，
 并叠加能量槽 + 抽鞭按钮（坐骑文案，如「地板油 · 72%」）与 ×N 倍率徽章；压弯计数仍由常驻的悬浮窗判定上报，主窗只做表现层。
 
+**庆祝反馈**：成就解锁 / 抵达城市 / 冲刺结束的 toast 走庆祝变体（描边点亮 + 图标弹跳 + 数据色扩散环），
+抵达景点 / 完赛 modal 徽标同款动效，并从事件原点炸出轻量彩带（`js/fx.js`，灰阶 + 唯一数据色，
+粒子跑完自动停 rAF，`prefers-reduced-motion` 时全静默）。
+
 设计细节见 `docs/superpowers/specs/2026-10-30-gameplay-v1-design.md`。
 
 ---
@@ -276,6 +280,7 @@ UI 截图 harness（不碰主进程与真实存档，用假 state 渲染主窗�
 ```bash
 env -u ELECTRON_RUN_AS_NODE npx electron scripts/ui-shot.cjs /tmp/mj-ui/today.png
 # MJ_ENERGY=1（满能量） / MJ_WHIP=12（冲刺中） / MJ_LEAN=1（压弯中） / MJ_GHOST=0（无幽灵） 可截不同玩法状态
+# MJ_EVENT=achv（默认）/ spot / city / complete —— 900ms 后注入对应庆祝事件，截庆祝动效
 ```
 
 首次启动会同时打开主窗口与右上角悬浮窗；移动鼠标即可看到数字增长、小人前进。

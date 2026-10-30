@@ -127,6 +127,7 @@ const state = {
 };
 
 const ok = (v) => () => Promise.resolve(v);
+const cbs = {};
 contextBridge.exposeInMainWorld('api', {
   getState: ok(state),
   statsRange: ok([]),
@@ -154,5 +155,20 @@ contextBridge.exposeInMainWorld('api', {
   resetDay: ok(state),
   openFolder: ok({}),
   quit: ok({}),
-  on: () => () => {}
+  on: (ch, cb) => { (cbs[ch] = cbs[ch] || []).push(cb); return () => {}; }
 });
+
+/* MJ_EVENT=achv（默认）/ spot / city / complete：900ms 后注入一条庆祝事件，供截图自查 */
+const fire = (ch, payload) => (cbs[ch] || []).forEach((f) => f(payload));
+setTimeout(() => {
+  const ev = process.env.MJ_EVENT || 'achv';
+  if (ev === 'spot') {
+    fire('journey:event', { type: 'spot', payload: { name: '秦始皇兵马俑', city: '西安', intro: '世界第八大奇迹，两千两百年前的地下军团。' } });
+  } else if (ev === 'city') {
+    fire('journey:event', { type: 'city', payload: { name: '西安', km: 1057.8 } });
+  } else if (ev === 'complete') {
+    fire('journey:event', { type: 'complete', payload: { routeName: '京→蓉 纵贯线', totalKm: 1681.9 } });
+  } else {
+    fire('achievement', { name: '50 km', desc: '累计骑行 50 公里' });
+  }
+}, 900);
