@@ -55,7 +55,7 @@ const dayKey = (t) => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 };
 const rawDays = {};
-for (let i = 1; i <= 13; i++) {
+for (let i = 1; i <= 45; i++) { // 45 天：覆盖本月/上月同期与前 14 天同比
   rawDays[dayKey(Date.now() - i * 86400000)] = {
     distanceCm: 320000 + Math.round(Math.sin(i * 2.1) * 180000) + i * 9000,
     moves: 140 + i * 23,

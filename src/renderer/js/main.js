@@ -477,17 +477,53 @@ function statsFinding() {
   return `${rangeNames[S.statsRange] || ''}已走 ${Fmt.formatDistance(total)} · 最高 ${best.key} ${Fmt.formatDistance(best.meters)}`;
 }
 
-/** 游戏化洞察徽标：本周较上周 ±% / 连续记录天数 / 最佳单日（数据型游戏化，唯一数据色给正向信号） */
+/** 洞察区间的当前键集与对比键集（各区间用自己的同比口径，月对齐到「上月同期」日数） */
+function insightRange(range) {
+  const today = new Date();
+  const monday = today.getTime() - ((today.getDay() + 6) % 7) * 86400000;
+  if (range === 'lastweek') {
+    return {
+      cur: Fmt.currentWeekDays(monday - 7 * 86400000),
+      prev: Fmt.currentWeekDays(monday - 14 * 86400000),
+      name: '上周', prevName: '前一周'
+    };
+  }
+  if (range === 'month') {
+    const y = today.getFullYear();
+    const m = today.getMonth();
+    const dayN = today.getDate();                       // 本月已过天数（含今天）
+    const dimPrev = new Date(y, m, 0).getDate();        // 上月总天数
+    const n = Math.min(dayN, dimPrev);                  // 同比口径：同期日数对齐
+    const cur = [...Array(dayN).keys()].map((i) => Fmt.dayKey(new Date(y, m, 1 + i).getTime()));
+    const prev = [...Array(n).keys()].map((i) => Fmt.dayKey(new Date(y, m - 1, 1 + i).getTime()));
+    return { cur, prev, name: '本月', prevName: '上月同期' };
+  }
+  if (range === '14') {
+    return {
+      cur: Fmt.lastNDays(14),
+      prev: Fmt.lastNDays(14, today.getTime() - 14 * 86400000),
+      name: '近 14 天', prevName: '前 14 天'
+    };
+  }
+  return {
+    cur: Fmt.currentWeekDays(),
+    prev: Fmt.currentWeekDays(monday - 7 * 86400000),
+    name: '本周', prevName: '上周'
+  };
+}
+
+/** 游戏化洞察徽标（随所选区间联动）：同比 ±% / 连续记录天数 / 区间内最佳单日。
+ *  数据型游戏化，唯一数据色给正向信号。 */
 function renderInsights() {
   const host = $('stat-insights');
   if (!host) return;
   const st = S.state;
   const days = st.rawDays || {};
-  const sum = (keys) => keys.reduce((a, k) => a + ((days[k] && days[k].distanceCm) || 0), 0) / 100;
-  const today = new Date();
-  const monday = today.getTime() - ((today.getDay() + 6) % 7) * 86400000;
-  const cur = sum(Fmt.currentWeekDays());
-  const prev = sum([0, 1, 2, 3, 4, 5, 6].map((i) => Fmt.dayKey(monday - (7 - i) * 86400000)));
+  const metersOf = (k) => ((days[k] && days[k].distanceCm) || 0) / 100;
+  const sum = (keys) => keys.reduce((a, k) => a + metersOf(k), 0);
+  const R = insightRange(S.statsRange);
+  const cur = sum(R.cur);
+  const prev = sum(R.prev);
 
   const chip = (icon, text, cls) => {
     const el = document.createElement('span');
@@ -500,15 +536,23 @@ function renderInsights() {
   if (cur > 0 || prev > 0) {
     if (prev > 0) {
       const pct = Math.round(((cur - prev) / prev) * 100);
-      host.appendChild(chip('stats', `本周较上周 ${pct >= 0 ? '+' : ''}${pct}%`, pct > 0 ? 'up' : ''));
+      host.appendChild(chip('stats', `${R.name}较${R.prevName} ${pct >= 0 ? '+' : ''}${pct}%`, pct > 0 ? 'up' : ''));
     } else {
-      host.appendChild(chip('stats', '上周无记录，本周从零开始'));
+      host.appendChild(chip('stats', `${R.prevName}无记录，${R.name}从零开始`));
     }
   }
   const streak = (st.metrics && st.metrics.streakDays) || 0;
   if (streak > 0) host.appendChild(chip('flame', `连续记录 ${streak} 天`, streak >= 2 ? 'hot' : ''));
-  const best = (st.metrics && st.metrics.bestDayMeters) || 0;
-  if (best > 0) host.appendChild(chip('trophy', `最佳单日 ${Fmt.formatDistance(best)}`));
+  let bestK = null;
+  for (const k of R.cur) {
+    if (metersOf(k) > 0 && (bestK == null || metersOf(k) > metersOf(bestK))) bestK = k;
+  }
+  if (bestK) {
+    host.appendChild(chip('trophy', `最佳单日 ${bestK.slice(5)} · ${Fmt.formatDistance(metersOf(bestK))}`));
+  } else {
+    const best = (st.metrics && st.metrics.bestDayMeters) || 0;
+    if (best > 0) host.appendChild(chip('trophy', `历史最佳 ${Fmt.formatDistance(best)}`));
+  }
 }
 
 function renderStats() {

@@ -42,6 +42,12 @@ app.whenReady().then(async () => {
       `document.querySelector('.nav-item[data-tab="${TAB}"]').click()`
     );
   }
+  if (process.env.MJ_RANGE) {
+    // 统计页区间切换（复用真实 seg-btn 点击链路）
+    await win.webContents.executeJavaScript(
+      `document.querySelector('#stats-range .seg-btn[data-range="${process.env.MJ_RANGE}"]').click()`
+    );
+  }
   if (process.env.MJ_CLICK === 'toast') {
     // 事件在 900ms 注入出 toast；轮询等它出现再点击，验证「事件 → 页面」闭环
     const r = await win.webContents.executeJavaScript(
