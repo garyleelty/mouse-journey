@@ -821,7 +821,25 @@ function renderAchievements() {
   log.innerHTML = '';
   const logs = st.journeyLog || [];
   if (!logs.length) {
-    log.innerHTML = '<li class="empty">还没有完成的旅程</li>';
+    // 空状态引导：给出首段旅程建议与路线页入口（导航闭环）
+    const li = document.createElement('li');
+    li.className = 'log-guide';
+    if (st.journey) {
+      li.innerHTML = `
+        <div class="lg-title"></div>
+        <div class="lg-sub"></div>
+        <button class="btn ghost sm" id="btn-go-journey">去路线页看看</button>`;
+      li.querySelector('.lg-title').textContent = '完成第一段旅程，就会记录在这里';
+      li.querySelector('.lg-sub').textContent =
+        `当前「${st.journey.name}」已走 ${Math.round((st.journey.percent || 0) * 100)}% · 走完全程 ${Number(st.journey.totalKm || 0).toFixed(0)} 公里即可解锁第一段旅程纪念`;
+      li.querySelector('button').addEventListener('click', () => switchTab('journey'));
+    } else {
+      const sub = document.createElement('div');
+      sub.className = 'lg-sub';
+      sub.textContent = '还没有旅程数据';
+      li.appendChild(sub);
+    }
+    log.appendChild(li);
   } else {
     logs.slice(0, 4).forEach((r) => {
       const li = document.createElement('li');
