@@ -253,7 +253,12 @@ function registerIpc(ctx) {
     ctx.journey.setLean(!!(a && a.active));
     return true;
   });
-  ipcMain.handle('boost:ghostPass', () => ctx.journey.recordGhostPass());
+  ipcMain.handle('boost:ghostPass', () => {
+    const r = ctx.journey.recordGhostPass();
+    // 超越检测在悬浮窗（常驻面），庆祝广播到全部窗口：主窗 toast + 彩带，悬浮窗沿用能量条闪动
+    if (r && r.total) ctx.broadcast('boost:event', { type: 'ghostPass', total: r.total });
+    return r;
+  });
 
   ipcMain.handle('data:resetDay', () => {
     const k = dayKey();

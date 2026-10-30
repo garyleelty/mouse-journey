@@ -30,6 +30,9 @@
 - 数据：`store.recordIntraday()` 每分钟记录当日累计 cm 到 `days[key].intraday[分钟]`（0..1439，稀疏数组）；跨天 `pruneIntraday(2)` 只留 2 天。
 - `store.ghostMetersAt()` 取昨天同一分钟（缺样本向前最多找 60 分钟），经 `state.ghost = {have, meters}` 下发。
 - 表现（仅路上视角）：领先时前方同车道半透明剪影车（z = 40 + min(150, 领先km×25) 米）；超越检测带迟滞（落后 ≥200m 武装 → 领先 ≥50m 触发）→ `boost:ghostPass` 计数 + 能量条闪动。
+- 超越庆祝广播（2026-10-31 追加）：`boost:ghostPass` handler 记录计数后经 `ctx.broadcast('boost:event', {type:'ghostPass', total})`
+  广播全窗口——主窗庆祝 toast（ghost 图标 + 领先幅度）+ 迷你彩带，悬浮窗维持能量条闪动不重复提示。
+  注意主窗 `onUpdate` 必须同步 `u.ghost`（此前漏同步，主窗场景幽灵位置冻结在启动值）。
 - 第一天无昨日数据 → have=false，无幽灵（诚实）。
 
 ## 计数与成就

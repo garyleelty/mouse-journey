@@ -796,6 +796,7 @@ function onUpdate(u) {
   s.paused = u.paused;
   s.continuousMs = u.continuousMs;
   s.track = u.track;
+  s.ghost = u.ghost; // 幽灵车分钟级快照（主窗场景剪影 + 超越庆祝都要用）
   s.screenLayout = u.screenLayout || s.screenLayout;
   renderSidebar();
   renderToday();
@@ -834,6 +835,12 @@ function onBoostEvent(e) {
   if (e && e.type === 'whipEnd') {
     const el = toast('flag', `${e.label || '冲刺'}结束`, `这一轮跑了 +${(e.gainedKm || 0).toFixed(1)} km`, 5000, true);
     FX.burstFromEl(el.querySelector('.ti'), { count: 30, spread: Math.PI * 0.7, power: 0.7 });
+  } else if (e && e.type === 'ghostPass') {
+    // 超越昨天的自己：领先幅度取事件时刻的本地快照（幽灵此刻已在身后）
+    const st = S.state;
+    const lead = st && st.ghost && st.today ? Math.max(0, st.today.meters - st.ghost.meters) : 0;
+    const el = toast('ghost', '胜过昨天的你', `第 ${e.total} 次超越${lead > 0 ? ` · 此刻领先 ${Fmt.formatDistance(lead)}` : ''}`, 5000, true);
+    FX.burstFromEl(el.querySelector('.ti'), { count: 36, spread: Math.PI * 0.8, power: 0.75 });
   }
 }
 

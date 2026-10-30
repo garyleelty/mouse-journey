@@ -164,6 +164,11 @@ setTimeout(() => {
   const ev = process.env.MJ_EVENT || 'achv';
   if (ev === 'none') {
     // 不注入事件（截静态页面用）
+  } else if (ev === 'ghost') {
+    // 超越瞬间：先推一条幽灵落后 120m 的 state:update（contextBridge 克隆对象，
+    // 直接改 state 不影响渲染层已持有的拷贝），再注入超越事件
+    fire('state:update', Object.assign({}, state, { ghost: { have: true, meters: todayMeters - 120 } }));
+    fire('boost:event', { type: 'ghostPass', total: 3 });
   } else if (ev === 'spot') {
     fire('journey:event', { type: 'spot', payload: { name: '秦始皇兵马俑', city: '西安', intro: '世界第八大奇迹，两千两百年前的地下军团。' } });
   } else if (ev === 'city') {
