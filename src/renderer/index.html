@@ -110,11 +110,24 @@
                 <div class="hud-item"><span class="hud-k">下一景点</span><b id="scene-spot"></b></div>
                 <div class="hud-item"><span class="hud-k">当前速度</span><b class="num" id="scene-speed">静止</b></div>
               </div>
+
+              <div class="scene-mult num" id="scene-mult" hidden></div>
+
+              <div class="scene-ride" data-ui>
+                <div class="ride-boost" id="ride-boost" title="能量槽：持续移动鼠标充能，静止会慢慢流失">
+                  <i id="ride-boost-bar"></i>
+                </div>
+                <button class="whip-btn" id="btn-whip" title="满能量后点击抽鞭冲刺：15 秒内里程 ×2，可与压弯叠加">
+                  <span class="wb-ic" id="whip-ic"></span>
+                  <span id="whip-label">抽鞭冲刺</span>
+                </button>
+              </div>
             </div>
             <div class="map-legend">
               <span><i class="lg lg-done"></i>路面中心线 = 你走过的行程</span>
               <span><i class="lg lg-spot"></i>途经景点指示牌</span>
               <span><i class="lg lg-city"></i>远处的城市</span>
+              <span><i class="lg lg-ghost"></i>昨天的你（幽灵车）</span>
             </div>
           </div>
 

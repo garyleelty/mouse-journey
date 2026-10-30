@@ -159,15 +159,18 @@ cmPerPoint = (对角线英寸 × 2.54) / √(width² + height²)      // width/h
 
 ---
 
-## 3.7.5 趣味机制（`src/main/journey.js` + `src/renderer/js/float.js`）
+## 3.7.5 趣味机制（`src/main/journey.js` + `src/renderer/js/float.js` + `src/renderer/js/main.js`）
 
 游戏性优先，但保留两条底线：**倍率只作用于真实鼠标位移**（不动鼠标永远是 0，天然防作弊）；**没有任何机制扣里程**。
 
 | 机制 | 触发 | 效果 | 参数 |
 | --- | --- | --- | --- |
-| 抽鞭冲刺 | 满能量点击悬浮窗画面 | 15s 内 ×2，结束后主窗 toast 本轮里程 | 充能 45s 持续移动 / 静止 5s 后 30s 掉光 |
+| 抽鞭冲刺 | 满能量点击悬浮窗画面或主窗「路上」画面 | 15s 内 ×2，结束后 toast 本轮里程 | 充能 45s 持续移动 / 静止 5s 后 30s 掉光 |
 | 顺弯压弯 | 弯道中（前方 120m 路心偏移 > 4m）鼠标水平速度与弯向同号持续 1.5s | ×1.25，可叠加冲刺 ×2.5 | vx 阈值 60 px/s，tracker EMA 平滑 |
 | 幽灵车 | 自动（有昨日分钟级数据时） | 前方剪影车 + 超越计数与庆祝 | 迟滞：落后 200m 武装、领先 50m 触发 |
+
+主窗口与悬浮窗共享同一份 boost 快照：主窗「路上」画面同样有相机侧倾、冲刺速度线/扬尘、幽灵车，
+并叠加能量槽 + 抽鞭按钮（坐骑文案，如「地板油 · 72%」）与 ×N 倍率徽章；压弯计数仍由常驻的悬浮窗判定上报，主窗只做表现层。
 
 设计细节见 `docs/superpowers/specs/2026-10-30-gameplay-v1-design.md`。
 
@@ -266,6 +269,13 @@ npm run icon         # 生成 build/icon.png 与托盘图标（首次必做，�
 npm start            # 直接运行
 npm run dev          # 运行并打开 DevTools
 npm run smoke        # 主进程冒烟测试（stub electron：store/tracker/calibration/achievements/journey/存档往返）
+```
+
+UI 截图 harness（不碰主进程与真实存档，用假 state 渲染主窗口并截图，供 UI 迭代自查）：
+
+```bash
+env -u ELECTRON_RUN_AS_NODE npx electron scripts/ui-shot.cjs /tmp/mj-ui/today.png
+# MJ_ENERGY=1（满能量） / MJ_WHIP=12（冲刺中） / MJ_LEAN=1（压弯中） / MJ_GHOST=0（无幽灵） 可截不同玩法状态
 ```
 
 首次启动会同时打开主窗口与右上角悬浮窗；移动鼠标即可看到数字增长、小人前进。

@@ -1,9 +1,12 @@
 'use strict';
 
-/* global api, Geo, Fmt, MapKit, HeatMap, Charts, Icons */
+/* global api, Geo, Fmt, MapKit, SceneryKit, HeatMap, Charts, Icons */
 
 const $ = (id) => document.getElementById(id);
-const S = { state: null, settingsFilled: false, statsRange: 'week', chartData: [], tableExpanded: false, tab: 'today', speed: null };
+const S = {
+  state: null, settingsFilled: false, statsRange: 'week', chartData: [], tableExpanded: false, tab: 'today', speed: null,
+  ride: { shownKm: 0, camRoll: 0, lastInfo: null, lastDraw: 0 } // 路上视角：进度补间 / 相机侧倾 / 上一帧弯道信息
+};
 
 const NAV_ICONS = { today: 'today', stats: 'stats', route: 'route', achv: 'medal', settings: 'gear' };
 const NAV_LABELS = { today: '今日', stats: '统计', route: '路线', achv: '成就', settings: '设置' };
@@ -114,7 +117,8 @@ function drawMap(canvas, markerEl, compact) {
   placeMarker(markerEl, canvas, pos);
 }
 
-/** 第一人称「在路上」视角：镜头贴着路面往前看，纵深由真实路线几何算出 */
+/** 第一人称「在路上」视角：镜头贴着路面往前看，纵深由真实路线几何算出。
+ *  玩法表现层与悬浮窗同源：进度补间、相机侧倾（压弯/冲刺）、幽灵车、速度线。 */
 function drawScenery() {
   const st = S.state;
   const j = st.journey;
@@ -123,13 +127,96 @@ function drawScenery() {
   const nextCity = j.nextCity && kmAhead != null
     ? { name: j.nextCity.name, lon: j.nextCity.lon, lat: j.nextCity.lat, kmAhead }
     : null;
-  SceneryKit.render($('scene-today'), {
+  const b = j.boost;
+  const whipOn = !!(b && b.whipRemainS > 0);
+  const ghost = (st.ghost && st.ghost.have)
+    ? { aheadKm: (st.ghost.meters - st.today.meters) / 1000 }
+    : null;
+  S.ride.lastInfo = SceneryKit.render($('scene-today'), {
     route: { points: j.points, cum: j.cum, totalKm: j.totalKm, spots: j.spots },
-    progressKm: j.progressKm,
+    progressKm: S.ride.shownKm,
     visitedSpots: j.visitedSpots,
     nextCity,
-    compact: false
+    compact: false,
+    roll: S.ride.camRoll,
+    boost: { whip: whipOn },
+    ghost
   });
+}
+
+/** 路上视角动画循环：进度补间 + 相机侧倾平滑。只在今日页且页面可见时作画，
+ *  其余时刻空转（Canvas 位图在 display:none 时也不会膨胀）。 */
+function rideLoop(ts) {
+  requestAnimationFrame(rideLoop);
+  const st = S.state;
+  const j = st && st.journey;
+  if (!j || !j.points) return;
+  if (S.tab !== 'today' || document.hidden) return;
+
+  // 主进程 2Hz 推送，这里补间，避免画面跳帧（与悬浮窗同一手感）
+  S.ride.shownKm += (j.progressKm - S.ride.shownKm) * 0.18;
+  if (Math.abs(j.progressKm - S.ride.shownKm) < 0.01) S.ride.shownKm = j.progressKm;
+
+  // 相机侧倾目标：压弯向弯内倾 + 冲刺轻微抖动（弯向取上一帧渲染信息）
+  const b = j.boost;
+  const whipOn = !!(b && b.whipRemainS > 0);
+  const bendDir = S.ride.lastInfo ? S.ride.lastInfo.bendDir : 0;
+  const rollTarget = (b && b.leanActive && bendDir ? bendDir * 0.05 : 0)
+    + (whipOn ? Math.sin(ts / 90) * 0.006 : 0);
+  S.ride.camRoll += (rollTarget - S.ride.camRoll) * 0.12;
+
+  if (ts - S.ride.lastDraw < 40) return; // ~25fps，与悬浮窗一致，够顺滑且省电
+  S.ride.lastDraw = ts;
+  drawScenery();
+}
+
+/** 玩法叠层：能量槽 / 抽鞭按钮 / 倍率徽章（与悬浮窗同一份 boost 快照） */
+function renderRide() {
+  const st = S.state;
+  const j = st.journey;
+  if (!j) return;
+  const b = j.boost;
+  const e = b ? Math.max(0, Math.min(1, b.energy)) : 0;
+  const whipOn = !!(b && b.whipRemainS > 0);
+  const label = b && b.whipLabel ? b.whipLabel : '冲刺';
+
+  const row = $('ride-boost');
+  row.classList.toggle('whip', whipOn);
+  row.classList.toggle('ready', !whipOn && e >= 1);
+  $('ride-boost-bar').style.width = whipOn
+    ? `${Math.min(100, (b.whipRemainS / 15) * 100)}%`
+    : `${Math.round(e * 100)}%`;
+
+  const btn = $('btn-whip');
+  btn.classList.toggle('whip', whipOn);
+  btn.classList.toggle('ready', !whipOn && e >= 1);
+  $('whip-label').textContent = whipOn
+    ? `${label}中 · ${b.whipRemainS}s`
+    : (e >= 1 ? `点击${label}！` : `${label} · ${Math.round(e * 100)}%`);
+
+  const ic = $('whip-ic');
+  if (ic.dataset.mount !== st.mount.id) {
+    ic.dataset.mount = st.mount.id;
+    ic.innerHTML = Icons.mountIcon(st.mount.id, 14);
+  }
+
+  const m = $('scene-mult');
+  if (b && b.gameMult > 1) {
+    m.hidden = false;
+    m.textContent = `×${b.gameMult} ${whipOn ? label : '压弯中'}`;
+  } else {
+    m.hidden = true;
+  }
+}
+
+/** 抽鞭冲刺（主窗口也能玩）：能量满 → 冲刺；不足 → 拒绝抖动 */
+async function onWhip() {
+  const r = await api.whip();
+  const btn = $('btn-whip');
+  btn.classList.remove('deny');
+  void btn.offsetWidth; // 重启动画
+  if (r && r.ok === false) btn.classList.add('deny');
+  else renderRide();
 }
 
 /* ------------------------------------------------------------------ 今日 */
@@ -223,7 +310,7 @@ function renderToday() {
       : '—';
   }
   updateSpeed();
-  drawScenery();
+  renderRide();
 
   // 下一个里程碑
   const next = (st.achievements || []).filter((a) => a.type === 'distance' && !a.unlocked).sort((a, b) => a.value - b.value)[0];
@@ -646,7 +733,7 @@ function switchTab(tab) {
   renderPageHead();
   if (tab === 'stats') requestAnimationFrame(renderStats);
   if (tab === 'journey') requestAnimationFrame(() => { renderJourney(); drawMap($('map-main'), $('map-marker-main'), false); });
-  if (tab === 'today') requestAnimationFrame(() => { renderToday(); drawMap($('map-today'), $('map-marker'), true); drawScenery(); });
+  if (tab === 'today') requestAnimationFrame(() => { renderToday(); drawMap($('map-today'), $('map-marker'), true); });
   if (tab === 'achv') requestAnimationFrame(renderAchievements);
 }
 
@@ -660,7 +747,14 @@ function bindNav() {
 }
 
 function applyFull(state) {
-  if (state) S.state = state;
+  if (state) {
+    // 换路线（reroll / 切固定路线 / 完赛开新段 / 重置今日）时进度归零：
+    // 吸到新值，否则补间会把小人从上千 km 平滑「倒放」回 0（同悬浮窗）
+    const routeChanged = !S.state || !S.state.journey || !state.journey
+      || S.state.journey.routeId !== state.journey.routeId;
+    S.state = state;
+    if (routeChanged) S.ride.shownKm = state.journey ? state.journey.progressKm : 0;
+  }
   if (S.state.needsCalibration && !calSkipActive()) $('cal-banner').hidden = false;
   renderAll();
 }
@@ -681,7 +775,6 @@ function renderAll() {
   fillSettings();
   drawMap($('map-today'), $('map-marker'), true);
   drawMap($('map-main'), $('map-marker-main'), false);
-  drawScenery();
 }
 
 /* ------------------------------------------------------------------ 事件 */
@@ -745,6 +838,7 @@ async function init() {
   });
 
   S.state = await api.getState();
+  S.ride.shownKm = S.state.journey ? S.state.journey.progressKm : 0;
   bindNav();
   bindSettings();
   bindStatsRange();
@@ -757,6 +851,11 @@ async function init() {
   api.on('health:reminder', onReminder);
   api.on('boost:event', onBoostEvent);
 
+  // 主窗口同样能玩：点路面 = 抽鞭冲刺，叠层按钮同效；动画循环驱动路上视角
+  $('scene-today').addEventListener('click', onWhip);
+  $('btn-whip').addEventListener('click', onWhip);
+  requestAnimationFrame(rideLoop);
+
   let resizeTimer = null;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
@@ -765,7 +864,6 @@ async function init() {
       renderToday();
       drawMap($('map-main'), $('map-marker-main'), false);
       drawMap($('map-today'), $('map-marker'), true);
-      drawScenery();
     }, 120);
   });
 

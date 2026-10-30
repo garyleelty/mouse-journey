@@ -21,6 +21,10 @@
 - 顺弯判定：鼠标水平速度 `vx`（tracker EMA，state:update 下发）与弯向同号且 |vx| > 60 px/s 持续 1.5s → 进入压弯，倍率 ×1.25（`LEAN_MULT`），可与冲刺叠加（×2.5）。
 - 反馈：相机侧倾（canvas 绕底部中心 rotate，压弯 ±0.05rad）+ 冲刺速度线/扬尘（灰阶）。
 - 状态变化时才上报 `boost:lean`（invoke），非连续流。
+- 主窗口同步（2026-10-30 追加）：主窗「路上」画面接入同一套表现层——`main.js` 的 `rideLoop`
+  （rAF，~25fps，仅今日页且页面可见时作画）做进度补间与侧倾平滑，把 `roll/boost/ghost` 传给
+  `SceneryKit.render`；叠层 UI（能量槽 `ride-boost`、抽鞭按钮 `btn-whip`、倍率徽章 `scene-mult`）
+  与悬浮窗读同一份 boost 快照，点路面或按钮即 `boost:whip`。压弯计数仍由常驻悬浮窗判定上报，主窗只做表现。
 
 ### 3. 幽灵车（和昨天的自己赛跑）
 - 数据：`store.recordIntraday()` 每分钟记录当日累计 cm 到 `days[key].intraday[分钟]`（0..1439，稀疏数组）；跨天 `pruneIntraday(2)` 只留 2 天。
