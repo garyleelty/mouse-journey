@@ -34,7 +34,8 @@ function renderHud() {
   if (!st || !st.journey) return;
   $('f-dist').textContent = fmtMeters(st.today.meters);
   $('f-mount').innerHTML = Icons.mountIcon(st.mount.id, 14);
-  $('f-pos').textContent = `${st.journey.progressKm} / ${st.journey.totalKm} km`;
+  const km = (v, d = 2) => String(Number(Number(v || 0).toFixed(d)));
+  $('f-pos').textContent = `${km(st.journey.progressKm)} / ${km(st.journey.totalKm, 0)} km`;
 
   // 今日目标进度环（HUD 迷你环 + 折叠态迷你环；关闭/无目标时隐藏；SVG 显隐用 attribute）
   const gl = st.settings && st.settings.goal;

@@ -13,6 +13,8 @@ const NAV_LABELS = { today: '今日', stats: '统计', route: '路线', achv: '�
 
 /* ------------------------------------------------------------------ 工具 */
 const meters = (v) => Number(v) || 0;
+/** 公里数展示：最多 2 位小数、去尾零（1681.856… → 1681.86，1860 → 1860） */
+const km = (v) => String(Number(Number(v || 0).toFixed(2)));
 
 /** 页面标题与副标题（每个屏一个 h1 + 一行答案） */
 function renderPageHead() {
@@ -418,7 +420,7 @@ function renderToday() {
 
   // 行程
   const j = st.journey;
-  $('today-map-hint').textContent = j ? `${j.name} · ${j.progressKm} / ${j.totalKm} km` : '—';
+  $('today-map-hint').textContent = j ? `${j.name} · ${km(j.progressKm)} / ${km(j.totalKm)} km` : '—';
   if (j) {
     const cityKm = nextCityKm(j);
     $('route-percent').textContent = `${Math.round(j.percent * 100)}%`;
@@ -456,7 +458,7 @@ function renderToday() {
   if (next) {
     $('milestone-badge').textContent = next.name;
     $('milestone-bar').style.width = `${Math.round(next.progress * 100)}%`;
-    $('milestone-text').textContent = `${Fmt.formatDistance(st.totals.meters)} / ${Fmt.formatDistance(next.value)} · ${next.desc}`;
+    $('milestone-text').textContent = `${Fmt.formatDistance(st.totals.meters)} / ${Fmt.formatDistance(next.value)}`;
     sn.classList.toggle('near', next.progress >= 0.8);
   } else {
     $('milestone-badge').textContent = '全部达成';
@@ -692,7 +694,7 @@ function renderJourney() {
   const j = st.journey;
   if (!j) return;
   renderPageHead();
-  $('journey-map-hint').textContent = `${j.progressKm} / ${j.totalKm} km`;
+  $('journey-map-hint').textContent = `${km(j.progressKm)} / ${km(j.totalKm)} km`;
   $('route-percent-2').textContent = `${Math.round(j.percent * 100)}%`;
   $('route-bar-2').style.width = `${Math.round(j.percent * 100)}%`;
   $('route-done-2').textContent = `${j.progressKm} km`;

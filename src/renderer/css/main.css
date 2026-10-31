@@ -214,6 +214,8 @@ canvas { display: block; }
 .kpi:not(.kpi-lead) .kpi-value { font-size: var(--fs-title); font-weight: 400; }
 .kpi-hint { font-size: var(--fs-small); color: var(--muted); }
 .kpi-lead { position: relative; }
+/* 目标环是绝对定位（right:18 宽 46），提示语预留右侧空间避免被环覆盖 */
+.kpi-lead .kpi-hint { padding-right: 64px; }
 
 /* ---------- 今日目标进度环（今日页 KPI / 悬浮窗 HUD） ---------- */
 .goal-ring { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); width: 46px; height: 46px; }
