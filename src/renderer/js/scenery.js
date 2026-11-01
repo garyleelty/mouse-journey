@@ -118,6 +118,33 @@
     return ((x % 100000) + 100000) % 100000 / 100000;
   }
 
+  /** 昼夜相位（真实本地时间驱动，不联网）：0=夜 1=白天，5-7/17-19 为晨昏过渡。
+   *  hourF 可注入小时数（0-23，测试用）；不传则用真实本地时间。 */
+  function daylight(hourF) {
+    let h;
+    if (hourF == null) {
+      const d = new Date();
+      h = d.getHours() + d.getMinutes() / 60;
+    } else {
+      h = hourF;
+    }
+    if (h >= 7 && h < 17) return 1;
+    if (h >= 5 && h < 7) return (h - 5) / 2;
+    if (h >= 17 && h < 19) return 1 - (h - 17) / 2;
+    return 0;
+  }
+  const hexRgb2 = (h) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+  const lerpHex = (a, b, t) => {
+    const A = hexRgb2(a), B = hexRgb2(b);
+    return `#${A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0')).join('')}`;
+  };
+  // 夜间色表（与白天同亮度层级，冷灰蓝；场景内容色，不属于 UI 数据色纪律）
+  const NIGHT = {
+    sky: '#1d2330', haze: '#272e3c', hillFar: '#242b38', hill: '#212734',
+    ground: '#252b37', verge: '#2c323e', furrow: '#282e3a',
+    pole: '#4a5262', canopy: '#39414f', city: '#333a48'
+  };
+
   /** 剖面QLine：把 hint => 线性插值 */
   function interp(prof, key, z) {
     if (z <= prof[0].z) return prof[0][key];
@@ -305,23 +332,47 @@
     const dm = Math.max(0, Math.min(total, o.progressKm || 0));   // 当前里程（km）
     const here = Geo.pointAtKm(route.points, route.cum, dm);
 
-    // 地貌配色：由当前位置的经纬度确定性算出（跨区线性过渡）
-    const P = terrainPalette(here.lon, here.lat);
+    // 地貌配色：由当前位置的经纬度确定性算出（跨区线性过渡）；
+    // 再按昼夜相位向夜间色表插值（真实本地时间驱动，不联网）
+    const dayT = daylight(o.hour == null ? null : o.hour);
+    const nightT = 1 - dayT;
+    const P0 = terrainPalette(here.lon, here.lat);
+    const P = {};
+    for (const k in P0) P[k] = NIGHT[k] ? lerpHex(P0[k], NIGHT[k], nightT) : P0[k];
+    const roadCol = lerpHex(T.road, '#39404e', nightT);
+    const roadEdgeCol = lerpHex(T.roadEdge, '#4a5160', nightT);
 
     // 天地：分层实色（无渐变），随地貌渐变
     g.fillStyle = P.sky;
     g.fillRect(0, 0, w, hy);
-    // 太阳（右上，两层同心实色圆）与云（确定性定位，随里程缓慢漂移）
-    const sunX = w * 0.78;
-    const sunY = hy * 0.22;
-    g.fillStyle = 'rgba(255, 253, 244, 0.9)';
-    g.beginPath();
-    g.arc(sunX, sunY, Math.max(10, hy * 0.07), 0, Math.PI * 2);
-    g.fill();
-    g.fillStyle = 'rgba(255, 253, 244, 0.45)';
-    g.beginPath();
-    g.arc(sunX, sunY, Math.max(16, hy * 0.12), 0, Math.PI * 2);
-    g.fill();
+    // 太阳（右上，两层同心实色圆）与云（确定性定位，随里程缓慢漂移）；夜里换月牙与星星
+    if (nightT > 0.5) {
+      g.fillStyle = `rgba(226, 232, 240, ${0.9 * nightT})`;
+      g.beginPath();
+      g.arc(w * 0.76, hy * 0.24, Math.max(9, hy * 0.055), 0, Math.PI * 2);
+      g.fill();
+      g.fillStyle = P.sky; // 盖出月牙
+      g.beginPath();
+      g.arc(w * 0.76 + Math.max(4, hy * 0.026), hy * 0.24 - Math.max(2, hy * 0.014), Math.max(8, hy * 0.048), 0, Math.PI * 2);
+      g.fill();
+      for (let st = 0; st < 34; st++) {
+        const r1 = hash01(st * 131 + 7);
+        const r2 = hash01(st * 173 + 11);
+        g.fillStyle = `rgba(226, 232, 240, ${(0.25 + r2 * 0.6) * nightT})`;
+        g.fillRect(r1 * w, hy * r2 * 0.85, 1.5, 1.5);
+      }
+    } else {
+      const sunX = w * 0.78;
+      const sunY = hy * 0.22;
+      g.fillStyle = `rgba(255, 253, 244, ${0.9 * dayT + 0.1})`;
+      g.beginPath();
+      g.arc(sunX, sunY, Math.max(10, hy * 0.07), 0, Math.PI * 2);
+      g.fill();
+      g.fillStyle = `rgba(255, 253, 244, ${0.45 * dayT + 0.1})`;
+      g.beginPath();
+      g.arc(sunX, sunY, Math.max(16, hy * 0.12), 0, Math.PI * 2);
+      g.fill();
+    }
     const cloudBase = Math.floor(dm * 1000 / 900); // 每 900 m 云形缓变
     for (let c = 0; c < 3; c++) {
       const r1 = hash01(cloudBase * 7 + c * 13);
@@ -329,7 +380,8 @@
       const cxp = ((r1 * 1.4 - 0.2) * w + (dm * 1000 % 900) / 900 * w * 0.3) % (w + 120) - 60;
       const cyp = hy * (0.12 + r2 * 0.3);
       const cs = Math.max(8, hy * (0.05 + r1 * 0.05));
-      g.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      g.fillStyle = lerpHex('#ffffff', '#9aa5b5', nightT).replace('#', '#') ;
+      g.globalAlpha = 0.9 - nightT * 0.55;
       g.beginPath();
       g.ellipse(cxp, cyp, cs * 1.9, cs * 0.62, 0, 0, Math.PI * 2);
       g.fill();
@@ -339,10 +391,13 @@
       g.beginPath();
       g.ellipse(cxp + cs * 0.8, cyp + cs * 0.08, cs * 1.0, cs * 0.45, 0, 0, Math.PI * 2);
       g.fill();
-      g.fillStyle = 'rgba(140, 150, 166, 0.4)'; // 云底灰，给一点体积
+      g.globalAlpha = 1;
+      g.fillStyle = lerpHex('#8c96a6', '#565f6e', nightT);
+      g.globalAlpha = 0.4;
       g.beginPath();
       g.ellipse(cxp, cyp + cs * 0.42, cs * 1.5, cs * 0.2, 0, 0, Math.PI * 2);
       g.fill();
+      g.globalAlpha = 1;
     }
     g.fillStyle = P.ground;
     g.fillRect(0, hy, w, h - hy);
@@ -418,11 +473,29 @@
     g.fill();
     const roadPoly = bandPath((l) => l, () => ROAD_HALF);
     poly(roadPoly);
-    g.fillStyle = T.road;
+    g.fillStyle = roadCol;
     g.fill();
     g.lineWidth = 1;
-    g.strokeStyle = T.roadEdge;
+    g.strokeStyle = roadEdgeCol;
     g.stroke();
+
+    /* ---- 车灯光锥（夜间）：照亮前方路面，中心线在光上更醒目 ---- */
+    if (nightT > 0.4) {
+      const zN = 5;
+      const zF = 17;
+      const yN = proj(0, zN).y + 6;
+      const yF = proj(0, zF).y;
+      const wN = ROAD_HALF * (FOCAL / zN);
+      const wF = ROAD_HALF * (FOCAL / zF);
+      g.fillStyle = `rgba(255, 244, 210, ${0.11 * nightT})`;
+      g.beginPath();
+      g.moveTo(cx - wN, yN);
+      g.lineTo(cx - wF, yF);
+      g.lineTo(cx + wF, yF);
+      g.lineTo(cx + wN, yN);
+      g.closePath();
+      g.fill();
+    }
 
     /* ---- 路面中心线（唯一数据色：你正在走的行程） ---- */
     g.fillStyle = T.line;
@@ -457,6 +530,7 @@
     g.textAlign = 'center';
     g.textBaseline = 'middle';
     const poleTops = []; // 电线：相邻杆顶连线（远→近）
+    const shadowCol = `rgba(10, 10, 10, ${(0.08 * (0.3 + 0.7 * dayT)).toFixed(3)})`; // 夜里影淡（月光影）
     items.forEach((it) => {
       const z = it.s - startMeters;
       const minZ = it.kind === 'tree' ? 26 : it.kind === 'pole' ? 16 : 6;
@@ -472,13 +546,23 @@
         const hp = 7.6 * sc;
         const wpx = Math.max(1, 0.3 * sc);
         // 投影：太阳在右上，影向左下贴地
-        g.fillStyle = SHADOW_SOFT;
+        g.fillStyle = shadowCol;
         g.beginPath();
         g.ellipse(px - hp * 0.45, gy + Math.max(1, 0.12 * sc), hp * 0.55, Math.max(1, 0.09 * sc), 0, 0, Math.PI * 2);
         g.fill();
         g.fillStyle = P.pole;
         g.fillRect(px - wpx / 2, gy - hp, wpx, hp);
         g.fillRect(px - hp * 0.13, gy - hp + Math.max(1, 0.7 * sc), hp * 0.26, Math.max(1, 0.18 * sc));
+        if (nightT > 0.5) {
+          g.fillStyle = `rgba(255, 240, 200, ${0.55 * nightT})`;
+          g.beginPath();
+          g.arc(px, gy - hp - Math.max(2, 0.5 * sc), Math.max(2.5, 0.9 * sc), 0, Math.PI * 2);
+          g.fill();
+          g.fillStyle = `rgba(255, 240, 200, ${0.07 * nightT})`;
+          g.beginPath();
+          g.ellipse(px, gy, Math.max(6, 2.6 * sc), Math.max(2, 0.6 * sc), 0, 0, Math.PI * 2);
+          g.fill();
+        }
         poleTops.push({ x: px, y: gy - hp, sc });
         return;
       }
@@ -491,7 +575,7 @@
         const th = (3.6 + hash01(seed + 3) * 1.6) * sc;
         const tw = Math.max(0.8, 0.26 * sc);
         const r = (1.5 + hash01(seed + 11) * 1.3) * sc;
-        g.fillStyle = SHADOW_SOFT;
+        g.fillStyle = shadowCol;
         g.beginPath();
         g.ellipse(px - th * 0.55, gy + Math.max(1, th * 0.05), th * 0.8, Math.max(1, th * 0.11), 0, 0, Math.PI * 2);
         g.fill();
@@ -510,7 +594,7 @@
         const bh = 0.85 * sc;
         const ph = 1.15 * sc;
         const tw = Math.max(0.8, 0.22 * sc);
-        g.fillStyle = SHADOW_SOFT;
+        g.fillStyle = shadowCol;
         g.beginPath();
         g.ellipse(px - bw * 0.7, gy + Math.max(1, 0.05 * sc), bw * 1.3, Math.max(1, 0.07 * sc), 0, 0, Math.PI * 2);
         g.fill();

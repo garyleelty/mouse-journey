@@ -178,6 +178,7 @@ function drawScenery() {
     nextCity,
     mountId: st.mount.id,
     speedKmh: S.speedKmh || 0,
+    hour: window.__mjHour != null ? window.__mjHour : null,
     compact: false,
     roll: S.ride.camRoll,
     boost: { whip: whipOn },

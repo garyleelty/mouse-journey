@@ -184,6 +184,10 @@ const state = {
   }
 };
 
+// MJ_HOUR：注入场景昼夜相位（如 22 = 夜），便于自查夜间渲染；不设则用真实本地时间。
+// preload 与页面是隔离世界，window.__X 不互通 —— 必须经 contextBridge 暴露
+contextBridge.exposeInMainWorld('__mjHour', process.env.MJ_HOUR != null ? Number(process.env.MJ_HOUR) : null);
+
 const ok = (v) => () => Promise.resolve(v);
 const cbs = {};
 contextBridge.exposeInMainWorld('api', {
