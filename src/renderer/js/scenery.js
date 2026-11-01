@@ -26,8 +26,11 @@
     boardEdge: '#c9cfd9',
     city: '#c9d0db',
     ink: '#0a0a0a',
+    hood: '#e8eaee',          // 引擎盖（比路面深半档）
     font: '600 10px Geist, Inter, system-ui, -apple-system, "PingFang SC", sans-serif'
   };
+  const SHADOW = 'rgba(10, 10, 10, 0.07)';   // 投影（实色低透明，不引入渐变）
+  const SHADOW_SOFT = 'rgba(10, 10, 10, 0.05)';
 
   const FOCAL = 250;      // 焦距（px·m）
   const CAM_H = 1.55;     // 视高（m）
@@ -129,6 +132,103 @@
     return prof[prof.length - 1][key];
   }
 
+  /** 第一人称座舱：随坐骑形态变化（剪影风，随相机侧倾整体转动）。
+   *  speedKmh 为真实鼠标速度（km/h），显示在仪表上——真实数据进入场景。 */
+  function drawCockpit(g, w, h, mountId, speedKmh) {
+    if (mountId === 'walk') return; // 步行无座舱
+    const inkA = (a) => `rgba(20, 22, 26, ${a})`;
+    const dashY = h * 0.955;
+
+    if (mountId === 'bike') {
+      // 自行车：两侧车把弯向中央 + 把套 + 立管 + 小码表
+      g.strokeStyle = inkA(0.92);
+      g.lineCap = 'round';
+      g.lineWidth = Math.max(8, h * 0.035);
+      g.beginPath();
+      g.moveTo(-w * 0.02, h + 4);
+      g.quadraticCurveTo(w * 0.16, h * 0.93, w * 0.30, h * 0.965);
+      g.stroke();
+      g.beginPath();
+      g.moveTo(w * 1.02, h + 4);
+      g.quadraticCurveTo(w * 0.84, h * 0.93, w * 0.70, h * 0.965);
+      g.stroke();
+      g.lineWidth = Math.max(5, h * 0.022);
+      g.beginPath();
+      g.moveTo(w * 0.30, h * 0.965);
+      g.quadraticCurveTo(w * 0.46, h * 0.9, w * 0.5, h * 0.985);
+      g.stroke();
+      g.beginPath();
+      g.moveTo(w * 0.70, h * 0.965);
+      g.quadraticCurveTo(w * 0.54, h * 0.9, w * 0.5, h * 0.985);
+      g.stroke();
+      g.fillStyle = inkA(0.95);
+      g.fillRect(w * 0.275, h * 0.945, w * 0.055, h * 0.038);
+      g.fillRect(w * 0.67, h * 0.945, w * 0.055, h * 0.038);
+    } else {
+      // 仪表台（公交/汽车/高铁/飞机）：全宽台面 + 中央速度表 + A 柱 + 后视镜
+      g.fillStyle = inkA(0.94);
+      g.beginPath();
+      g.moveTo(-2, h + 2);
+      g.lineTo(-2, h * 0.972);
+      g.quadraticCurveTo(w * 0.5, h * 0.926, w + 2, h * 0.972);
+      g.lineTo(w + 2, h + 2);
+      g.closePath();
+      g.fill();
+      // A 柱：左右斜梁
+      g.strokeStyle = inkA(0.94);
+      g.lineWidth = Math.max(10, h * 0.03);
+      g.beginPath();
+      g.moveTo(w * 0.015, h * 0.44);
+      g.lineTo(w * 0.10, h + 2);
+      g.moveTo(w * 0.985, h * 0.44);
+      g.lineTo(w * 0.90, h + 2);
+      g.stroke();
+      // 中央速度表：真实速度（km/h）
+      const cx = w * 0.5;
+      const cy = h * 0.968;
+      const R = Math.max(26, h * 0.075);
+      g.fillStyle = inkA(0.97);
+      g.beginPath();
+      g.arc(cx, cy, R * 1.12, Math.PI, 0);
+      g.closePath();
+      g.fill();
+      g.fillStyle = '#f5f6f8';
+      g.beginPath();
+      g.arc(cx, cy, R, Math.PI, 0);
+      g.closePath();
+      g.fill();
+      // 刻度（0..120，每 20 一格）
+      g.strokeStyle = '#b4bbc7';
+      g.lineWidth = 2;
+      for (let i = 0; i <= 6; i++) {
+        const a = Math.PI + (i / 6) * Math.PI;
+        g.beginPath();
+        g.moveTo(cx + Math.cos(a) * R * 0.82, cy + Math.sin(a) * R * 0.82);
+        g.lineTo(cx + Math.cos(a) * R * 0.95, cy + Math.sin(a) * R * 0.95);
+        g.stroke();
+      }
+      // 指针（数据色）+ 数字
+      const frac = Math.max(0, Math.min(1, speedKmh / 120));
+      const na = Math.PI + frac * Math.PI;
+      g.strokeStyle = '#1d5fbf';
+      g.lineWidth = 3;
+      g.beginPath();
+      g.moveTo(cx, cy);
+      g.lineTo(cx + Math.cos(na) * R * 0.78, cy + Math.sin(na) * R * 0.78);
+      g.stroke();
+      g.fillStyle = '#1d5fbf';
+      g.font = `700 ${Math.max(11, R * 0.4).toFixed(0)}px Geist, Inter, system-ui, sans-serif`;
+      g.textAlign = 'center';
+      g.textBaseline = 'middle';
+      g.fillText(`${Math.round(speedKmh)}`, cx, cy - R * 0.42);
+      g.fillStyle = '#6b6b6b';
+      g.font = `500 ${Math.max(7, R * 0.18).toFixed(0)}px Geist, Inter, system-ui, sans-serif`;
+      g.fillText('km/h', cx, cy - R * 0.06);
+      g.textAlign = 'left';
+      g.textBaseline = 'alphabetic';
+    }
+  }
+
   function drawCity(g, o, w, hy) {
     const city = o.nextCity;
     if (!city) return;
@@ -211,6 +311,39 @@
     // 天地：分层实色（无渐变），随地貌渐变
     g.fillStyle = P.sky;
     g.fillRect(0, 0, w, hy);
+    // 太阳（右上，两层同心实色圆）与云（确定性定位，随里程缓慢漂移）
+    const sunX = w * 0.78;
+    const sunY = hy * 0.22;
+    g.fillStyle = 'rgba(255, 253, 244, 0.9)';
+    g.beginPath();
+    g.arc(sunX, sunY, Math.max(10, hy * 0.07), 0, Math.PI * 2);
+    g.fill();
+    g.fillStyle = 'rgba(255, 253, 244, 0.45)';
+    g.beginPath();
+    g.arc(sunX, sunY, Math.max(16, hy * 0.12), 0, Math.PI * 2);
+    g.fill();
+    const cloudBase = Math.floor(dm * 1000 / 900); // 每 900 m 云形缓变
+    for (let c = 0; c < 3; c++) {
+      const r1 = hash01(cloudBase * 7 + c * 13);
+      const r2 = hash01(cloudBase * 7 + c * 29);
+      const cxp = ((r1 * 1.4 - 0.2) * w + (dm * 1000 % 900) / 900 * w * 0.3) % (w + 120) - 60;
+      const cyp = hy * (0.12 + r2 * 0.3);
+      const cs = Math.max(8, hy * (0.05 + r1 * 0.05));
+      g.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      g.beginPath();
+      g.ellipse(cxp, cyp, cs * 1.9, cs * 0.62, 0, 0, Math.PI * 2);
+      g.fill();
+      g.beginPath();
+      g.ellipse(cxp - cs * 0.7, cyp + cs * 0.1, cs * 1.1, cs * 0.5, 0, 0, Math.PI * 2);
+      g.fill();
+      g.beginPath();
+      g.ellipse(cxp + cs * 0.8, cyp + cs * 0.08, cs * 1.0, cs * 0.45, 0, 0, Math.PI * 2);
+      g.fill();
+      g.fillStyle = 'rgba(140, 150, 166, 0.4)'; // 云底灰，给一点体积
+      g.beginPath();
+      g.ellipse(cxp, cyp + cs * 0.42, cs * 1.5, cs * 0.2, 0, 0, Math.PI * 2);
+      g.fill();
+    }
     g.fillStyle = P.ground;
     g.fillRect(0, hy, w, h - hy);
     const hazeH = Math.max(5, Math.round(h * 0.018));
@@ -219,6 +352,21 @@
 
     drawHills(g, w, hy, Math.floor(here.lon * 4 + here.lat * 4), P);
     drawCity(g, { nextCity: o.nextCity, compact, pal: P }, w, hy);
+
+    // 田野色块：远 ground 上按里程确定性分块（复垦感），路面覆盖其中间
+    if (!compact) {
+      const blockH = Math.max(10, (h - hy) * 0.09);
+      for (let bi = 0; bi < 26; bi++) {
+        const r = hash01(Math.floor(dm * 1000 / 120) * 31 + bi);
+        if (r < 0.35) continue;
+        const bx = ((bi * 97 + Math.floor(dm * 1000 / 120) * 53) % 130 - 15) / 100 * w;
+        const by = hy + (bi % 3) * blockH * 0.9 + 2;
+        g.fillStyle = r > 0.72 ? P.furrow : (r > 0.52 ? P.hillFar : P.verge);
+        g.globalAlpha = 0.5;
+        g.fillRect(bx, by, w * (0.12 + r * 0.2), blockH * (0.6 + r * 0.6));
+        g.globalAlpha = 1;
+      }
+    }
 
     const cx = w / 2;
     const zNear = (CAM_H * FOCAL) / Math.max(26, h - hy + 28);
@@ -434,6 +582,9 @@
       }
       g.restore();
     }
+
+    // 第一人称座舱（主窗）：最后画 = 最贴近镜头；在 roll 变换内，随侧倾/冲刺抖动整体转动
+    if (!compact) drawCockpit(g, w, h, o.mountId || 'car', o.speedKmh || 0);
 
     // 弯道信息：前方 120m 路心横向偏移（米），供悬浮窗做「顺弯压弯」判定
     const lookLat = latAt(Math.min(120, zFar));

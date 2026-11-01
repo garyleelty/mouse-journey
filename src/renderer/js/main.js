@@ -176,6 +176,8 @@ function drawScenery() {
     progressKm: S.ride.shownKm,
     visitedSpots: j.visitedSpots,
     nextCity,
+    mountId: st.mount.id,
+    speedKmh: S.speedKmh || 0,
     compact: false,
     roll: S.ride.camRoll,
     boost: { whip: whipOn },
@@ -299,11 +301,12 @@ function updateSpeed() {
   const prev = S.speed;
   S.speed = { m, ts: now };
   if (!prev || now - prev.ts < 40 || now - prev.ts > 4000) {
-    if (!prev || now - prev.ts > 2500) el.textContent = '静止';
+    if (!prev || now - prev.ts > 2500) { el.textContent = '静止'; S.speedKmh = 0; }
     return;
   }
   const v = (m - prev.m) / ((now - prev.ts) / 1000); // m/s
-  if (!(v > 0)) { el.textContent = '静止'; return; }
+  if (!(v > 0)) { el.textContent = '静止'; S.speedKmh = 0; return; }
+  S.speedKmh = v * 3.6;
   el.textContent = v < 1 ? `${(v * 100).toFixed(0)} cm/s` : `${v.toFixed(2)} m/s`;
 }
 
