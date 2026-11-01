@@ -29,8 +29,8 @@
     hood: '#e8eaee',          // 引擎盖（比路面深半档）
     font: '600 10px Geist, Inter, system-ui, -apple-system, "PingFang SC", sans-serif'
   };
-  const SHADOW = 'rgba(10, 10, 10, 0.07)';   // 投影（实色低透明，不引入渐变）
-  const SHADOW_SOFT = 'rgba(10, 10, 10, 0.05)';
+  const SHADOW = 'rgba(10, 10, 10, 0.08)';   // 投影（实色低透明，不引入渐变）
+  const SHADOW_SOFT = 'rgba(10, 10, 10, 0.08)';
 
   const FOCAL = 250;      // 焦距（px·m）
   const CAM_H = 1.55;     // 视高（m）
@@ -456,6 +456,7 @@
 
     g.textAlign = 'center';
     g.textBaseline = 'middle';
+    const poleTops = []; // 电线：相邻杆顶连线（远→近）
     items.forEach((it) => {
       const z = it.s - startMeters;
       const minZ = it.kind === 'tree' ? 26 : it.kind === 'pole' ? 16 : 6;
@@ -470,9 +471,15 @@
         const px = cx + (lat + ROAD_HALF + VERGE + 1.5) * sc;
         const hp = 7.6 * sc;
         const wpx = Math.max(1, 0.3 * sc);
+        // 投影：太阳在右上，影向左下贴地
+        g.fillStyle = SHADOW_SOFT;
+        g.beginPath();
+        g.ellipse(px - hp * 0.45, gy + Math.max(1, 0.12 * sc), hp * 0.55, Math.max(1, 0.09 * sc), 0, 0, Math.PI * 2);
+        g.fill();
         g.fillStyle = P.pole;
         g.fillRect(px - wpx / 2, gy - hp, wpx, hp);
         g.fillRect(px - hp * 0.13, gy - hp + Math.max(1, 0.7 * sc), hp * 0.26, Math.max(1, 0.18 * sc));
+        poleTops.push({ x: px, y: gy - hp, sc });
         return;
       }
 
@@ -484,6 +491,10 @@
         const th = (3.6 + hash01(seed + 3) * 1.6) * sc;
         const tw = Math.max(0.8, 0.26 * sc);
         const r = (1.5 + hash01(seed + 11) * 1.3) * sc;
+        g.fillStyle = SHADOW_SOFT;
+        g.beginPath();
+        g.ellipse(px - th * 0.55, gy + Math.max(1, th * 0.05), th * 0.8, Math.max(1, th * 0.11), 0, 0, Math.PI * 2);
+        g.fill();
         g.fillStyle = P.pole;
         g.fillRect(px - tw / 2, gy - th, tw, th);
         g.beginPath();
@@ -499,6 +510,10 @@
         const bh = 0.85 * sc;
         const ph = 1.15 * sc;
         const tw = Math.max(0.8, 0.22 * sc);
+        g.fillStyle = SHADOW_SOFT;
+        g.beginPath();
+        g.ellipse(px - bw * 0.7, gy + Math.max(1, 0.05 * sc), bw * 1.3, Math.max(1, 0.07 * sc), 0, 0, Math.PI * 2);
+        g.fill();
         g.fillStyle = P.pole;
         g.fillRect(px - tw / 2, gy - ph - bh, tw, ph + bh);
         g.fillStyle = T.board;
@@ -537,6 +552,23 @@
         }
       }
     });
+
+    /* ---- 电线：相邻电线杆顶之间，带下垂的悬链线（简化二次曲线） ---- */
+    g.strokeStyle = P.pole;
+    g.lineWidth = 1.2;
+    g.globalAlpha = 0.8;
+    for (let wi = 0; wi < poleTops.length - 1; wi++) {
+      const a = poleTops[wi];
+      const b = poleTops[wi + 1];
+      if (b.x - a.x < 4 || a.y < hy + 4) continue; // 太远/在雾线以上不画
+      const mx = (a.x + b.x) / 2;
+      const my = (a.y + b.y) / 2 + Math.min(34, (b.sc || 1) * 1.6);
+      g.beginPath();
+      g.moveTo(a.x, a.y);
+      g.quadraticCurveTo(mx, my, b.x, b.y);
+      g.stroke();
+    }
+    g.globalAlpha = 1;
 
     /* ---- 幽灵车（昨天的你）：同车道半透明剪影，领先你时出现在前方 ---- */
     if (o.ghost && o.ghost.aheadKm != null && o.ghost.aheadKm > -0.25) {
